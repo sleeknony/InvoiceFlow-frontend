@@ -1,0 +1,5 @@
+.invoice-theme {
+    font-family: var(--if-font);
+    background: var(--if-background);
+    color: var(--if-text);
+}

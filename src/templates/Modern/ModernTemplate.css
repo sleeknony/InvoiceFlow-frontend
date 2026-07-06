@@ -1,0 +1,61 @@
+
+.modern-template {
+    background: var(--if-background);
+    color: var(--if-text);
+    font-family: var(--if-font);
+    font-size: var(--if-body-size);
+    width: 210mm;
+    min-height: 297mm;
+    margin: 30px auto;
+    padding: 40px;
+    border: 1px solid var(--if-border);
+    box-sizing: border-box;
+    position: relative;
+}
+
+    .modern-template * {
+        box-sizing: border-box;
+    }
+
+    .modern-template h1,
+    .modern-template h2,
+    .modern-template h3,
+    .modern-template h4,
+    .modern-template h5 {
+        color: var(--if-heading);
+        margin: 0;
+    }
+
+    .modern-template table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .modern-template th {
+        background: var(--if-table-header);
+        color: var(--if-text);
+    }
+
+    .modern-template td,
+    .modern-template th {
+        border: 1px solid var(--if-border);
+        padding: 10px;
+    }
+
+    .modern-template hr {
+        border: none;
+        border-top: 1px solid var(--if-border);
+    }
+
+    .modern-template .text-muted {
+        color: var(--if-muted);
+    }
+
+    .modern-template .badge {
+        background: var(--if-badge-bg);
+        color: var(--if-badge-text);
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }

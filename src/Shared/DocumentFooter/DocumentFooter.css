@@ -1,0 +1,55 @@
+.document-footer {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid #dcdcdc;
+    font-size: 13px;
+    color: #555;
+}
+
+.footer-message {
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 15px;
+    color: #444;
+    font-style: italic;
+}
+
+.footer-divider {
+    border-bottom: 1px solid #ececec;
+    margin-bottom: 20px;
+}
+
+.footer-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+.footer-company {
+    flex: 1;
+}
+
+    .footer-company strong {
+        display: block;
+        margin-bottom: 8px;
+        color: #222;
+    }
+
+.footer-contact {
+    flex: 1;
+    text-align: right;
+}
+
+    .footer-contact div {
+        margin-bottom: 5px;
+    }
+
+.footer-bottom {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px dashed #ddd;
+    text-align: center;
+    font-size: 12px;
+    color: #999;
+}

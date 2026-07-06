@@ -1,0 +1,19 @@
+@media print {
+
+    body {
+        margin: 0;
+        background: white;
+    }
+
+    .modern-template {
+        width: 100%;
+        margin: 0;
+        padding: 15mm;
+        border: none;
+        box-shadow: none;
+    }
+
+    button {
+        display: none !important;
+    }
+}

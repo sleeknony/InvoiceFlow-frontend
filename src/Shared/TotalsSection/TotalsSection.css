@@ -1,0 +1,70 @@
+.totals-section {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2rem;
+}
+
+.totals-table {
+    width: 360px;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+    .totals-table tbody tr {
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .totals-table td {
+        padding: 10px 14px;
+    }
+
+        .totals-table td:first-child {
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .totals-table td:last-child {
+            text-align: right;
+            font-weight: 600;
+            color: #212529;
+        }
+
+    .totals-table .grand-total {
+        border-top: 2px solid #343a40;
+        border-bottom: none;
+    }
+
+        .totals-table .grand-total td {
+            padding-top: 16px;
+            padding-bottom: 16px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #000;
+        }
+
+    .totals-table .balance-due td {
+        color: #dc3545;
+        font-weight: 700;
+    }
+
+    .totals-table .amount-paid td {
+        color: #198754;
+        font-weight: 600;
+    }
+
+    .totals-table .subtotal td,
+    .totals-table .discount td,
+    .totals-table .tax td {
+        font-size: 0.95rem;
+    }
+
+@media print {
+
+    .totals-section {
+        page-break-inside: avoid;
+    }
+
+    .totals-table {
+        width: 320px;
+    }
+}

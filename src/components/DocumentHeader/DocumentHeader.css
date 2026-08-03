@@ -1,0 +1,18 @@
+.document-header {
+    background: white;
+    border-radius: 18px;
+    padding: 25px;
+    margin-bottom: 25px;
+}
+
+.company-logo {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    margin-right: 20px;
+}
+
+.document-header h2 {
+    font-weight: 700;
+    margin-bottom: 4px;
+}

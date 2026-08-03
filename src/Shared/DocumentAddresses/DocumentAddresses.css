@@ -1,37 +1,49 @@
-.document-addresses {
+.address-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
-    margin: 35px 0;
+    grid-template-columns: repeat(3,1fr);
+    gap: 24px;
+    margin-bottom: 42px;
 }
 
 .address-card {
-    padding: 18px;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
+    background: #fff;
+    border: 1px solid #E7EAF3;
+    border-radius: 12px;
+    padding: 22px;
+    min-height: 170px;
+    box-shadow: 0 2px 8px rgba(15,23,42,.04);
+    transition: .2s;
 }
+
+    .address-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px rgba(15,23,42,.08);
+    }
 
 .address-title {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
-    color: #6b7280;
-    margin-bottom: 12px;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
+    color: #94A3B8;
+    margin-bottom: 18px;
 }
 
-.address-name {
-    margin-bottom: 10px;
-    font-size: 18px;
-    font-weight: 600;
+.address-body {
+    font-size: 14px;
+    line-height: 1.9;
+    color: #475569;
 }
 
-.address-card p {
-    margin-bottom: 5px;
-    color: #374151;
-}
+    .address-body strong {
+        display: block;
+        font-size: 16px;
+        color: #111827;
+        margin-bottom: 10px;
+    }
 
-@media (max-width: 768px) {
-    .document-addresses {
+@media(max-width:900px) {
+
+    .address-grid {
         grid-template-columns: 1fr;
     }
 }

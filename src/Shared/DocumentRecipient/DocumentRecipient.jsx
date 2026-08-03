@@ -7,7 +7,7 @@ export default function DocumentRecipient({
 
     return (
 
-        <div className="document-recipient">
+        <PrintableSection type="recipient">
 
             <div className="recipient-card">
 
@@ -64,7 +64,7 @@ export default function DocumentRecipient({
 
             </div>
 
-        </div>
+        </PrintableSection>
 
     );
 

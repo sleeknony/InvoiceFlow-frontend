@@ -1,0 +1,107 @@
+/* ==========================================================
+   MODERN DOCUMENT
+   Foundation Layout
+========================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.modern-document {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 18mm;
+    background: #ffffff;
+    color: #1a1a2e;
+    font-family: "Segoe UI", Inter, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+
+    /* ==========================================================
+   SECTION SPACING
+========================================================== */
+
+    .modern-document > * {
+        margin-bottom: 14mm;
+    }
+
+        .modern-document > *:last-child {
+            margin-bottom: 0;
+        }
+
+
+    /* ==========================================================
+   IMAGES
+========================================================== */
+
+    .modern-document img {
+        max-width: 100%;
+        display: block;
+    }
+
+
+    /* ==========================================================
+   TABLES
+========================================================== */
+
+    .modern-document table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+
+    /* ==========================================================
+   LINKS
+========================================================== */
+
+    .modern-document a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+
+/* ==========================================================
+   PRINT
+========================================================== */
+
+@page {
+    size: A4 portrait;
+    margin: 12mm;
+}
+
+@media print {
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        background: white;
+    }
+
+    .modern-document {
+        width: 186mm;
+        min-height: auto;
+        margin: 0 auto;
+        padding: 0;
+        box-shadow: none;
+    }
+}
+
+
+/* ==========================================================
+   RESPONSIVE PREVIEW
+========================================================== */
+
+@media (max-width:900px) {
+
+    .modern-document {
+        width: 100%;
+        min-height: auto;
+        padding: 24px;
+    }
+}

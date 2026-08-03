@@ -52,24 +52,39 @@ export default function BrandingTab({
                     </h6>
 
                     <input
-
                         type="file"
-
                         accept="image/*"
-
                         className="form-control"
+                        onChange={async (e) => {
 
-                        onChange={uploadLogo}
+                            const file =
+                                e.target.files?.[0];
 
+                            if (!file)
+                                return;
+
+                            try {
+
+                                await uploadLogo(file);
+
+                            }
+
+                            catch (err) {
+
+                                console.error(err);
+
+                            }
+
+                        }}
                     />
 
-                    {form.logoUrl && (
+                    {(form.logoBase64 || form.logoUrl) && (
 
                         <div className="text-center mt-4">
 
                             <img
 
-                                src={form.logoUrl}
+                                src={form.logoBase64 ?? form.logoUrl}
 
                                 alt="Logo"
 

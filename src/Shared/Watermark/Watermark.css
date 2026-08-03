@@ -1,0 +1,23 @@
+.document-watermark {
+    position: fixed;
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%,-50%) rotate(-32deg);
+    font-size: 110px;
+    font-weight: 800;
+    letter-spacing: 8px;
+    color: #1a1a2e;
+    opacity: .05;
+    user-select: none;
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+}
+
+@media print {
+
+    .document-watermark {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}

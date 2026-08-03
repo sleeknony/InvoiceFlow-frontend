@@ -1,84 +1,185 @@
 import "./PaymentSection.css";
+import PrintableSection from "../../renderer/PrintableSection";
+import { useRenderDocument} from "../../renderer/RenderContext";
+import { useDocument } from "../../renderer/RenderContext";
 
-export default function PaymentSection({
-    document,
-    settings,
-    config
-}) {
+export default function PaymentSection() {
 
-    if (!config.features.showPaymentInstructions)
+    const {
+
+        payment,
+
+        features
+
+    } = useDocument();
+
+    if (!features.showPaymentInstructions)
         return null;
 
+    if (!payment.bank)
+        return null;
+
+    const {
+
+        name,
+
+        accountName,
+
+        accountNumber,
+
+        sortCode,
+
+        swiftCode,
+
+        iban,
+
+        instructions
+
+    } = payment.bank;
+
+    const hasBankInfo =
+
+        name ||
+        accountName ||
+        accountNumber ||
+        sortCode ||
+        swiftCode ||
+        iban ||
+        instructions;
+
+    if (!hasBankInfo)
+        return null;
+    
     return (
 
-        <section className="payment-section">
+        <PrintableSection type="payment">
 
             <h4 className="payment-title">
+
                 Payment Information
+
             </h4>
 
-            <div className="payment-grid">
+            <div
+                className={`payment-grid${instructions ? " has-notes" : ""}`}
+            >
 
                 <div className="payment-details">
 
-                    {settings?.bankName && (
+                    {name && (
 
                         <div className="payment-row">
 
                             <span className="payment-label">
+
                                 Bank
+
                             </span>
 
                             <span className="payment-value">
-                                {settings.bankName}
+
+                                {name}
+
                             </span>
 
                         </div>
 
                     )}
 
-                    {settings?.accountName && (
+                    {accountName && (
 
                         <div className="payment-row">
 
                             <span className="payment-label">
+
                                 Account Name
+
                             </span>
 
                             <span className="payment-value">
-                                {settings.accountName}
+
+                                {accountName}
+
                             </span>
 
                         </div>
 
                     )}
 
-                    {settings?.accountNumber && (
+                    {accountNumber && (
 
                         <div className="payment-row">
 
                             <span className="payment-label">
-                                Account Number
+
+                                Account No.
+
                             </span>
 
                             <span className="payment-value">
-                                {settings.accountNumber}
+
+                                {accountNumber}
+
                             </span>
 
                         </div>
 
                     )}
 
-                    {settings?.swiftCode && (
+                    {sortCode && (
 
                         <div className="payment-row">
 
                             <span className="payment-label">
-                                SWIFT
+
+                                Sort Code
+
                             </span>
 
                             <span className="payment-value">
-                                {settings.swiftCode}
+
+                                {sortCode}
+
+                            </span>
+
+                        </div>
+
+                    )}
+
+                    {swiftCode && (
+
+                        <div className="payment-row">
+
+                            <span className="payment-label">
+
+                                SWIFT Code
+
+                            </span>
+
+                            <span className="payment-value">
+
+                                {swiftCode}
+
+                            </span>
+
+                        </div>
+
+                    )}
+
+                    {iban && (
+
+                        <div className="payment-row">
+
+                            <span className="payment-label">
+
+                                IBAN
+
+                            </span>
+
+                            <span className="payment-value">
+
+                                {iban}
+
                             </span>
 
                         </div>
@@ -87,19 +188,19 @@ export default function PaymentSection({
 
                 </div>
 
-                {settings?.paymentInstructions && (
+                {instructions && (
 
                     <div className="payment-notes">
 
                         <h5>
 
-                            Payment Instructions
+                             Instructions
 
                         </h5>
 
                         <p>
 
-                            {settings.paymentInstructions}
+                            {instructions}
 
                         </p>
 
@@ -109,7 +210,7 @@ export default function PaymentSection({
 
             </div>
 
-        </section>
+        </PrintableSection>
 
     );
 

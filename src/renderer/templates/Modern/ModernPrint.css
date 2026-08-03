@@ -1,0 +1,134 @@
+﻿/* ==========================================================
+   MODERN DOCUMENT PRINT
+========================================================== */
+
+/* ==========================================================
+   PAGE SETUP
+========================================================== */
+
+@page {
+    size: A4 portrait;
+    margin: 12mm;
+}
+
+/* ==========================================================
+   PRINT
+========================================================== */
+
+@media print {
+
+    /* ------------------------------------------------------
+       GLOBAL
+    ------------------------------------------------------ */
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        background: #ffffff;
+        color: #000000;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    * {
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    /* ------------------------------------------------------
+       PREVIEW OVERRIDES
+    ------------------------------------------------------ */
+
+    .modern-preview {
+        gap: 0;
+    }
+
+    .modern-page-wrapper {
+        width: auto;
+        margin: 0;
+        padding: 0;
+    }
+
+    .modern-document {
+        width: 100%;
+        min-height: auto;
+        margin: 0;
+        padding: 0;
+        background: #ffffff;
+        box-shadow: none;
+    }
+
+    /* ------------------------------------------------------
+       SECTION FLOW
+    ------------------------------------------------------ */
+
+    .modern-header,
+    .modern-addresses,
+    .modern-totals,
+    .modern-payment-details,
+    .modern-footer,
+    .document-bottom,
+    .signature-section {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    /* ------------------------------------------------------
+       TABLE PRINTING
+    ------------------------------------------------------ */
+
+    .items-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .items-table thead {
+            display: table-header-group;
+        }
+
+        .items-table tbody {
+            display: table-row-group;
+        }
+
+        .items-table tr {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        .items-table th,
+        .items-table td {
+            vertical-align: top;
+        }
+
+    /* ------------------------------------------------------
+       PRESERVE IMPORTANT COLOURS
+    ------------------------------------------------------ */
+
+    .grand-total,
+    .balance-row,
+    .balance-status {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* ------------------------------------------------------
+       LINKS
+    ------------------------------------------------------ */
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    /*
+    .sidebar,
+    .topbar,
+    .toolbar,
+    .document-actions,
+    .app-header,
+    .app-footer {
+        display: none !important;
+    }
+    */
+}

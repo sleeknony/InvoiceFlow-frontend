@@ -1,116 +1,128 @@
 import "./DocumentAddresses.css";
 
-export default function DocumentAddresses({
-    document,
-    customer
-}) {
+import PrintableSection
+    from "../../renderer/PrintableSection";
+
+import {
+    useRenderDocument
+} from "../../renderer/RenderContext";
+import { useDocument } from "../../renderer/RenderContext";
+
+export default function DocumentAddresses() {
+
+    const {
+
+        company,
+
+        customer,
+
+        flags
+
+    } = useDocument();
+
     return (
-        <div className="document-addresses">
 
-            {/* BILL TO */}
+        <PrintableSection type="addresses">
 
-            <div className="address-card">
+            <section className="address-grid">
 
-                <div className="address-title">
-                    BILL TO
-                </div>
+                <article className="address-card">
 
-                <h3 className="address-name">
-                    {customer?.companyName ||
-                        document.customerName}
-                </h3>
+                    <div className="address-title">
 
-                {customer?.contactPerson && (
-                    <p>{customer.contactPerson}</p>
+                        FROM
+
+                    </div>
+
+                    <div className="address-body">
+
+                        <strong>
+
+                            {company.name}
+
+                        </strong>
+
+                        {company.address &&
+                            <div>{company.address}</div>}
+
+                        {company.phone &&
+                            <div>{company.phone}</div>}
+
+                        {company.email &&
+                            <div>{company.email}</div>}
+
+                    </div>
+
+                </article>
+
+                <article className="address-card">
+
+                    <div className="address-title">
+
+                        BILL TO
+
+                    </div>
+
+                    <div className="address-body">
+
+                        <strong>
+
+                            {customer.name}
+
+                        </strong>
+
+                        {customer.billing.exists &&
+                            <div>
+
+                                {customer.billing.address}
+
+                            </div>}
+
+                        {customer.email &&
+                            <div>
+
+                                {customer.email}
+
+                            </div>}
+
+                    </div>
+
+                </article>
+
+                {flags.showShippingAddress && (
+
+                    <article className="address-card">
+
+                        <div className="address-title">
+
+                            SHIP TO
+
+                        </div>
+
+                        <div className="address-body">
+
+                            <strong>
+
+                                {customer.name}
+
+                            </strong>
+
+                            <div>
+
+                                {customer.shipping.address}
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
                 )}
 
-                {document.billingAddress ? (
-                    <p>{document.billingAddress}</p>
-                ) : (
-                    <>
-                        {customer?.address && (
-                            <p>{customer.address}</p>
-                        )}
+            </section>
 
-                        {customer?.city && (
-                            <p>
-                                {customer.city}
-                                {customer.state
-                                    ? `, ${customer.state}`
-                                    : ""}
-                            </p>
-                        )}
+        </PrintableSection>
 
-                        {customer?.country && (
-                            <p>{customer.country}</p>
-                        )}
-                    </>
-                )}
-
-                {customer?.phone && (
-                    <p>
-                        <strong>Phone:</strong>{" "}
-                        {customer.phone}
-                    </p>
-                )}
-
-                {customer?.email && (
-                    <p>
-                        <strong>Email:</strong>{" "}
-                        {customer.email}
-                    </p>
-                )}
-
-                {customer?.taxNumber && (
-                    <p>
-                        <strong>Tax No:</strong>{" "}
-                        {customer.taxNumber}
-                    </p>
-                )}
-            </div>
-
-            {/* SHIP TO */}
-
-            <div className="address-card">
-
-                <div className="address-title">
-                    SHIP TO
-                </div>
-
-                <h3 className="address-name">
-                    {customer?.companyName ||
-                        document.customerName}
-                </h3>
-
-                <p>
-                    {document.shippingAddress ||
-                        document.billingAddress}
-                </p>
-
-                {document.deliveryMethod && (
-                    <p>
-                        <strong>Method:</strong>{" "}
-                        {document.deliveryMethod}
-                    </p>
-                )}
-
-                {document.deliveryDate && (
-                    <p>
-                        <strong>Delivery:</strong>{" "}
-                        {new Date(
-                            document.deliveryDate
-                        ).toLocaleDateString()}
-                    </p>
-                )}
-
-                {document.trackingNumber && (
-                    <p>
-                        <strong>Tracking:</strong>{" "}
-                        {document.trackingNumber}
-                    </p>
-                )}
-            </div>
-
-        </div>
     );
+
 }

@@ -56,6 +56,14 @@ export default function Settings() {
 
     });
 
+    const [documentPolicy, setDocumentPolicy] =
+        useState({
+            subscriptionPlan: "Free",
+            templateLimit: 1,
+            maxDocumentPages: 1,
+            availableTemplates: []
+        });
+
     useEffect(() => {
 
         loadSettings();
@@ -63,36 +71,50 @@ export default function Settings() {
     }, []);
 
     async function loadSettings() {
-
         try {
-
             setLoading(true);
 
-            const settings = await getSettings();
-          
-            if (settings) {
+            const settings =
+                await getSettings();
 
+            if (settings) {
                 setForm(prev => ({
                     ...prev,
                     ...settings
                 }));
 
-            }
+                setDocumentPolicy({
 
+                    subscriptionPlan:
+                        settings.subscriptionPlan ?? "Free",
+
+                    maxDocumentPages:
+                        settings.maxDocumentPages === undefined
+                            ? 1
+                            : settings.maxDocumentPages,
+
+                    templateLimit:
+                        settings.templateLimit === undefined
+                            ? 1
+                            : settings.templateLimit,
+
+                    availableTemplates:
+                        settings.availableTemplates ?? []
+
+                });
+
+            }
         }
         catch (err) {
-
             console.error(err);
 
-            toast.error("Unable to load settings.");
-
+            toast.error(
+                "Unable to load settings."
+            );
         }
         finally {
-
             setLoading(false);
-
         }
-
     }
 
     async function saveSettings() {
@@ -144,7 +166,16 @@ export default function Settings() {
                     <BrandingTab
                         form={form}
                         setForm={setForm}
-                        uploadLogo={uploadLogo}
+                        uploadLogo={async (file) => {
+
+                            const updated =
+                                await uploadLogo(file);
+
+                            setForm(updated);
+
+                            toast.success("Logo uploaded.");
+
+                        }}
                     />
                 );
 
@@ -154,6 +185,7 @@ export default function Settings() {
                     <DocumentsTab
                         form={form}
                         setForm={setForm}
+                        documentPolicy={documentPolicy}
                     />
                 );
 

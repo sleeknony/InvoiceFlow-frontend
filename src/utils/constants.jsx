@@ -40,3 +40,16 @@ export const DOCUMENT_TEMPLATES = [
     }
 ];
 
+export const SUBSCRIPTION_FEATURES = Object.freeze({
+    CREATE_DOCUMENTS: "CreateDocuments",
+    EDIT_DOCUMENTS: "EditDocuments",
+    PDF_DOWNLOAD: "PdfDownload",
+    EMAIL_DOCUMENTS: "EmailDocuments",
+    CUSTOM_TEMPLATES: "CustomTemplates",
+    PAYMENT_TRACKING: "PaymentTracking",
+    MULTIPLE_USERS: "MultipleUsers",
+    API_ACCESS: "ApiAccess",
+    BULK_IMPORT: "BulkImport",
+    MULTIPLE_COMPANIES: "MultipleCompanies",
+    DOCUMENT_CONVERSION: "DocumentConversion"
+});

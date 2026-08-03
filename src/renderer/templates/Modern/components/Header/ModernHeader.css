@@ -1,0 +1,271 @@
+/* ==========================================================
+   MODERN HEADER
+   Preview styling only.
+   No print-specific rules belong in this file.
+========================================================== */
+
+/* ==========================================================
+   HEADER CONTAINER
+========================================================== */
+
+.modern-header {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+
+/* ==========================================================
+   HEADER TOP
+========================================================== */
+
+.modern-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 32px;
+    padding: 30px;
+    background: #1a1a2e;
+}
+
+
+/* ==========================================================
+   COMPANY
+========================================================== */
+
+.modern-company {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    flex: 1;
+}
+
+
+/* ==========================================================
+   LOGO
+========================================================== */
+
+.modern-company-logo,
+.modern-logo-placeholder {
+    width: 78px;
+    height: 78px;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.modern-company-logo {
+    object-fit: contain;
+    background: white;
+    padding: 6px;
+}
+
+.modern-logo-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    color: #1a1a2e;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+
+/* ==========================================================
+   COMPANY DETAILS
+========================================================== */
+
+.modern-company-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+    .modern-company-details h1 {
+        margin: 0;
+        color: white;
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    .modern-company-details p {
+        margin: 0;
+        color: #d8dbea;
+        font-size: 13px;
+        line-height: 1.45;
+        word-break: break-word;
+    }
+
+
+/* ==========================================================
+   DOCUMENT TITLE
+========================================================== */
+
+.modern-document-title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    flex-shrink: 0;
+    min-width: 210px;
+}
+
+    .modern-document-title h2 {
+        margin: 0;
+        color: white;
+        font-size: 30px;
+        font-weight: 700;
+        letter-spacing: .4px;
+    }
+
+.modern-document-number {
+    margin-top: 10px;
+    color: #c8c5ff;
+    font-size: 14px;
+}
+
+
+/* ==========================================================
+   ACCENT BAR
+========================================================== */
+
+.modern-header-accent {
+    height: 5px;
+    background: #5f6fff;
+}
+
+
+/* ==========================================================
+   META ROW
+========================================================== */
+
+.modern-meta-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    border-top: 1px solid #eceef4;
+}
+
+
+/* ==========================================================
+   META CARD
+========================================================== */
+
+.modern-meta-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px 22px;
+    border-right: 1px solid #eceef4;
+}
+
+    .modern-meta-card:last-child {
+        border-right: none;
+    }
+
+
+/* ==========================================================
+   META LABEL
+========================================================== */
+
+.modern-meta-label {
+    color: #7a8595;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+
+/* ==========================================================
+   META VALUE
+========================================================== */
+
+.modern-meta-value {
+    color: #1a1a2e;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+
+/* ==========================================================
+   STATUS
+========================================================== */
+
+.modern-status {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* ==========================================================
+   STATUS COLOURS
+========================================================== */
+
+.modern-status-draft {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+
+.modern-status-approved {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.modern-status-sent {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.modern-status-paid {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.modern-status-overdue {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.modern-status-cancelled {
+    background: #f4f4f5;
+    color: #71717a;
+}
+
+
+/* ==========================================================
+   RESPONSIVE PREVIEW
+========================================================== */
+
+@media (max-width: 900px) {
+
+    .modern-header-top {
+        flex-direction: column;
+    }
+
+    .modern-document-title {
+        align-items: flex-start;
+        text-align: left;
+        min-width: auto;
+    }
+
+    .modern-meta-row {
+        grid-template-columns: 1fr;
+    }
+
+    .modern-meta-card {
+        border-right: none;
+        border-bottom: 1px solid #eceef4;
+    }
+
+        .modern-meta-card:last-child {
+            border-bottom: none;
+        }
+}

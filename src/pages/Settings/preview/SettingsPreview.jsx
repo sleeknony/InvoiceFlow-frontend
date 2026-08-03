@@ -1,6 +1,15 @@
-import sampleDocument from "../../../templates/sampleDocument";
+import { useMemo } from "react";
 
-import { getTemplate } from "../../../templates/getTemplate";
+import sampleDocument from "../../../renderer/templates/sampleDocument";
+
+import DocumentPipeline
+    from "../../../DocumentEngine/Pipeline/DocumentPipeline";
+
+import { getDocumentConfig }
+    from "../../../renderer/templates/config/documentConfigService";
+
+import { DocumentRenderer }
+    from "../../../renderer";
 
 export default function SettingsPreview({
 
@@ -8,21 +17,35 @@ export default function SettingsPreview({
 
 }) {
 
-    const Template =
+    const renderDocument =
+        useMemo(() =>
 
-        getTemplate(
+            DocumentPipeline.build({
 
-            settings.documentTemplate
+                document: sampleDocument,
+
+                settings,
+
+                config:
+                    getDocumentConfig(
+                        sampleDocument.type
+                    ),
+
+                payments: [],
+
+                approvalHistory: []
+
+            }),
+
+            [settings]
 
         );
 
     return (
 
-        <Template
+        <DocumentRenderer
 
-            document={sampleDocument}
-
-            settings={settings}
+            renderDocument={renderDocument}
 
         />
 

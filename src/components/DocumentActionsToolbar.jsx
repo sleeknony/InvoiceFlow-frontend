@@ -1,55 +1,47 @@
-import { Link } from "react-router-dom";
-
 export default function DocumentActionsToolbar({
     document,
-    onPrint,
     onDownload,
     onEmail,
     onDuplicate,
     onDelete,
     onConvert,
-    onEdit
+    onEdit,
+    canConvertDocuments = false,
 }) {
-    const canConvert =
-        document.type === "Quote";
 
-   const canEdit =
-       document.status === "Draft";
+    // Convert applies only to Quote and Invoice.
+    const isConvertibleDocument =
+        document?.type === "Quote" ||
+        document?.type === "Invoice";
 
     return (
-        <div className="card shadow-sm border-0 mb-3">
+        <div className="card shadow-sm border-0 mb-3 document-toolbar">
             <div className="card-body py-2">
+
                 <div className="d-flex flex-wrap gap-2">
 
                     <button
-                        className="btn btn-outline-secondary"
-                        onClick={onPrint}
-                    >
-                        <i className="bi bi-printer me-1"></i>
-                        Print
-                    </button>
-
-                    <button
+                        type="button"
                         className="btn btn-outline-secondary"
                         onClick={onDownload}
                     >
-                        <i className="bi bi-download me-1"></i>
+                        <i className="bi bi-download me-1" />
                         Download
                     </button>
 
                     <button
+                        type="button"
                         className="btn btn-outline-secondary"
                         onClick={onEmail}
                     >
-                        <i className="bi bi-envelope me-1"></i>
+                        <i className="bi bi-envelope me-1" />
                         Email
                     </button>
 
-                    {(
-                        document.status === "Draft" ||
-                        document.status === "Rejected"
-                    ) && (
+                    {(document?.status === "Draft" ||
+                        document?.status === "Rejected") && (
                             <button
+                                type="button"
                                 className="btn btn-outline-primary"
                                 onClick={onDuplicate}
                             >
@@ -57,8 +49,28 @@ export default function DocumentActionsToolbar({
                             </button>
                         )}
 
-                    {document.status === "Draft" && (
+                   
+                    {/* CONVERT */}
+                    {isConvertibleDocument && (
                         <button
+                            type="button"
+                            className="btn btn-outline-primary"
+                            disabled={!canConvertDocuments}
+                            title={
+                                canConvertDocuments
+                                    ? "Convert document"
+                                    : "Document conversion is not available on your current plan."
+                            }
+                            onClick={() => onConvert()}
+                        >
+                            <i className="bi bi-arrow-repeat me-1" />
+                            Convert
+                        </button>
+                    )}
+
+                    {document?.status === "Draft" && (
+                        <button
+                            type="button"
                             className="btn btn-primary"
                             onClick={onEdit}
                         >
@@ -66,25 +78,18 @@ export default function DocumentActionsToolbar({
                         </button>
                     )}
 
-                    {canConvert && (
+                    {document?.status === "Draft" && (
                         <button
-                            className="btn btn-outline-primary"
-                            onClick={onConvert}
-                        >
-                            <i className="bi bi-arrow-repeat me-1"></i>
-                            Convert to Invoice
-                        </button>
-                    )}
-
-                    {document.status === "Draft" && (
-                        <button
+                            type="button"
                             className="btn btn-danger"
                             onClick={onDelete}
                         >
                             Delete
                         </button>
                     )}
+
                 </div>
+
             </div>
         </div>
     );

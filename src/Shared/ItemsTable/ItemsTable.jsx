@@ -1,121 +1,170 @@
 import "./ItemsTable.css";
-import currencySymbol from "../../utils/currency";
-import { DOCUMENT_CONFIG }
-    from "../../templates/config/documentConfig";
+
+import PrintableSection
+    from "../../renderer/PrintableSection";
+
+import {
+    useRenderDocument
+} from "../../renderer/RenderContext";
+
+import formatCurrency
+    from "../../utils/currency";
+
+import { useDocument } from "../../renderer/RenderContext";
+
 
 export default function ItemsTable({
-    document,settings
+
+    rows = null
+
 }) {
 
-    const config = DOCUMENT_CONFIG[document.type];
-    const items = document?.items || [];
-    const currency =
-        document?.currency ||
-        settings?.currency ||
-        "NGN";
+    const {
+
+        items,
+
+        layout
+
+    } = useDocument();
+
+    const displayRows =
+        rows ?? items.rows;
+
+  
+
+    // Hide the entire section if there are no items
+    if (!displayRows?.length) {
+
+        return null;
+
+    }
+
+    const {
+
+        currency
+
+    } = items;
+
+    const {
+
+        columns,
+
+        widths
+
+    } = layout;
 
     return (
 
-        <div className="document-items">
+        <PrintableSection type="items">
 
-            <table className="invoice-table">
+            <section className="items-card">
 
-                <thead>
+                <table className="items-table">
 
-                    <tr>
+                    <colgroup>
 
-                        {config.columns.includes("description") &&
-                            <th>Description</th>}
+                        {columns.map(column => (
 
-                        {config.columns.includes("quantity") &&
-                            <th>Qty</th>}
+                            <col
+                                key={column}
+                                style={{
+                                    width: widths[column]
+                                }}
+                            />
 
-                        {config.columns.includes("unitPrice") &&
-                            <th>Unit Price</th>}
+                        ))}
 
-                        {config.columns.includes("discount") &&
-                            <th>Discount</th>}
+                    </colgroup>
 
-                        {config.columns.includes("tax") &&
-                            <th>VAT</th>}
-
-                        {config.columns.includes("total") &&
-                            <th className="text-end">Amount</th>}
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    {items.length === 0 ? (
+                    <thead>
 
                         <tr>
 
-                            <td
-                                colSpan="6"
-                                className="empty-items"
-                            >
+                            {columns.includes("description") &&
+                                <th>DESCRIPTION</th>}
 
-                                No items available.
+                            {columns.includes("quantity") &&
+                                <th className="numeric">
+                                    QTY
+                                </th>}
 
-                            </td>
+                            {columns.includes("unitPrice") &&
+                                <th className="numeric">
+                                    PRICE
+                                </th>}
+
+                            {columns.includes("discount") &&
+                                <th className="numeric">
+                                    DISC %
+                                </th>}
+
+                            {columns.includes("tax") &&
+                                <th className="numeric">
+                                    VAT %
+                                </th>}
+
+                            {columns.includes("total") &&
+                                <th className="numeric">
+                                    AMOUNT
+                                </th>}
 
                         </tr>
 
-                    ) : (
+                    </thead>
 
-                        items.map((item) => (
+                    <tbody>
+
+                        {displayRows.map(item => (
 
                             <tr key={item.id}>
 
-                                {config.columns.includes("description") && (
-                                    <td>{item.description}</td>
-                                )}
-
-                                {config.columns.includes("quantity") && (
-                                    <td>{item.quantity}</td>
-                                )}
-
-                               
-                                {config.columns.includes("unitPrice") && (
+                                {columns.includes("description") &&
                                     <td>
-                                     
-                                        {currencySymbol(
+                                        {item.description}
+                                    </td>}
+
+                                {columns.includes("quantity") &&
+                                    <td className="numeric">
+                                        {item.quantity}
+                                    </td>}
+
+                                {columns.includes("unitPrice") &&
+                                    <td className="numeric">
+                                        {formatCurrency(
                                             item.unitPrice,
                                             currency
                                         )}
-                                    </td>
-                                )}
+                                    </td>}
 
-                                {config.columns.includes("discount") && (
-                                    <td>{item.discountPercent}%</td>
-                                )}
+                                {columns.includes("discount") &&
+                                    <td className="numeric">
+                                        {item.discount}
+                                    </td>}
 
-                                {config.columns.includes("tax") && (
-                                    <td>{item.taxRatePercent}%</td>
-                                )}
+                                {columns.includes("tax") &&
+                                    <td className="numeric">
+                                        {item.tax}
+                                    </td>}
 
-                                {config.columns.includes("total") && (
-                                    <td className="text-end fw-bold">
-                                        {currencySymbol(
-                                            item.lineTotal,
+                                {columns.includes("total") &&
+                                    <td className="numeric total-column">
+                                        {formatCurrency(
+                                            item.total,
                                             currency
                                         )}
-                                    </td>
-                                )}
+                                    </td>}
 
                             </tr>
 
-                        ))
+                        ))}
 
-                    )}
+                    </tbody>
 
-                </tbody>
+                </table>
 
-            </table>
+            </section>
 
-        </div>
+        </PrintableSection>
 
     );
 

@@ -1,115 +1,71 @@
 ﻿import "./DocumentFooter.css";
 
-export default function DocumentFooter({
-    document,
-    settings,
-    config
-}) {
+import PrintableSection  from "../../renderer/PrintableSection";
 
-    if (!config?.features?.showFooter)
+import { useRenderDocument} from "../../renderer/RenderContext";
+import { useDocument } from "../../renderer/RenderContext";
+
+export default function DocumentFooter() {
+
+    const {
+
+        company,
+
+        features,
+
+        flags
+
+    } = useDocument();
+
+    if (!features.showFooter)
         return null;
+
+    const footerText =
+        company.footer?.text;
+
+    
 
     return (
 
-        <footer className="document-footer">
+        <PrintableSection type="footer">
 
-            {config.features.showFooterText &&
-                settings?.footerText && (
+            <footer className="document-footer">
+
+                {footerText && (
 
                     <div className="footer-message">
 
-                        {settings.footerText}
+                        {footerText}
 
                     </div>
 
                 )}
 
-            <div className="footer-divider"></div>
+                <div className="footer-divider" />
 
-            <div className="footer-grid">
+                <div className="footer-meta">
 
-                <div className="footer-company">
+                    <span>
 
-                    <strong>
+                        © {new Date().getFullYear()} {company.name}
 
-                        {settings?.companyName}
+                    </span>
 
-                    </strong>
+                    {flags.showInvoiceFlowBranding && (
 
-                    {settings?.address && (
+                        <span className="footer-brand">
 
-                        <div>
+                            Powered by <strong>InvoiceFlow</strong>
 
-                            {settings.address}
-
-                        </div>
+                        </span>
 
                     )}
 
                 </div>
 
-                <div className="footer-contact">
+            </footer>
 
-                    {settings?.phone && (
-
-                        <div>
-
-                            📞 {settings.phone}
-
-                        </div>
-
-                    )}
-
-                    {settings?.email && (
-
-                        <div>
-
-                            ✉ {settings.email}
-
-                        </div>
-
-                    )}
-
-                    {settings?.website && (
-
-                        <div>
-
-                            🌐 {settings.website}
-
-                        </div>
-
-                    )}
-
-                </div>
-
-            </div>
-
-            <div className="footer-bottom">
-
-                {settings?.showPoweredBy && (
-
-                    <div className="footer-bottom">
-
-                        Powered by <strong>InvoiceFlow</strong>
-
-                    </div>
-
-                )}
-                {/*{config.subscription.allowBrandRemoval*/}
-                {/*    ? null*/}
-                {/*    : (*/}
-
-                {/*        <span>*/}
-
-                {/*            Powered by <strong>InvoiceFlow</strong>*/}
-
-                {/*        </span>*/}
-
-                {/*    )}*/}
-
-            </div>
-
-        </footer>
+        </PrintableSection>
 
     );
 

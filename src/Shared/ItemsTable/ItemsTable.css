@@ -1,65 +1,63 @@
-.document-items {
-    margin: 40px 0;
+.items-card {
+    background: #fff;
+    border: 1px solid #E7EAF3;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(15,23,42,.04);
 }
 
-.invoice-table {
+.items-header {
+    padding: 22px 26px;
+    border-bottom: 1px solid #EEF2F7;
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.items-table {
     width: 100%;
     border-collapse: collapse;
-    border-radius: 12px;
-    overflow: hidden;
 }
 
-    .invoice-table thead {
-        background: #0d6efd;
-        color: white;
-    }
-
-    .invoice-table th {
-        padding: 16px;
-        font-size: 14px;
-        font-weight: 700;
+    .items-table thead th {
+        background: #F8FAFC;
+        color: #475569;
+        font-size: 12px;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: .8px;
+        font-weight: 700;
+        padding: 18px;
+        border-bottom: 1px solid #E2E8F0;
     }
 
-    .invoice-table td {
-        padding: 16px;
-        border-bottom: 1px solid #ececec;
+
+    .items-table tbody td {
+        padding: 20px 18px;
+        border-bottom: 1px solid #F1F5F9;
         font-size: 14px;
+        color: #334155;
     }
 
-    .invoice-table tbody tr:nth-child(even) {
-        background: #fafafa;
+    .items-table tbody tr:hover {
+        background: #FAFCFF;
     }
 
-    .invoice-table tbody tr:hover {
-        background: #f2f7ff;
+    .items-table tbody tr:nth-child(even) {
+        background: #FCFCFD;
     }
 
-.description-column {
-    width: 45%;
-}
+    .items-table td:last-child {
+        font-weight: 700;
+        color: #111827;
+    }
 
-.text-end {
-    text-align: right;
-}
+    .items-table td:first-child {
+        font-weight: 600;
+        color: #111827;
+    }
 
 .empty-items {
     text-align: center;
-    color: #999;
-    padding: 40px;
-}
-@media print {
-
-    .invoice-table {
-        page-break-inside: auto;
-    }
-
-        .invoice-table tr {
-            page-break-inside: avoid;
-        }
-
-        .invoice-table thead {
-            display: table-header-group;
-        }
+    padding: 60px;
+    color: #94A3B8;
 }

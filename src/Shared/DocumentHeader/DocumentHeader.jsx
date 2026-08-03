@@ -1,186 +1,174 @@
 import "./DocumentHeader.css";
-import { getDocumentLabel }
-    from "../../utils/documentTypes";
 
-export default function DocumentHeader({
-    document,
-    settings
-}) {
-    const formatDate = (date) =>
-        date
-            ? new Date(date).toLocaleDateString()
-            : "-";
+import {
+    useRenderDocument
+} from "../../renderer/RenderContext";
+import formatDate
+    from "../../utils/formatDate";
+import { useDocument}  from "../../renderer/RenderContext";
+
+export default function DocumentHeader() {
+
+    const {
+
+        company,
+
+        meta,
+
+        flags
+
+    } = useDocument();
+
+    const logo =
+
+        company.logo?.base64 ??
+
+        company.logo?.url;
 
     return (
-        <div className="doc-header">
 
-            {/* COMPANY */}
+        <header className="document-header">
 
-            <div className="company-section">
+            <section className="company-section">
 
-                {settings?.logoUrl ? (
+                {company.logo?.exists ? (
+
                     <img
-                        src={settings.logoUrl}
-                        alt={settings.companyName}
+                        src={logo}
+                        alt={company.name}
                         className="company-logo"
+                        crossOrigin="anonymous"
                     />
+
                 ) : (
+
                     <div className="company-logo-placeholder">
-                        {settings?.companyName?.charAt(0) || "I"}
+
+                        {company.name?.charAt(0)}
+
                     </div>
+
                 )}
 
                 <div className="company-details">
 
-                    <h2>
-                        {settings?.companyName}
-                    </h2>
+                    <h1>
 
-                    {settings?.address &&
-                        <p>{settings.address}</p>}
+                        {company.name}
 
-                    {settings?.phone &&
-                        <p>{settings.phone}</p>}
+                    </h1>
 
-                    {settings?.email &&
-                        <p>{settings.email}</p>}
+                    {company.address && (
 
-                    {settings?.website &&
-                        <p>{settings.website}</p>}
+                        <div>
+
+                            {company.address}
+
+                        </div>
+
+                    )}
+
+                    {company.phone && (
+
+                        <div>
+
+                            {company.phone}
+
+                        </div>
+
+                    )}
+
+                    {company.email && (
+
+                        <div>
+
+                            {company.email}
+
+                        </div>
+
+                    )}
+
+                    {company.website && (
+
+                        <div>
+
+                            {company.website}
+
+                        </div>
+
+                    )}
+
                 </div>
-            </div>
 
-            {/* DOCUMENT DETAILS */}
+            </section>
 
-            <div className="document-section">
+            <section className="document-info">
 
-                <h1 className="document-title">
-                    {getDocumentLabel(
-                        document.type
-                    ).toUpperCase()}
-                </h1>
+                <h2>
+
+                    {meta.title}
+
+                </h2>
 
                 <table className="document-meta">
+
                     <tbody>
 
                         <tr>
-                            <td>Number</td>
-                            <td>
-                                {document.number ||
-                                    document.documentNumber}
-                            </td>
+
+                            <td>Document No.</td>
+
+                            <td>{meta.documentNumber}</td>
+
                         </tr>
 
                         <tr>
-                            <td>Issue Date</td>
-                            <td>
-                                {formatDate(
-                                    document.issueDate
-                                )}
-                            </td>
+
+                            <td>Date</td>
+
+                            <td>{formatDate(meta.formattedIssueDate)}</td>
+
                         </tr>
+                        {meta.dateLabel && meta.dateValue && (
 
-                        {document.dueDate && (
                             <tr>
-                                <td>Due Date</td>
-                                <td>
-                                    {formatDate(
-                                        document.dueDate
-                                    )}
-                                </td>
+
+                                <td>{meta.dateLabel}</td>
+
+                                <td>{meta.formattedSecondaryDate}</td>
+
                             </tr>
+
                         )}
 
-                        {document.validityDate && (
-                            <tr>
-                                <td>Valid Until</td>
-                                <td>
-                                    {formatDate(
-                                        document.validityDate
-                                    )}
-                                </td>
-                            </tr>
-                        )}
+                        {flags.showStatus && (
 
-                        {document.purchaseOrderNumber && (
                             <tr>
-                                <td>PO Number</td>
-                                <td>
-                                    {
-                                        document.purchaseOrderNumber
-                                    }
-                                </td>
-                            </tr>
-                        )}
 
-                        {document.referenceNumber && (
-                            <tr>
-                                <td>Reference</td>
-                                <td>
-                                    {
-                                        document.referenceNumber
-                                    }
-                                </td>
-                            </tr>
-                        )}
+                                <td>Status</td>
 
-                        {document.originalDocumentNumber && (
-                            <tr>
                                 <td>
-                                    Original Invoice
-                                </td>
-                                <td>
-                                    {
-                                        document.originalDocumentNumber
-                                    }
-                                </td>
-                            </tr>
-                        )}
 
-                        {document.deliveryDate && (
-                            <tr>
-                                <td>
-                                    Delivery Date
-                                </td>
-                                <td>
-                                    {formatDate(
-                                        document.deliveryDate
-                                    )}
-                                </td>
-                            </tr>
-                        )}
+                                    <span className={`status-badge status-${meta.status?.toLowerCase()}`}>
 
-                        {document.deliveryMethod && (
-                            <tr>
-                                <td>
-                                    Delivery Method
-                                </td>
-                                <td>
-                                    {
-                                        document.deliveryMethod
-                                    }
-                                </td>
-                            </tr>
-                        )}
+                                        {meta.status}
 
-                        {document.trackingNumber && (
-                            <tr>
-                                <td>
-                                    Tracking No.
+                                    </span>
+
                                 </td>
-                                <td>
-                                    {
-                                        document.trackingNumber
-                                    }
-                                </td>
+
                             </tr>
+
                         )}
 
                     </tbody>
+
                 </table>
 
-            </div>
+            </section>
 
-        </div>
+        </header>
+
     );
+
 }

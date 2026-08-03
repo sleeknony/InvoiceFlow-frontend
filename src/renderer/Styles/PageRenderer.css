@@ -1,0 +1,42 @@
+.print-page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto 20px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.page-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 12mm 15mm;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.page-number {
+    padding: 6px 15mm;
+    border-top: 1px solid #e5e5e5;
+    font-size: 11px;
+    color: #666;
+    text-align: center;
+}
+
+@media print {
+
+    .print-page {
+        margin: 0;
+        box-shadow: none;
+        page-break-after: always;
+        break-after: page;
+    }
+
+        .print-page:last-child {
+            page-break-after: auto;
+            break-after: auto;
+        }
+}

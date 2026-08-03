@@ -1,0 +1,26 @@
+.customer-sidebar {
+    position: sticky;
+    top: 24px;
+}
+
+.customer-stat-card {
+    transition: all .25s ease;
+}
+
+    .customer-stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 .75rem 2rem rgba(0,0,0,.08);
+    }
+
+.customer-info-card {
+    border-radius: 1rem;
+}
+
+.customer-section-title {
+    font-size: .8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #6c757d;
+    letter-spacing: .05rem;
+    margin-bottom: 1rem;
+}

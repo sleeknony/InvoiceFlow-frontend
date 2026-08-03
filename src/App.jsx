@@ -5,13 +5,17 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 // Pages
 import Dashboard from "./pages/Dashboard.jsx";
-import Customers from "./pages/Customers.jsx";
+import Customers from "./pages/Customers/Customers";
 import Documents from "./pages/Documents.jsx";
 import DocumentEditor from "./pages/DocumentEditor.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import Settings from "./pages/Settings/Settings";
 import DocumentViewer from "./pages/DocumentViewer";
-
+import Pricing from "./pages/Pricing/Pricing";
+import PaymentResult from "./pages/Subscription/PaymentResult";
+import SubscriptionBilling from "./pages/Subscription/SubscriptionBilling";
+import CustomerDetails from "./pages/Customers/CustomerDetails";
+import TeamManagement from "./pages/TeamManagement/TeamManagement";
 // Auth
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -38,6 +42,8 @@ export default function App() {
 
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/customers" element={<Customers />} />
+                <Route path="/customers/:id" element={<CustomerDetails />}
+                />
 
                 <Route
                     path="/documents/create"
@@ -55,15 +61,25 @@ export default function App() {
                     element={<DocumentViewer />}
                 />
 
-                {/*<Route*/}
-                {/*    path="/documents/new"*/}
-                {/*    element={<DocumentEditor mode="create" />}*/}
-                {/*/>*/}
+                <Route
+                    path="/pricing"
+                    element={<Pricing />}
+                />
 
-                {/*<Route*/}
-                {/*    path="/documents/:id"*/}
-                {/*    element={<DocumentEditor mode="edit" />}*/}
-                {/*/>*/}
+                <Route
+                    path="/subscription/payment-result"
+                    element={<PaymentResult />}
+                />
+
+                <Route
+                    path="/subscription/billing"
+                    element={<SubscriptionBilling />}
+                />
+
+                <Route
+                    path="/team"
+                    element={<TeamManagement />}
+                />
 
             </Route>
 

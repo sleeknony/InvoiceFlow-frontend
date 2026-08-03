@@ -13,19 +13,32 @@ export const updateSettings = async (data) => {
 export const saveSettings = updateSettings;
 
 export const uploadLogo = async (file) => {
+
     const formData = new FormData();
+
     formData.append("file", file);
 
     const res = await http.post(
+
         "/settings/logo",
+
         formData,
+
         {
+
             headers: {
-                "Content-Type":
-                    "multipart/form-data"
+
+                "Content-Type": "multipart/form-data"
+
             }
+
         }
+
     );
 
     return res.data;
+
 };
+
+
+

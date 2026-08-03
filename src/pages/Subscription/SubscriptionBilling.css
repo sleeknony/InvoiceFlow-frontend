@@ -1,0 +1,365 @@
+.subscription-billing-page {
+    padding: 28px;
+    max-width: 1450px;
+    margin: 0 auto;
+}
+
+.billing-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+    .billing-page-header h2 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 700;
+        color: #172033;
+    }
+
+    .billing-page-header p {
+        margin: 7px 0 0;
+        color: #667085;
+        font-size: 14px;
+    }
+
+.billing-refresh-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 15px;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    background: #fff;
+    color: #344054;
+    font-weight: 600;
+}
+
+    .billing-refresh-btn:hover {
+        background: #f8fafc;
+    }
+
+.billing-loading {
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    color: #667085;
+}
+
+.billing-section {
+    margin-bottom: 34px;
+}
+
+.billing-section-heading {
+    margin-bottom: 14px;
+}
+
+    .billing-section-heading h4 {
+        margin: 3px 0 0;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1d2939;
+    }
+
+    .billing-section-heading p {
+        margin: 5px 0 0;
+        color: #667085;
+        font-size: 13px;
+    }
+
+.section-eyebrow {
+    display: block;
+    color: #475467;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+/* CURRENT PLAN */
+
+.current-plan-card {
+    background: #fff;
+    border: 1px solid #e4e7ec;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 2px 7px rgba(16, 24, 40, 0.04);
+}
+
+.current-plan-main {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.plan-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eef2f6;
+    color: #344054;
+    font-size: 21px;
+}
+
+.plan-name-row {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+    .plan-name-row h3 {
+        margin: 0;
+        color: #101828;
+        font-size: 22px;
+        font-weight: 700;
+    }
+
+.current-plan-main p {
+    margin: 4px 0 0;
+    color: #667085;
+    font-size: 13px;
+}
+
+.subscription-status {
+    padding: 4px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+    .subscription-status.active {
+        color: #067647;
+        background: #ecfdf3;
+        border: 1px solid #abefc6;
+    }
+
+    .subscription-status.inactive {
+        color: #b42318;
+        background: #fef3f2;
+        border: 1px solid #fecdca;
+    }
+
+.subscription-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+    padding: 22px 0;
+    margin: 22px 0;
+    border-top: 1px solid #eaecf0;
+    border-bottom: 1px solid #eaecf0;
+}
+
+.subscription-detail {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    color: #475467;
+}
+
+    .subscription-detail > svg {
+        font-size: 18px;
+    }
+
+    .subscription-detail div {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .subscription-detail span {
+        font-size: 12px;
+        color: #667085;
+    }
+
+    .subscription-detail strong {
+        font-size: 14px;
+        color: #1d2939;
+    }
+
+.current-plan-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.change-plan-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 8px;
+    background: #1d2939;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+    .change-plan-btn:hover {
+        background: #101828;
+    }
+
+/* PAYMENT HISTORY */
+
+.payment-history-card {
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #e4e7ec;
+    border-radius: 14px;
+    box-shadow: 0 2px 7px rgba(16, 24, 40, 0.04);
+}
+
+.billing-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .billing-table th {
+        padding: 12px 18px;
+        text-align: left;
+        background: #f8fafc;
+        border-bottom: 1px solid #e4e7ec;
+        color: #475467;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+    }
+
+    .billing-table td {
+        padding: 16px 18px;
+        border-bottom: 1px solid #eaecf0;
+        color: #344054;
+        font-size: 13px;
+        vertical-align: middle;
+    }
+
+    .billing-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .billing-table tbody tr:hover {
+        background: #fcfcfd;
+    }
+
+.payment-date {
+    color: #1d2939;
+    font-weight: 600;
+}
+
+.billing-table small {
+    display: block;
+    margin-top: 3px;
+    color: #98a2b3;
+    font-size: 11px;
+}
+
+.payment-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+    .payment-status.successful {
+        color: #067647;
+        background: #ecfdf3;
+    }
+
+    .payment-status.failed {
+        color: #b42318;
+        background: #fef3f2;
+    }
+
+    .payment-status.pending {
+        color: #854a0e;
+        background: #fffaeb;
+    }
+
+    .payment-status.processing {
+        color: #175cd3;
+        background: #eff8ff;
+    }
+
+.transaction-reference {
+    display: block;
+    max-width: 230px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: monospace;
+    color: #475467;
+    font-size: 12px;
+}
+
+/* EMPTY */
+
+.payment-empty-state {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.empty-payment-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #f2f4f7;
+    color: #475467;
+    font-size: 20px;
+}
+
+.payment-empty-state h5 {
+    margin: 0;
+    color: #1d2939;
+    font-size: 15px;
+}
+
+.payment-empty-state p {
+    max-width: 400px;
+    margin: 6px auto 0;
+    color: #667085;
+    font-size: 13px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+    .subscription-billing-page {
+        padding: 18px;
+    }
+
+    .billing-page-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .subscription-details {
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .current-plan-actions {
+        justify-content: stretch;
+    }
+
+    .change-plan-btn {
+        justify-content: center;
+        width: 100%;
+    }
+}

@@ -1,52 +1,61 @@
 .payment-section {
-    margin-top: 40px;
-    border-top: 1px solid #e5e5e5;
-    padding-top: 25px;
+    margin-top: var(--if-section-spacing);
+    border: var(--if-payment-border);
+    border-radius: var(--if-payment-radius);
+    padding: var(--if-payment-padding);
+    background: #fff;
 }
 
 .payment-title {
-    margin-bottom: 18px;
+    margin: 0 0 18px;
+    color: var(--if-payment-title-color);
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .payment-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    grid-template-columns: 1fr;
+    gap: 30px;
 }
+
+    .payment-grid.has-notes {
+        grid-template-columns: 1fr 1fr;
+    }
 
 .payment-details {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 }
 
 .payment-row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    gap: 20px;
+    padding: 6px 0;
 }
 
 .payment-label {
-    color: #777;
-    font-weight: 500;
+    color: var(--if-payment-label-color);
+    font-weight: 600;
+    white-space: nowrap;
 }
 
 .payment-value {
-    font-weight: 600;
+    color: var(--if-payment-value-color);
+    text-align: right;
+    font-weight: 500;
 }
 
 .payment-notes {
-    background: #fafafa;
-    padding: 18px;
-    border-radius: 8px;
-    border: 1px solid #ececec;
+    border-left: 1px solid var(--if-table-border);
+    padding-left: 24px;
 }
 
     .payment-notes h5 {
-        margin-bottom: 10px;
-        font-size: 15px;
+        margin: 0 0 10px;
+        color: var(--if-payment-title-color);
     }
 
     .payment-notes p {
@@ -54,9 +63,23 @@
         line-height: 1.6;
     }
 
-@media print {
+@media (max-width: 768px) {
 
-    .payment-section {
-        page-break-inside: avoid;
+    .payment-grid {
+        grid-template-columns: 1fr;
     }
+
+    .payment-notes {
+        border-left: none;
+        border-top: 1px solid var(--if-table-border);
+        padding-left: 0;
+        padding-top: 20px;
+    }
+}
+
+
+.payment-details-full {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }

@@ -1,0 +1,38 @@
+.team-action-menu {
+    position: absolute;
+    right: 0;
+    top: 42px;
+    width: 220px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 14px 30px rgba(0,0,0,.12);
+    overflow: hidden;
+    z-index: 100;
+}
+
+    .team-action-menu button {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 14px;
+        color: #334155;
+        transition: .2s;
+    }
+
+        .team-action-menu button:hover {
+            background: #f8fafc;
+        }
+
+    .team-action-menu .danger {
+        color: #dc2626;
+    }
+
+        .team-action-menu .danger:hover {
+            background: #fef2f2;
+        }

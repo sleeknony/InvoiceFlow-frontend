@@ -1,0 +1,194 @@
+/* ==========================================================
+   MODERN ITEMS TABLE
+   Preview styling only.
+   All print rules live in ModernPrint.css
+========================================================== */
+
+
+/* ==========================================================
+   CONTAINER
+========================================================== */
+
+.modern-items {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+
+/* ==========================================================
+   TABLE
+========================================================== */
+
+.modern-items-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+
+    /* ==========================================================
+   HEADER
+========================================================== */
+
+    .modern-items-table thead th {
+        padding: 18px 24px;
+        background: #f8fafc;
+        border-bottom: 2px solid #dbe2ea;
+        color: #7b8697;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+
+    /* ==========================================================
+   COLUMN WIDTHS
+========================================================== */
+
+    .modern-items-table th.description {
+        width: auto;
+        text-align: left;
+    }
+
+    .modern-items-table th.quantity {
+        width: 90px;
+        text-align: center;
+    }
+
+    .modern-items-table th.price {
+        width: 170px;
+        text-align: right;
+    }
+
+    .modern-items-table th.amount {
+        width: 180px;
+        text-align: right;
+    }
+
+
+    /* ==========================================================
+   ROWS
+========================================================== */
+
+    .modern-items-table tbody tr {
+        border-bottom: 1px solid #eceef4;
+        transition: background-color .15s ease;
+    }
+
+        .modern-items-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .modern-items-table tbody tr:hover {
+            background: #fafcff;
+        }
+
+
+    /* ==========================================================
+   CELLS
+========================================================== */
+
+    .modern-items-table td {
+        padding: 18px 24px;
+        vertical-align: middle;
+        color: #1a1a2e;
+        font-size: 14px;
+    }
+
+
+        /* ==========================================================
+   DESCRIPTION
+========================================================== */
+
+        .modern-items-table td.description {
+            text-align: left;
+        }
+
+.item-description {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a2e;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.item-subtitle {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #7b8697;
+    line-height: 1.6;
+}
+
+
+/* ==========================================================
+   QUANTITY
+========================================================== */
+
+.modern-items-table td.quantity {
+    text-align: center;
+    color: #4b5563;
+    font-weight: 500;
+}
+
+
+/* ==========================================================
+   UNIT PRICE
+========================================================== */
+
+.modern-items-table td.price {
+    text-align: right;
+    white-space: nowrap;
+    color: #4b5563;
+    font-variant-numeric: tabular-nums;
+}
+
+
+/* ==========================================================
+   AMOUNT
+========================================================== */
+
+.modern-items-table td.amount {
+    text-align: right;
+    white-space: nowrap;
+    color: #1a1a2e;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+
+/* ==========================================================
+   EMPTY
+========================================================== */
+
+.modern-items-empty {
+    padding: 48px;
+    text-align: center;
+    color: #94a3b8;
+}
+
+
+/* ==========================================================
+   RESPONSIVE PREVIEW
+========================================================== */
+
+@media (max-width:900px) {
+
+    .modern-items-table th,
+    .modern-items-table td {
+        padding: 16px;
+    }
+}
+
+@media (max-width:700px) {
+
+    .modern-items {
+        overflow-x: auto;
+    }
+
+    .modern-items-table {
+        min-width: 760px;
+    }
+}

@@ -1,0 +1,34 @@
+.signature-section {
+    margin-top: var(--if-section-spacing-lg);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.signature-block {
+    width: var(--if-signature-width);
+    text-align: center;
+    margin-right: 15mm;
+}
+
+.signature-line {
+    border-top: var(--if-signature-border);
+    margin-bottom: 15px;
+}
+
+.signature-title {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.signature-name {
+    font-weight: 700;
+}
+
+.signature-role {
+    color: var(--if-muted);
+}
+
+.signature-date {
+    font-size: var(--if-small-size);
+    color: var(--if-muted);
+}

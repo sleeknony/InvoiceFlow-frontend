@@ -1,0 +1,131 @@
+.team-table-wrapper {
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid #edf0f5;
+    overflow: visible;
+    position: relative;
+}
+
+.team-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .team-table thead {
+        background: #f8fafc;
+    }
+
+    .team-table th {
+        text-align: left;
+        padding: 16px;
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 600;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .team-table td {
+        padding: 16px;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .team-table tbody tr:hover {
+        background: #fafcff;
+    }
+
+.team-user {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.team-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #2563eb;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.team-name {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.team-email {
+    color: #64748b;
+    font-size: 13px;
+    margin-top: 2px;
+}
+
+.team-role {
+    padding: 5px 12px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.team-permission-count {
+    color: #475569;
+    font-size: 13px;
+}
+
+.team-status {
+    padding: 5px 12px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+    .team-status.active {
+        background: #ecfdf5;
+        color: #16a34a;
+    }
+
+    .team-status.inactive {
+        background: #fef2f2;
+        color: #dc2626;
+    }
+
+.team-actions {
+    width: 60px;
+    text-align: right;
+    position:relative;
+}
+
+.team-action-button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 18px;
+    color: #64748b;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+}
+
+    .team-action-button:hover {
+        background: #f1f5f9;
+    }
+
+.team-table-empty {
+    background: #fff;
+    border-radius: 14px;
+    padding: 60px;
+    text-align: center;
+    border: 1px solid #edf0f5;
+}
+
+    .team-table-empty h3 {
+        margin-bottom: 8px;
+    }
+
+    .team-table-empty p {
+        color: #64748b;
+    }

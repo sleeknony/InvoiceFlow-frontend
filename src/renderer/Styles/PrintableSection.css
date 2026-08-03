@@ -1,0 +1,86 @@
+.printable-section {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ===========================================
+   Keep Together
+=========================================== */
+
+.keep-together {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+}
+
+/* ===========================================
+   Allow Breaking
+=========================================== */
+
+.allow-break {
+    break-inside: auto;
+    page-break-inside: auto;
+}
+
+/* ===========================================
+   Explicit Break Rules
+=========================================== */
+
+.avoid-break {
+    break-before: auto;
+    break-after: auto;
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+.page-break-before {
+    break-before: page;
+    page-break-before: always;
+}
+
+.page-break-after {
+    break-after: page;
+    page-break-after: always;
+}
+
+.page-break-inside {
+    break-inside: auto;
+    page-break-inside: auto;
+}
+
+/* ===========================================
+   Print Optimizations
+=========================================== */
+
+@media print {
+
+    .printable-section {
+        width: 100%;
+    }
+
+    .keep-together {
+        break-inside: avoid-page;
+        page-break-inside: avoid;
+    }
+
+    .avoid-break {
+        break-inside: avoid-page;
+        page-break-inside: avoid;
+    }
+
+    .page-break-before {
+        break-before: page;
+        page-break-before: always;
+    }
+
+    .page-break-after {
+        break-after: page;
+        page-break-after: always;
+    }
+
+    .allow-break {
+        break-inside: auto;
+        page-break-inside: auto;
+    }
+}

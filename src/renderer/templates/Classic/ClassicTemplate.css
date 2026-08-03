@@ -1,0 +1,11 @@
+.classic-template {
+    --if-primary: #000;
+    --if-heading: #000;
+    --if-document-color: #000;
+    --if-company-color: #000;
+    --if-header-border: 1px solid #000;
+    --if-table-border: #000;
+    --if-table-header-bg: #fff;
+    --if-table-header-color: #000;
+    --if-font-family: "Times New Roman", serif;
+}

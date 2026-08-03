@@ -1,0 +1,147 @@
+@page {
+    size: A4 portrait;
+    margin: 12mm;
+}
+
+@media print {
+
+    html,
+    body {
+        width: 210mm;
+        height: auto;
+        background: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+}
+
+@media print {
+    .sidebar,
+    .navbar,
+    .toolbar,
+    .page-header,
+    .page-actions,
+    .document-toolbar,
+    .document-actions,
+    .btn,
+    button {
+        display: none !important;
+    }
+}
+
+@media print {
+
+    .modern-document {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+    }
+}
+
+/*@media print {
+
+    .modern-header,
+    .modern-addresses,
+    .modern-totals,
+    .modern-payment-details,
+    .modern-footer {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}*/
+
+@media print {
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    tfoot {
+        display: table-footer-group;
+    }
+}
+
+@media print {
+
+    tr {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}
+
+@media print {
+
+    img {
+        max-width: 100%;
+        page-break-inside: avoid;
+    }
+}
+
+@media print {
+
+    .document-watermark {
+        opacity: .05;
+    }
+}
+
+@media print {
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+}
+
+@media print {
+
+    * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+
+@media print {
+
+    .app-sidebar,
+    .app-main > :first-child {
+        display: none !important;
+    }
+
+    .app-main {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+
+    .app-content {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+    }
+}
+
+
+@media print {
+    .document-viewer-header,
+    .document-toolbar {
+        display: none !important;
+    }
+
+    .document-preview {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+    }
+}

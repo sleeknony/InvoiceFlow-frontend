@@ -1,143 +1,139 @@
-.doc-header {
+.document-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 60px;
-    margin-bottom: 40px;
-    padding-bottom: 25px;
-    border-bottom: 2px solid #e9ecef;
+    gap: 40px;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #E7EAF3;
 }
 
+/* =========================
+   COMPANY
+========================= */
+
 .company-section {
-    display: flex;
-    gap: 20px;
     flex: 1;
+    display: grid;
+    grid-template-columns: 84px 1fr;
+    column-gap: 20px;
+    align-items: start;
 }
 
 .company-logo {
-    width: 110px;
-    height: 110px;
+    width: 84px;
+    height: 84px;
     object-fit: contain;
+    border-radius: 12px;
+    flex-shrink: 0;
 }
 
 .company-logo-placeholder {
-    width: 110px;
-    height: 110px;
+    width: 84px;
+    height: 84px;
     border-radius: 12px;
-    background: #0d6efd;
-    color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 48px;
+    background: var(--if-primary);
+    color: #fff;
+    font-size: 34px;
     font-weight: 700;
+    flex-shrink: 0;
 }
 
 .company-details {
     flex: 1;
 }
 
-    .company-details h2 {
-        margin: 0;
-        font-size: 30px;
-        font-weight: 700;
-        color: #1b1b1b;
+    .company-details h1 {
+        margin: 0 0 8px;
+        font-size: 24px;
+        line-height: 1.2;
     }
 
-    .company-details p {
-        margin: 3px 0;
-        color: #666;
+    .company-details div {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+/* =========================
+   DOCUMENT INFO
+========================= */
+
+.document-info {
+    width: 280px;
+    flex-shrink: 0;
+}
+
+    .document-info h2 {
+        margin: 0 0 16px;
+        text-align: right;
+        font-size: 38px;
+    }
+
+/* =========================
+   META TABLE
+========================= */
+
+.document-meta {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .document-meta td {
+        padding: 8px 0;
         font-size: 14px;
     }
 
-.document-section {
-    width: 280px;
-    text-align: right;
+        .document-meta td:first-child {
+            width: 40%;
+            color: #6B7280;
+            font-weight: 600;
+        }
+
+        .document-meta td:last-child {
+            text-align: right;
+            color: #111827;
+            font-weight: 700;
+        }
+
+/* =========================
+   STATUS
+========================= */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 90px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: #E8F2FF;
+    color: #0D6EFD;
+    font-size: 12px;
+    font-weight: 700;
 }
 
-.document-title {
-    margin: 0 0 20px;
-    font-size: 40px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    color: #0d6efd;
-}
+/* =========================
+   MOBILE
+========================= */
 
-.document-section table {
-    width: 100%;
-    border-collapse: collapse;
-}
+@media (max-width:900px) {
 
-.document-section td {
-    padding: 6px 0;
-    font-size: 14px;
-}
-
-    .document-section td:first-child {
-        color: #777;
-        font-weight: 600;
-    }
-
-    .document-section td:last-child {
-        font-weight: 700;
-    }
-
-
-.document-meta {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-    .document-meta td:first-child {
-        font-weight: 600;
-        color: #666;
-        padding-right: 20px;
-        white-space: nowrap;
-    }
-
-    .document-meta td {
-        padding: 4px 0;
-        vertical-align: top;
-    }
-
-@media(max-width:768px) {
-
-    .doc-header {
+    .document-header {
         flex-direction: column;
     }
 
-    .document-section {
+    .document-info {
         width: 100%;
+    }
+
+        .document-info h2 {
+            text-align: left;
+        }
+
+    .document-meta td:last-child {
         text-align: left;
-    }
-
-    .document-title {
-        font-size: 32px;
-    }
-
-    .company-logo {
-        width: 80px;
-        height: 80px;
-    }
-
-    .company-logo-placeholder {
-        width: 80px;
-        height: 80px;
-        font-size: 36px;
-    }
-}
-
-@media print {
-
-    .doc-header {
-        page-break-inside: avoid;
-    }
-
-    .document-title {
-        color: #000;
-    }
-
-    .company-details p {
-        color: #000;
     }
 }

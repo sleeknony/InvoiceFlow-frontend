@@ -1,0 +1,11 @@
+.corporate-template {
+    --if-primary: #0056b3;
+    --if-heading: #0056b3;
+    --if-document-color: #0056b3;
+    --if-table-header-bg: #0056b3;
+    --if-table-header-color: #fff;
+    --if-header-border: none;
+    --if-footer-border: none;
+    --if-address-bg: #f8fbff;
+    --if-payment-border: 2px solid #0056b3;
+}

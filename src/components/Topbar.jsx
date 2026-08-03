@@ -1,139 +1,441 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate} from "react-router-dom";
+import {
+    FiBell,
+    FiChevronDown,
+    FiCreditCard,
+    FiFileText,
+    FiGrid,
+    FiLogOut,
+    FiSettings,
+    FiUser
+} from "react-icons/fi";
+
 import { useAuth } from "../context/useAuth";
+import { useSubscription } from "../context/useSubscription";
+
+import "./Topbar.css";
+
+function getPageContext(pathname) {
+
+    // ==========================================
+    // SUBSCRIPTION
+    // ==========================================
+
+    if (pathname === "/pricing") {
+        return {
+            section: "Subscription",
+            title: "Plans & Pricing"
+        };
+    }
+
+    if (pathname.startsWith("/subscription/billing")) {
+        return {
+            section: "Subscription",
+            title: "Subscription & Billing"
+        };
+    }
+
+
+    // ==========================================
+    // CUSTOMERS
+    // ==========================================
+
+    if (pathname.startsWith("/customers")) {
+        return {
+            section: "Workspace",
+            title: "Customers"
+        };
+    }
+
+
+    // ==========================================
+    // DOCUMENTS
+    // ==========================================
+
+    if (pathname === "/documents/create") {
+        return {
+            section: "Documents",
+            title: "Create Document"
+        };
+    }
+
+    // View / edit individual document
+    if (
+        pathname.startsWith("/documents/") &&
+        pathname !== "/documents/create"
+    ) {
+        return {
+            section: "Documents",
+            title: "Document Details"
+        };
+    }
+
+    if (pathname === "/documents") {
+        return {
+            section: "Documents",
+            title: "All Documents"
+        };
+    }
+
+
+    // ==========================================
+    // SETTINGS
+    // ==========================================
+
+    if (pathname.startsWith("/settings")) {
+        return {
+            section: "Account",
+            title: "Settings"
+        };
+    }
+
+
+    // ==========================================
+    // DASHBOARD
+    // ==========================================
+
+    if (
+        pathname === "/" ||
+        pathname.startsWith("/dashboard")
+    ) {
+        return {
+            section: "Workspace",
+            title: "Dashboard"
+        };
+    }
+
+
+    // ==========================================
+    // FALLBACK
+    // ==========================================
+
+    return {
+        section: "Workspace",
+        title: "InvoiceFlow"
+    };
+}
 
 export default function Topbar() {
     const { user, isAuthenticated, logout } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const pageContext =
+        getPageContext(location.pathname);
+
+    const {
+        planName,
+        isFree,
+        isEnterprise,
+        loading: subscriptionLoading
+    } = useSubscription();
 
     const handleLogout = () => {
         logout();
         navigate("/login");
     };
 
-   /* console.log("TOPBAR USER:", user);*/
+    const email =
+        user?.email || "No email";
 
-    // safe values
-    const email = user?.email || "No email";
     const displayName =
         user?.name ||
         user?.firstName ||
         user?.email ||
         "User";
 
-    return (
-        <nav className="navbar navbar-expand-lg bg-white border-bottom px-4 py-2 shadow-sm">
+    const initial =
+        displayName
+            ?.charAt(0)
+            ?.toUpperCase() || "U";
 
-            {/* LEFT */}
-            <div className="d-flex align-items-center">
-                <span className="navbar-brand fw-bold fs-4 text-primary mb-0">
-                    InvoiceFlow
-                </span>
+    const planActionLabel =
+        isEnterprise
+            ? "Manage Plan"
+            : isFree
+                ? "Upgrade Plan"
+                : "Change Plan";
+
+    return (
+        <header className="app-topbar">
+
+            {/* ==========================================
+                LEFT
+            ========================================== */}
+
+            <div className="topbar-left">
+
+                <div className="topbar-page-context">
+
+                    <span className="topbar-context-label">
+                        {pageContext.section}
+                    </span>
+
+                    <span className="topbar-context-name">
+                        {pageContext.title}
+                    </span>
+
+                </div>
+
             </div>
 
-            {/* RIGHT */}
-            <div className="ms-auto d-flex align-items-center">
+
+            {/* ==========================================
+                RIGHT
+            ========================================== */}
+
+            <div className="topbar-right">
 
                 {!isAuthenticated ? (
-                    <div className="d-flex gap-2">
-                        <Link to="/login" className="btn btn-outline-primary btn-sm">
+                    <div className="topbar-auth-actions">
+
+                        <Link
+                            to="/login"
+                            className="topbar-login-btn"
+                        >
                             Login
                         </Link>
 
-                        <Link to="/register" className="btn btn-primary btn-sm">
+                        <Link
+                            to="/register"
+                            className="topbar-register-btn"
+                        >
                             Register
                         </Link>
+
                     </div>
                 ) : (
-                    <div className="dropdown">
+                    <>
+                        {/* ==================================
+                            CURRENT PLAN
+                        ================================== */}
 
-                        {/* USER BUTTON */}
-                        <button
-                            className="btn border-0 d-flex align-items-center gap-2"
-                            type="button"
-                            data-bs-toggle="dropdown"
-                        >
-                            {/* AVATAR */}
-                            <div
-                                className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
-                                style={{
-                                    width: "36px",
-                                    height: "36px",
-                                    fontSize: "14px",
-                                    fontWeight: "600"
-                                }}
+                        {!subscriptionLoading && (
+                            <button
+                                type="button"
+                                className="topbar-plan"
+                                onClick={() =>
+                                    navigate(
+                                        "/subscription/billing"
+                                    )
+                                }
+                                title="Subscription & Billing"
                             >
-                                {displayName?.charAt(0)?.toUpperCase()}
-                            </div>
+                                <span className="topbar-plan-dot" />
 
-                            {/* USER INFO */}
-                            <div className="text-start">
-                                <div className="fw-semibold" style={{ fontSize: "14px" }}>
-                                    {email}
-                                </div>
+                                <span>
+                                    {planName || "Free"}
+                                </span>
+                            </button>
+                        )}
 
-                                {/*<small className="text-muted">*/}
-                                {/*    Account*/}
-                                {/*</small>*/}
-                            </div>
+
+                        {/* ==================================
+                            NOTIFICATIONS
+                        ================================== */}
+
+                        <button
+                            type="button"
+                            className="topbar-icon-btn"
+                            title="Notifications"
+                        >
+                            <FiBell />
                         </button>
 
-                        {/* DROPDOWN */}
-                        <ul className="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
 
-                            {/* USER HEADER */}
-                            <li className="px-3 py-2">
-                                <div className="fw-semibold">
-                                    {displayName}
+                        <div className="topbar-divider" />
+
+
+                        {/* ==================================
+                            USER
+                        ================================== */}
+
+                        <div className="dropdown">
+
+                            <button
+                                className="topbar-user-btn"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            >
+                                <div className="topbar-avatar">
+                                    {initial}
                                 </div>
-                                <small className="text-muted">
-                                    {email}
-                                </small>
-                            </li>
 
-                            <li><hr className="dropdown-divider" /></li>
+                                <div className="topbar-user-info">
 
-                            <li>
-                                <Link className="dropdown-item" to="/dashboard">
-                                    Dashboard
-                                </Link>
-                            </li>
+                                    <span className="topbar-user-name">
+                                        {displayName}
+                                    </span>
+
+                                    <span className="topbar-user-email">
+                                        {email}
+                                    </span>
+
+                                </div>
+
+                                <FiChevronDown className="topbar-chevron" />
+                            </button>
+
+
+                            {/* ==============================
+                                DROPDOWN
+                            ============================== */}
+
+                            <ul className="dropdown-menu dropdown-menu-end topbar-dropdown">
+
+                                {/* USER HEADER */}
+
+                                <li className="topbar-dropdown-header">
+
+                                    <div className="topbar-dropdown-avatar">
+                                        {initial}
+                                    </div>
+
+                                    <div>
+                                        <div className="topbar-dropdown-name">
+                                            {displayName}
+                                        </div>
+
+                                        <div className="topbar-dropdown-email">
+                                            {email}
+                                        </div>
+                                    </div>
+
+                                </li>
+
+
+                                {!subscriptionLoading && (
+                                    <li className="topbar-dropdown-plan">
+
+                                        <span>
+                                            Current plan
+                                        </span>
+
+                                        <strong>
+                                            {planName || "Free"}
+                                        </strong>
+
+                                    </li>
+                                )}
+
 
                                 <li>
-                                    <Link className="dropdown-item" to="/documents">
-                                        My Invoices
+                                    <hr className="dropdown-divider" />
+                                </li>
+
+
+                                {/* NAVIGATION */}
+
+                                <li>
+                                    <Link
+                                        className="dropdown-item topbar-dropdown-item"
+                                        to="/dashboard"
+                                    >
+                                        <FiGrid />
+
+                                        <span>
+                                            Dashboard
+                                        </span>
                                     </Link>
                                 </li>
-                            {/*<li>*/}
-                            {/*    <Link className="dropdown-item" to="/profile">*/}
-                            {/*        Profile*/}
-                            {/*    </Link>*/}
-                            {/*</li>*/}
 
-                            <li>
-                                <Link className="dropdown-item" to="/settings">
-                                    Settings
+
+                                <li>
+                                    <Link
+                                        className="dropdown-item topbar-dropdown-item"
+                                        to="/documents"
+                                    >
+                                        <FiFileText />
+
+                                        <span>
+                                            My Documents
+                                        </span>
                                     </Link>
-                            </li>
+                                </li>
 
-                            
 
-                            <li><hr className="dropdown-divider" /></li>
+                                <li>
+                                    <Link
+                                        className="dropdown-item topbar-dropdown-item"
+                                        to="/settings"
+                                    >
+                                        <FiSettings />
 
-                            <li>
-                                <button
-                                    className="dropdown-item text-danger"
-                                    onClick={handleLogout}
-                                >
-                                    Logout
-                                </button>
-                            </li>
+                                        <span>
+                                            Settings
+                                        </span>
+                                    </Link>
+                                </li>
 
-                        </ul>
 
-                    </div>
+                                <li>
+                                    <Link
+                                        className="dropdown-item topbar-dropdown-item"
+                                        to="/subscription/billing"
+                                    >
+                                        <FiCreditCard />
+
+                                        <span>
+                                            Subscription & Billing
+                                        </span>
+                                    </Link>
+                                </li>
+
+
+                                <li>
+                                    <hr className="dropdown-divider" />
+                                </li>
+
+
+                                {/* PLAN */}
+
+                                <li>
+                                    <button
+                                        type="button"
+                                        className="dropdown-item topbar-dropdown-item topbar-plan-action"
+                                        onClick={() =>
+                                            navigate("/pricing")
+                                        }
+                                    >
+                                        <FiCreditCard />
+
+                                        <span>
+                                            {planActionLabel}
+                                        </span>
+                                    </button>
+                                </li>
+
+
+                                <li>
+                                    <hr className="dropdown-divider" />
+                                </li>
+
+
+                                {/* LOGOUT */}
+
+                                <li>
+                                    <button
+                                        type="button"
+                                        className="dropdown-item topbar-dropdown-item topbar-logout"
+                                        onClick={handleLogout}
+                                    >
+                                        <FiLogOut />
+
+                                        <span>
+                                            Logout
+                                        </span>
+                                    </button>
+                                </li>
+
+                            </ul>
+
+                        </div>
+                    </>
                 )}
 
             </div>
-        </nav>
+
+        </header>
     );
 }

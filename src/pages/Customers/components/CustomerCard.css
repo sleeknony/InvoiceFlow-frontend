@@ -1,0 +1,29 @@
+.customer-card {
+    transition: all .25s ease;
+    cursor: pointer;
+}
+
+    .customer-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 1rem 3rem rgba(0,0,0,.12) !important;
+    }
+
+    .customer-card .btn {
+        border-radius: 12px;
+    }
+
+    .customer-card .card-footer {
+        padding: 1rem;
+    }
+
+    .customer-card .badge {
+        font-size: .75rem;
+        font-weight: 600;
+    }
+    .customer-card h5 {
+        transition: color .2s ease;
+    }
+
+    .customer-card:hover h5 {
+        color: var(--bs-primary);
+    }

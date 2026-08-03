@@ -1,0 +1,26 @@
+.print-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 40px;
+    min-height: 100vh;
+    background: #eef2f7;
+}
+
+.print-page {
+    box-shadow: 0 10px 35px rgba(0,0,0,.08);
+}
+
+@media print {
+
+    .print-layout {
+        padding: 0;
+        gap: 0;
+        background: transparent;
+    }
+
+    .print-page {
+        box-shadow: none;
+    }
+}

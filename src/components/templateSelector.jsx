@@ -1,11 +1,11 @@
-import { TEMPLATE_REGISTRY } from "../templates/templateRegistry";
+import  TemplateRegistry from "../renderer/templates/templateRegistry";
 
 export default function TemplateSelector({
     value,
     onChange
 }) {
     const templates =
-        Object.values(TEMPLATE_REGISTRY);
+        Object.values(TemplateRegistry);
 
     return (
         <div className="row g-3">

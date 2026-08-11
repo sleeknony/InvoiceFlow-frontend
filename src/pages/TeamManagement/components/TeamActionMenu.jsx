@@ -21,20 +21,17 @@ export default function TeamActionMenu({
     onRemove
 
 }) {
+    const isOwner = member.roleName === "Owner";
 
     return (
 
         <div className="team-action-menu">
 
             <button
-                onClick={() => {
-
-                    console.log("Edit clicked");
-                    onEdit(member)
-                }}
+                disabled={isOwner}
+                onClick={() => onEdit(member)}
             >
                 <FiEdit />
-
                 Edit Member
             </button>
 

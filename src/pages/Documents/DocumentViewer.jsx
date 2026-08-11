@@ -2,34 +2,22 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { toast } from "react-hot-toast";
-import { Card } from "react-bootstrap";
-
-import DocumentActionsToolbar from "../components/DocumentActionsToolbar";
-import DocumentStatusBadge from "../components/documentStatusBadge";
-import EmailDocumentModal from "../components/EmailDocumentModal";
-import AddPaymentModal from "../components/AddPaymentModal";
-import PaymentHistoryTable from "../components/PaymentHistoryTable";
-import PdfDocumentViewer from "../components/PdfDocumentViewer";
-
-import {
-    getDocument,
-    getApprovalHistory,
-    getPayments,
-    updateDocumentStatus,
-    approveDocument,
-    rejectDocument,
-    duplicateDocument,
-    deleteDocument,
-    convertDocument,
-    emailDocument,
-    addPayment,
-    getPreviewUrl,
-    downloadDocumentPdf
-} from "../services/documentService";
-
-import { getSettings } from "../services/settingsService";
-import { useSubscription } from "../context/useSubscription";
-import { SUBSCRIPTION_FEATURES } from "../utils/constants";
+import DocumentActionsToolbar  from "./components/DocumentActionsToolbar";
+//import DocumentActionsToolbar from "../../components/DocumentActionsToolbar";
+//import DocumentStatusBadge from "../../components/documentStatusBadge";
+import EmailDocumentModal from "../../components/EmailDocumentModal";
+import AddPaymentModal from "../../components/AddPaymentModal";
+import PaymentHistoryTable from "../../components/PaymentHistoryTable";
+import PdfDocumentViewer from "../../components/PdfDocumentViewer";
+import DocumentViewerHeader from "./components/DocumentViewerHeader";
+import DocumentKPICards  from "./components/DocumentKPICards";
+import {getDocument,getApprovalHistory,getPayments, updateDocumentStatus, approveDocument, rejectDocument, duplicateDocument,  deleteDocument,
+    convertDocument, emailDocument, addPayment, getPreviewUrl, downloadDocumentPdf, submitForApproval} from "../../services/documentService";
+import { getSettings } from "../../services/settingsService";
+import { useSubscription } from "../../context/useSubscription";
+import { SUBSCRIPTION_FEATURES } from "../../utils/constants";
+import { Row, Col, Card } from "react-bootstrap";
+import DocumentSummarySidebar from "./components/DocumentSummarySidebar";
 
 
 export default function DocumentViewer() {
@@ -213,23 +201,54 @@ export default function DocumentViewer() {
     // =====================================================
 
     const handleApprove = async () => {
+
         const result =
             await Swal.fire({
-                title: "Approve document?",
-                text:
-                    "This document will become approved.",
+                title: "Approve Document?",
+                html: `
+                <p class="mb-2">
+                    This action will approve
+                    <strong>${document.documentNumber}</strong>.
+                </p>
+                <p class="text-muted mb-0">
+                    Once approved, the document can no longer be edited.
+                </p>
+            `,
                 icon: "question",
+
+                input: "textarea",
+
+                inputLabel: "Approval Comment",
+
+                inputPlaceholder:
+                    "Enter approval comments (optional)",
+
+                inputAttributes: {
+                    "aria-label": "Approval Comment"
+                },
+
                 showCancelButton: true,
-                confirmButtonText: "Approve"
+
+                confirmButtonText: "Yes, Approve",
+
+                cancelButtonText: "Cancel",
+
+                confirmButtonColor: "#198754",
+
+                reverseButtons: true,
+
+                focusCancel: true
             });
 
         if (!result.isConfirmed)
             return;
 
         try {
+
             const updated =
                 await approveDocument(
-                    document.id
+                    document.id,
+                    result.value || ""
                 );
 
             setDocument(updated);
@@ -241,17 +260,28 @@ export default function DocumentViewer() {
 
             setApprovalHistory(history);
 
+            await Swal.fire({
+                icon: "success",
+                title: "Approved",
+                text: "The document has been approved.",
+                timer: 1800,
+                showConfirmButton: false
+            });
+
             toast.success(
                 "Document approved."
             );
+
         }
         catch (err) {
+
             console.error(err);
 
             toast.error(
                 err?.response?.data?.message ??
                 "Unable to approve document."
             );
+
         }
     };
 
@@ -615,7 +645,10 @@ export default function DocumentViewer() {
 
 
         // Quote has only one valid conversion.
-        if (document.type === "Quote") {
+        if (
+            document.type === "Quote" ||
+            document.type === "ProformaInvoice"
+        ) {
 
             targetType = "Invoice";
 
@@ -839,192 +872,116 @@ export default function DocumentViewer() {
     // =====================================================
 
     const canReceivePayment =
-        remainingBalance > 0 &&
-        (
-            document.status === "Sent" ||
-            document.status === "PartiallyPaid" ||
-            document.status === "Overdue"
-        );
-
+        document.canReceivePayment &&
+        remainingBalance > 0;
 
     // =====================================================
-    // RENDER
+    // APPROVAL REQUEST SUBMISSION
     // =====================================================
+
+    const handleSubmitForApproval =
+        async () => {
+
+            try {
+
+                await submitForApproval(
+                    document.id
+                );
+                toast.success(
+                    "Document submitted for approval."
+                );
+
+                await loadDocument();
+
+            }
+            catch (err) {
+
+                toast.error(
+                    err.response?.data?.message
+                    || "Failed to submit for approval"
+                );
+            }
+        };
 
     return (
         <>
             {/* ==========================================
                 DOCUMENT HEADER
             ========================================== */}
-
-            <div
-                className="
-                    d-flex
-                    justify-content-between
-                    align-items-center
-                    mb-3
-                    document-viewer-header
-                "
-            >
-                <div>
-                    <h4 className="mb-0">
-                        {document.documentNumber}
-                    </h4>
-
-                    <small className="text-muted">
-                        {document.type}
-                    </small>
-                </div>
-
-
-                <div
-                    className="
-                        d-flex
-                        align-items-center
-                        gap-2
-                        dstats
-                    "
-                >
-                    <DocumentStatusBadge
-                        status={document.status}
-                    />
-
-
-                    {/* ==================================
-                        APPROVAL
-                    ================================== */}
-
-                    {document.status === "Draft" && (
-                        <>
-                            <button
-                                type="button"
-                                className="btn btn-success"
-                                onClick={handleApprove}
-                            >
-                                Approve
-                            </button>
-
-                            <button
-                                type="button"
-                                className="btn btn-danger"
-                                onClick={handleReject}
-                            >
-                                Reject
-                            </button>
-                        </>
-                    )}
-
-
-                    {/* ==================================
-                        REJECTED
-                    ================================== */}
-
-                    {document.status === "Rejected" && (
-                        <button
-                            type="button"
-                            className="btn btn-primary"
-                            onClick={handleDuplicate}
-                        >
-                            Duplicate as Draft
-                        </button>
-                    )}
-
-
-                    {/* ==================================
-                        APPROVED
-                    ================================== */}
-
-                    {document.status === "Approved" && (
-                        <button
-                            type="button"
-                            className="btn btn-primary"
-                            onClick={handleSend}
-                        >
-                            Mark as Sent
-                        </button>
-                    )}
-
-
-                    {/* ==================================
-                        PAYMENT TRACKING
-                    ================================== */}
-
-                    {canReceivePayment && (
-                        <button
-                            type="button"
-                            className="btn btn-success"
-                            disabled={
-                                subscriptionLoading ||
-                                !canTrackPayments
-                            }
-                            title={
-                                canTrackPayments
-                                    ? "Record a payment"
-                                    : "Payment Tracking is not available on your current plan."
-                            }
-                            onClick={() => {
-                                if (
-                                    !subscriptionLoading &&
-                                    canTrackPayments
-                                ) {
-                                    setShowPaymentModal(
-                                        true
-                                    );
-                                }
-                            }}
-                        >
-                            Add Payment
-                        </button>
-                    )}
-                </div>
-            </div>
-
-
+            
+            <DocumentViewerHeader
+                document={document}
+                onBack={() => navigate("/documents")}
+            />
             {/* ==========================================
                 DOCUMENT ACTIONS
             ========================================== */}
 
-            <DocumentActionsToolbar
+            <DocumentKPICards
                 document={document}
-                onDownload={handleDownload}
-                onEmail={handleEmail}
-                onDuplicate={handleDuplicate}
-                onDelete={handleDelete}
-                onConvert={handleConvert}
-                canConvertDocuments={canConvertDocuments}
-                onEdit={handleEdit}
+                totalPaid={totalPaid}
+                remainingBalance={remainingBalance}
             />
 
+            <DocumentActionsToolbar
+                document={document}
+               
+                canReceivePayment={canReceivePayment}
+                canTrackPayments={canTrackPayments}
+                handleEdit={handleEdit}
+                handleApprove={handleApprove}
+                handleReject={handleReject}
+                handleDuplicate={handleDuplicate}
+                handleSubmitForApproval={handleSubmitForApproval}
+                handleSend={handleSend}
+                handleConvert={handleConvert}
+                handleDownload={handleDownload}
+                handleEmail={handleEmail}
+                handleDelete={handleDelete}
+                canConvertDocuments={canConvertDocuments}
+                setShowPaymentModal={setShowPaymentModal}
+            />
 
+        
             {/* ==========================================
                 DOCUMENT PREVIEW
             ========================================== */}
 
-            <Card
-                className="
-                    shadow-sm
-                    border-0
-                    mb-4
-                "
-            >
-                <Card.Body className="text-center">
+            <Row className="g-4 mb-4">
 
-                    <PdfDocumentViewer
-                        url={
-                            getPreviewUrl(
-                                document.id
-                            )
-                        }
-                        maxPages={
-                            settings?.maxDocumentPages
-                        }
-                        subscriptionPlan={
-                            settings?.subscriptionPlan
-                        }
+                <Col lg={9}>
+
+                    <Card
+                        className="
+                shadow-sm
+                border-0
+            "
+                    >
+                        <Card.Body className="text-center">
+
+                            <PdfDocumentViewer
+                                url={getPreviewUrl(document.id)}
+                                maxPages={settings?.maxDocumentPages}
+                                subscriptionPlan={settings?.subscriptionPlan}
+                            />
+
+                        </Card.Body>
+
+                    </Card>
+
+                </Col>
+
+                <Col lg={3}>
+
+                    <DocumentSummarySidebar
+                        document={document}
+                        totalPaid={totalPaid}
+                        remainingBalance={remainingBalance}
                     />
 
-                </Card.Body>
-            </Card>
+                </Col>
+
+            </Row>
 
 
             {/* ==========================================

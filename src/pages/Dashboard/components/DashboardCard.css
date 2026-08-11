@@ -1,0 +1,46 @@
+.dashboard-card {
+    border-radius: 16px;
+    padding: 24px;
+    color: white;
+    min-height: 150px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.08);
+}
+
+    .dashboard-card.primary {
+        background: linear-gradient( 135deg, #2563eb, #1d4ed8 );
+    }
+
+    .dashboard-card.success {
+        background: linear-gradient( 135deg, #16a34a, #15803d );
+    }
+
+    .dashboard-card.warning {
+        background: linear-gradient( 135deg, #f59e0b, #d97706 );
+    }
+
+    .dashboard-card.danger {
+        background: linear-gradient( 135deg, #dc2626, #b91c1c );
+    }
+
+.dashboard-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashboard-card-title {
+    font-size: 14px;
+    opacity: .9;
+}
+
+.dashboard-card-value {
+    font-size: 32px;
+    font-weight: 700;
+    margin-top: 20px;
+}
+
+.dashboard-card-subtitle {
+    margin-top: 12px;
+    opacity: .85;
+    font-size: 13px;
+}

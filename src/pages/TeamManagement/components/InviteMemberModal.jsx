@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import companyTeamService from "../../../services/companyTeamService";
 import PermissionChecklist from "./PermissionChecklist";
+import toast from "react-hot-toast";
 
 import "./InviteMemberModal.css";
 
@@ -55,7 +56,7 @@ export default function InviteMemberModal({
             return;
 
         }
-       
+
         const emailRegex =
             /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -81,15 +82,17 @@ export default function InviteMemberModal({
 
             setError("");
 
-            await companyTeamService.inviteMember({
+            const response =
+                await companyTeamService.inviteMember({
+                    email: email.trim(),
+                    role: Number(role),
+                    permissions: selectedPermissions
+                });
 
-                email: email.trim(),
-
-                role: Number(role),
-
-                permissions: selectedPermissions
-
-            });
+            toast.success(
+                response?.message ||
+                "Invitation sent successfully."
+            );
 
             onSuccess?.();
 
@@ -98,14 +101,9 @@ export default function InviteMemberModal({
         }
         catch (err) {
 
-            setError(
-
-                err.response?.data?.message ||
-
-                err.response?.data ||
-
+            toast.error(
+                err?.response?.data?.message ||
                 "Unable to send invitation."
-
             );
 
         }
@@ -114,7 +112,6 @@ export default function InviteMemberModal({
             setSaving(false);
 
         }
-
     }
 
     return (

@@ -1,160 +1,113 @@
-/*.settings-layout {
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #edf1f5;
+}
+
+.settings-page-title {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.settings-page-subtitle {
+    margin-top: 6px;
+    color: #6b7280;
+}
+
+.settings-save-btn {
+    min-width: 170px;
+    height: 46px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.settings-layout {
     display: grid;
-    grid-template-columns: 550px minmax(700px, 1fr);
-    gap: 30px;
+    grid-template-columns: 260px 1fr;
+    gap: 28px;
     align-items: start;
 }
 
-.settings-left {
+.settings-sidebar {
+    position: sticky;
+    top: 24px;
+    background: #fff;
+    border: 1px solid #e8edf3;
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.settings-sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #edf1f5;
+}
+
+.settings-nav {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    min-width: 0;
+    gap: 8px;
 }
 
-.settings-right {
-    position: sticky;
-    top: 20px;
-    min-width: 0;
-    overflow-x: auto;
-    overflow-y: visible;
-    padding-bottom: 20px;
-}
-
-    .settings-right > * {
-        min-width: 750px;
-    }
-
-.settings-preview {
-    width: 100%;
-}
-
-.settings-tabs {
+.settings-nav-item {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    background: none;
+    border-radius: 12px;
+    text-align: left;
+    transition: .25s;
 }
 
-    .settings-tabs button {
-        border: none;
-        background: #f4f4f4;
-        padding: 10px 18px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: all .2s ease;
+    .settings-nav-item:hover {
+        background: #f7f9fc;
     }
 
-        .settings-tabs button.active {
-            background: #0d6efd;
-            color: #fff;
-        }
+    .settings-nav-item.active {
+        background: #eaf3ff;
+        color: #0d6efd;
+        font-weight: 600;
+    }
+
+.settings-content {
+    min-width: 0;
+}
 
 .settings-panel {
     background: #fff;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 5px 20px rgba(0,0,0,.08);
+    border: 1px solid #e8edf3;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 2px 10px rgba(15,23,42,.04);
 }
 
-@media (max-width: 1400px) {
+
+@media (max-width:1200px) {
+
+    .settings-layout {
+        grid-template-columns: 220px 1fr;
+    }
+}
+
+@media (max-width:768px) {
+
     .settings-layout {
         grid-template-columns: 1fr;
     }
 
-    .settings-right {
+    .settings-sidebar {
         position: static;
-        overflow-x: auto;
     }
-
-        .settings-right > * {
-            min-width: 100%;
-        }
 }
-*/
-
-.settings-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-.settings-left,
-.settings-right {
-    width: 100%;
-}
-
-.settings-right {
-    position: static;
-}
-
-.settings-right {
-    background: #f5f6f8;
-    border-radius: 16px;
-    padding: 30px;
-    overflow-x: auto;
-}
-
-.settings-preview {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-}
-
-    .settings-preview .modern-template,
-    .settings-preview .invoice-theme {
-        max-width: 900px;
-        width: 100%;
-    }
-
-.settings-tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    padding: 8px;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 8px 30px rgba(0,0,0,.06);
-}
-
-.tab-btn {
-    border: none;
-    background: transparent;
-    padding: 14px 20px;
-    border-radius: 14px;
-    cursor: pointer;
-    font-weight: 600;
-    color: #6c757d;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: all .25s ease;
-}
-
-    .tab-btn i {
-        font-size: 18px;
-    }
-
-    .tab-btn:hover {
-        background: #f5f7ff;
-        color: #0d6efd;
-        transform: translateY(-2px);
-    }
-
-    .tab-btn.active {
-        background: linear-gradient( 135deg, #0d6efd, #3d8bfd );
-        color: white;
-        box-shadow: 0 8px 20px rgba(13,110,253,.35);
-    }
-
-        .tab-btn.active i {
-            color: white;
-        }
-
-.tab-btn {
-    backdrop-filter: blur(12px);
-}
-
-    .tab-btn.active {
-        background: linear-gradient( 135deg, #0d6efd, #6ea8fe );
-    }

@@ -3,8 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import LineItemsTable from "../components/LineItemsTable.jsx";
 import { calcTotals } from "../utils/calc.jsx";
 import { getCustomers } from "../services/customerService";
-import { createDocument, updateDocument,  getDocument} from "../services/documentService";
-import { getSettings } from "../services/settingsService";
+import { createDocument, updateDocument,  getDocument,} from "../services/documentService";
+import { getSettings, getBankAccounts } from "../services/settingsService";
 import toast from "react-hot-toast";
 import { DOCUMENT_BEHAVIOR } from "../components/documentBehavior";
 import DocumentHeader from "../components/DocumentHeader/DocumentHeader.jsx";
@@ -22,12 +22,15 @@ export default function DocumentEditor({ mode }) {
     const [loading, setLoading] = useState(false);
     const [customers, setCustomers] = useState([]);
     const [settings, setSettings] = useState(null);
+    const [bankAccounts, setBankAccounts] = useState([]);
+    const [selectedBankAccountId, setSelectedBankAccountId] =  useState(null);
 
     const [doc, setDoc] = useState({
         id: id || null,
         type: "Invoice",
         documentNumber: "",
         customerId: "",
+        companyBankAccountId: null,
         currency: "NGN",
         issueDate: new Date().toISOString().slice(0, 10),
         dueDate: "",
@@ -38,6 +41,7 @@ export default function DocumentEditor({ mode }) {
         billingAddress: "",
         shippingAddress: "",
         shippingCost: 0,
+        sameAsCustomerAddress: true,
         sameAsBilling: true,
         purchaseOrderNumber: "",
         referenceNumber: "",
@@ -64,6 +68,7 @@ export default function DocumentEditor({ mode }) {
     useEffect(() => {
         loadSettings();
     }, []);
+   
 
     async function loadSettings() {
         try {
@@ -91,6 +96,57 @@ export default function DocumentEditor({ mode }) {
             ? `${import.meta.env.VITE_API_URL}${settings.logoUrl}`
             : null
     );
+
+    // =========================
+    // LOAD BANK ACCOUNTS
+    // =========================
+
+    useEffect(() => {
+        loadBankAccounts();
+    }, []);
+
+    async function loadBankAccounts() {
+
+        try {
+
+            const accounts =
+                await getBankAccounts();
+
+            console.log(
+                "BANK ACCOUNTS:",
+                accounts
+            );
+
+            setBankAccounts(accounts);
+
+            if (mode === "create") {
+
+                const defaultAccount =
+                    accounts.find(
+                        x => x.isDefault
+                    ) ?? accounts[0];
+
+                if (defaultAccount) {
+
+                    setDoc(prev => ({
+                        ...prev,
+                        companyBankAccountId:
+                            defaultAccount.id
+                    }));
+
+                }
+            }
+
+        }
+        catch (err) {
+
+            toast.error(
+                "Failed to load bank accounts",
+                err
+            );
+
+        }
+    }
 
     // =========================
     // LOAD CUSTOMERS
@@ -127,6 +183,10 @@ export default function DocumentEditor({ mode }) {
                         document.documentNumber ?? "",
                     customerId:
                         document.customerId ?? "",
+
+                    companyBankAccountId:
+                        document.companyBankAccountId ?? null,
+
                     currency:
                         document.currency ?? "NGN",
 
@@ -160,6 +220,9 @@ export default function DocumentEditor({ mode }) {
 
                     shippingCost:
                         document.shippingCost ?? 0,
+
+                    sameAsCustomerAddress:
+                        document.sameAsCustomerAddress ?? true,
 
                     sameAsBilling:
                         document.sameAsBilling ?? true,
@@ -201,6 +264,11 @@ export default function DocumentEditor({ mode }) {
         loadDocument();
     }, [mode, id]);
 
+
+    const selectedCustomer =
+        customers.find(
+            x => x.id === doc.customerId
+        );
     // =========================
     // TOTALS
     // =========================
@@ -323,6 +391,24 @@ export default function DocumentEditor({ mode }) {
         }
     }, [doc, mode]);
 
+    useEffect(() => {
+
+        if (
+            doc.sameAsCustomerAddress &&
+            selectedCustomer
+        ) {
+            setDoc(prev => ({
+                ...prev,
+                billingAddress:
+                    selectedCustomer.address || ""
+            }));
+        }
+
+    }, [
+        selectedCustomer?.id,
+        doc.sameAsCustomerAddress
+    ]);
+
     return (
         <div>
 
@@ -350,12 +436,29 @@ export default function DocumentEditor({ mode }) {
                             behavior={behavior}
                             customers={customers}
                             customerId={doc.customerId}
-                            onCustomerChange={(customerId) =>
-                                setDoc(prev => ({
-                                    ...prev,
-                                    customerId
-                                }))
-                            }
+                            onCustomerChange={(customerId) => {
+
+                                const customer =
+                                    customers.find(
+                                        x => String(x.id) === String(customerId)
+                                    );
+
+                                setDoc(prev => {
+
+                                    const updated = {
+                                        ...prev,
+                                        customerId,
+                                        billingAddress: customer?.address || ""
+                                    };
+
+                                    console.log(
+                                        "New billing address:",
+                                        updated.billingAddress
+                                    );
+
+                                    return updated;
+                                });
+                            }}
                             onCreateCustomer={() =>
                                 navigate("/customers/create")
                             }
@@ -381,6 +484,7 @@ export default function DocumentEditor({ mode }) {
                                 doc={doc}
                                 setDoc={setDoc}
                                 behavior={behavior}
+                                customerAddress={selectedCustomer?.address || ""}
                             />
 
                         </div>
@@ -407,9 +511,8 @@ export default function DocumentEditor({ mode }) {
 
                                 behavior.showPaymentSection &&
                                 settings && (
-
                                     <PaymentSidebar
-                                        settings={settings}
+                                        bankAccounts={bankAccounts}
                                     />
 
                                 )

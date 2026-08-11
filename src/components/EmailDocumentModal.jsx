@@ -19,6 +19,9 @@ export default function EmailDocumentModal({
     const [to, setTo] =
         useState("");
 
+    const [cc, setCc] =
+        useState("");
+
     const [subject, setSubject] =
         useState("");
 
@@ -36,6 +39,8 @@ export default function EmailDocumentModal({
             document.customerEmail || ""
         );
 
+        setCc("");
+
         setSubject(
             `${document.type} ${document.documentNumber}`
         );
@@ -49,11 +54,73 @@ export default function EmailDocumentModal({
     if (!show)
         return null;
 
+    function isValidEmail(email) {
+
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+            .test(email);
+
+    }
+
+    function validateEmailList(value) {
+
+        if (!value)
+            return true;
+
+        const emails =
+            value
+                .split(",")
+                .map(x => x.trim())
+                .filter(Boolean);
+
+        return emails.every(
+            isValidEmail
+        );
+    }
+
+
     const submit = async () => {
-        if (!to) {
+        if (!to.trim()) {
+
             toast.error(
                 "Recipient email is required."
             );
+
+            return;
+        }
+
+        if (!validateEmailList(to)) {
+
+            toast.error(
+                "Please enter a valid recipient email."
+            );
+
+            return;
+        }
+
+        if (!validateEmailList(cc)) {
+
+            toast.error(
+                "One or more CC emails are invalid."
+            );
+
+            return;
+        }
+
+        if (!subject.trim()) {
+
+            toast.error(
+                "Subject is required."
+            );
+
+            return;
+        }
+
+        if (!message.trim()) {
+
+            toast.error(
+                "Message is required."
+            );
+
             return;
         }
 
@@ -64,6 +131,7 @@ export default function EmailDocumentModal({
                 document.id,
                 {
                     to,
+                    cc,
                     subject,
                     message
                 }
@@ -118,6 +186,29 @@ export default function EmailDocumentModal({
                                     )
                                 }
                             />
+                        </div>
+
+                        <div className="mb-3">
+
+                            <label>
+                                CC
+                            </label>
+
+                            <input
+                                className="form-control"
+                                placeholder="john@abc.com, jane@abc.com"
+                                value={cc}
+                                onChange={(e) =>
+                                    setCc(
+                                        e.target.value
+                                    )
+                                }
+                            />
+
+                            <small className="text-muted">
+                                Separate multiple emails with commas.
+                            </small>
+
                         </div>
 
                         <div className="mb-3">

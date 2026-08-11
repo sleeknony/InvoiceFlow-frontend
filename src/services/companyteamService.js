@@ -113,7 +113,26 @@ const companyTeamService = {
 
         return data;
 
-    }
+    },
+
+
+    async getInvitationByToken(token) {
+
+        const { data } = await http.get(
+            `/company/team/invitation/${token}`
+        );
+
+        return data;
+    },
+
+    async acceptInvitation(token) {
+
+        const { data } = await http.post(
+            `/company/team/accept/${token}`
+        );
+
+        return data;
+    },
 
 };
 

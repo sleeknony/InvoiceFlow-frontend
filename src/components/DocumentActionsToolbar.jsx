@@ -1,89 +1,163 @@
+import {
+    FiDownload,
+    FiMail,
+    FiCopy,
+    FiRefreshCw,
+    FiEdit2,
+    FiTrash2,
+    FiCheck,
+    FiX,
+    FiSend,
+    FiDollarSign,
+    FiUpload
+} from "react-icons/fi";
+
 export default function DocumentActionsToolbar({
     document,
-    onDownload,
-    onEmail,
-    onDuplicate,
-    onDelete,
-    onConvert,
-    onEdit,
-    canConvertDocuments = false,
-}) {
+    canConvertDocuments,
+    canTrackPayments,
 
-    // Convert applies only to Quote and Invoice.
-    const isConvertibleDocument =
-        document?.type === "Quote" ||
-        document?.type === "Invoice";
+    handleEdit,
+    handleApprove,
+    handleReject,
+    handleDuplicate,
+    handleSubmitForApproval,
+    handleSend,
+    handleConvert,
+    handleDownload,
+    handleEmail,
+    handleDelete,
+
+    setShowPaymentModal
+}) {
+    if (!document)
+        return null;
 
     return (
-        <div className="card shadow-sm border-0 mb-3 document-toolbar">
-            <div className="card-body py-2">
+        <div className="card shadow-sm border-0 mb-4">
+            <div className="card-body">
 
                 <div className="d-flex flex-wrap gap-2">
 
+                    {/* DOWNLOAD */}
                     <button
-                        type="button"
                         className="btn btn-outline-secondary"
-                        onClick={onDownload}
+                        onClick={handleDownload}
                     >
-                        <i className="bi bi-download me-1" />
+                        <FiDownload className="me-1" />
                         Download
                     </button>
 
+                    {/* EMAIL */}
                     <button
-                        type="button"
                         className="btn btn-outline-secondary"
-                        onClick={onEmail}
+                        onClick={handleEmail}
                     >
-                        <i className="bi bi-envelope me-1" />
+                        <FiMail className="me-1" />
                         Email
                     </button>
 
-                    {(document?.status === "Draft" ||
-                        document?.status === "Rejected") && (
-                            <button
-                                type="button"
-                                className="btn btn-outline-primary"
-                                onClick={onDuplicate}
-                            >
-                                Duplicate
-                            </button>
-                        )}
-
-                   
-                    {/* CONVERT */}
-                    {isConvertibleDocument && (
+                    {/* EDIT */}
+                    {document.canEdit && (
                         <button
-                            type="button"
-                            className="btn btn-outline-primary"
-                            disabled={!canConvertDocuments}
-                            title={
-                                canConvertDocuments
-                                    ? "Convert document"
-                                    : "Document conversion is not available on your current plan."
-                            }
-                            onClick={() => onConvert()}
-                        >
-                            <i className="bi bi-arrow-repeat me-1" />
-                            Convert
-                        </button>
-                    )}
-
-                    {document?.status === "Draft" && (
-                        <button
-                            type="button"
                             className="btn btn-primary"
-                            onClick={onEdit}
+                            onClick={handleEdit}
                         >
+                            <FiEdit2 className="me-1" />
                             Edit
                         </button>
                     )}
 
-                    {document?.status === "Draft" && (
+                    {/* DUPLICATE */}
+                    {document.canDuplicate && (
                         <button
-                            type="button"
-                            className="btn btn-danger"
-                            onClick={onDelete}
+                            className="btn btn-outline-primary"
+                            onClick={handleDuplicate}
                         >
+                            <FiCopy className="me-1" />
+                            Duplicate
+                        </button>
+                    )}
+
+                    {/* SUBMIT FOR APPROVAL */}
+                    {document.canSubmitForApproval && (
+                            <button
+                                className="btn btn-warning"
+                                onClick={
+                                    handleSubmitForApproval
+                                }
+                            >
+                                <FiUpload className="me-1" />
+                                Submit
+                            </button>
+                        )}
+
+                    {/* APPROVE */}
+                    {document.canApprove && (
+                        <button
+                            className="btn btn-success"
+                            onClick={handleApprove}
+                        >
+                            <FiCheck className="me-1" />
+                            Approve
+                        </button>
+                    )}
+
+                    {/* REJECT */}
+                    {document.canReject && (
+                        <button
+                            className="btn btn-outline-danger"
+                            onClick={handleReject}
+                        >
+                            <FiX className="me-1" />
+                            Reject
+                        </button>
+                    )}
+
+                    {/* SEND */}
+                    {document.canSend && (
+                        <button
+                            className="btn btn-info text-white"
+                            onClick={handleSend}
+                        >
+                            <FiSend className="me-1" />
+                            Send
+                        </button>
+                    )}
+
+                    {/* PAYMENT */}
+                    {canTrackPayments &&
+                        canReceivePayment && (
+                            <button
+                                className="btn btn-outline-success"
+                                onClick={() =>
+                                    setShowPaymentModal(true)
+                                }
+                            >
+                                <FiDollarSign className="me-1" />
+                                Record Payment
+                            </button>
+                        )}
+
+                    {/* CONVERT */}
+                    {document.canConvert && (
+                        <button
+                            className="btn btn-outline-primary"
+                            disabled={!canConvertDocuments}
+                            onClick={handleConvert}
+                        >
+                            <FiRefreshCw className="me-1" />
+                            Convert
+                        </button>
+                    )}
+
+                    {/* DELETE */}
+                    {document.canDelete && (
+                        <button
+                            className="btn btn-danger"
+                            onClick={handleDelete}
+                        >
+                            <FiTrash2 className="me-1" />
                             Delete
                         </button>
                     )}

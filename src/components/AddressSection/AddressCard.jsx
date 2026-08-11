@@ -1,10 +1,9 @@
 export default function AddressCard({
 
     doc,
-
     setDoc,
-
-    behavior
+    behavior,
+    customerAddress
 
 }) {
 
@@ -83,48 +82,34 @@ export default function AddressCard({
                 </div>
 
                 <div className="row">
-
-                    <div className="col-md-6 mb-4">
-
-                        <label className="form-label fw-semibold">
-
-                            Billing Address
-
+                  <div className="col-md-6 mb-4">
+                   <label className="form-label fw-semibold">
+                         Billing Address
                         </label>
 
                         <textarea
-
-                            rows="7"
-
+                            rows={4}
                             className="form-control"
-
-                            value={doc.billingAddress || ""}
-
+                            value={doc.billingAddress}
+                            readOnly={doc.sameAsCustomerAddress}
                             onChange={(e) =>
-
-                                updateBilling(
-
-                                    e.target.value
-
-                                )
-
+                                setDoc(prev => ({
+                                    ...prev,
+                                    billingAddress: e.target.value
+                                }))
                             }
-
                         />
 
                     </div>
 
                     <div className="col-md-6 mb-4">
-
-                        <label className="form-label fw-semibold">
-
-                            Shipping Address
-
-                        </label>
+                      <label className="form-label fw-semibold">
+                         Shipping Address
+                       </label>
 
                         <textarea
 
-                            rows="7"
+                            rows="4"
 
                             className="form-control"
 
@@ -159,26 +144,44 @@ export default function AddressCard({
                 </div>
 
                 <div className="border rounded-4 p-3 bg-light mb-4">
-
+                    
                     <div className="form-check form-switch">
 
                         <input
-
                             className="form-check-input"
-
                             type="checkbox"
-
-                            id="sameAddress"
-
-                            checked={doc.sameAsBilling}
-
+                            id="sameCustomerAddress"
+                            checked={doc.sameAsCustomerAddress}
                             onChange={(e) =>
+                                setDoc(prev => ({
+                                    ...prev,
+                                    sameAsCustomerAddress: e.target.checked,
 
-                                toggleSameAddress(
+                                    billingAddress:
+                                        e.target.checked
+                                            ? customerAddress
+                                            : prev.billingAddress
+                                }))
+                            }
+                        />
 
-                                    e.target.checked
+                        <label
+                            className="form-check-label"
+                            htmlFor="sameCustomerAddress"
+                        >
+                            Billing Address same as Company Address
+                        </label>
 
-                                )
+                    </div>
+                    <div className="form-check form-switch">
+
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="sameAddress"
+                            checked={doc.sameAsBilling}
+                            onChange={(e) =>
+                            toggleSameAddress(e.target.checked)
 
                             }
 

@@ -1,155 +1,7 @@
-﻿//import { useState } from "react";
-//import http from "../api/http";
-
-//export default function Register() {
-//    const [firstName, setfirstName] = useState("");
-//    const [lastName, setlastName] = useState("");
-//    const [email, setEmail] = useState("");
-//    const [password, setPassword] = useState("");
-
-//    const handleRegister = async () => {
-//        try {
-//            await http.post("/auth/register", {
-//                firstName,
-//                lastName,
-//                email,
-//                password
-//            });
-
-//            alert("Registered successfully");
-//        } catch {
-//            alert("Error registering");
-//        }
-//    };
-
-//    return (
-        
-//            <h2>Register</h2>
-
-//            <input placeholder="First Name" onChange={e => setfirstName(e.target.value)} />
-//            <input placeholder="Last Name" onChange={e => setlastName(e.target.value)} />
-//            <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
-//            <input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
-
-          
-       
-
-//        <div className="auth-wrapper">
-
-//            <div className="auth-container">
-
-//                {/* LEFT SIDE */}
-//                <div className="auth-hero">
-
-//                    <div className="auth-badge">
-//                        Smart Invoice Management
-//                    </div>
-
-//                    <h1 className="auth-title">
-//                        Simplify Your
-//                        <br />
-//                        Business With
-//                        <br />
-//                        <span>InvoiceFlow</span>
-//                    </h1>
-
-//                    <p className="auth-text">
-//                        Create invoices, manage customers,
-//                        track payments, generate receipts,
-//                        and streamline your entire billing
-//                        workflow from one powerful dashboard.
-//                    </p>
-
-//                    <div className="auth-features">
-
-//                        <div className="auth-feature">
-//                            <div className="auth-feature-icon">
-//                                ✓
-//                            </div>
-
-//                            Smart Invoice Generation
-//                        </div>
-
-//                        <div className="auth-feature">
-//                            <div className="auth-feature-icon">
-//                                ✓
-//                            </div>
-
-//                            Customer & Payment Tracking
-//                        </div>
-
-//                        <div className="auth-feature">
-//                            <div className="auth-feature-icon">
-//                                ✓
-//                            </div>
-
-//                            Secure Cloud Document Storage
-//                        </div>
-
-//                    </div>
-//                </div>
-
-//                {/* RIGHT SIDE */}
-//                <div className="auth-card">
-
-//                    <h2 className="auth-card-title">
-//                        Welcome Back
-//                    </h2>
-
-//                    <p className="auth-card-subtitle">
-//                        Login to continue to InvoiceFlow
-//                    </p>
-
-//                    <form className="auth-form">
-
-//                        <div className="auth-form-group">
-//                            <label className="auth-form-label">
-//                                Email
-//                            </label>
-
-//                            <input
-//                                type="email"
-//                                className="auth-input"
-//                                placeholder="Enter your email"
-//                            />
-//                        </div>
-
-//                        <div className="auth-form-group">
-//                            <label className="auth-form-label">
-//                                Password
-//                            </label>
-
-//                            <input
-//                                type="password"
-//                                className="auth-input"
-//                                placeholder="Enter your password"
-//                            />
-//                        </div>
-//                          <button className="auth-btn" onClick={handleRegister}>Register</button>
-
-//                    </form>
-
-//                    <div className="auth-footer">
-//                        Already have an account?
-//                        {" "}
-//                        <a href="/login">
-//                            Login
-//                        </a>
-//                    </div>
-
-//                </div>
-
-//            </div>
-
-//        </div>
-//    );
-//}
-
-
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-import http from "../api/http";
+import { FiEye, FiEyeOff } from "react-icons/fi";
+import http from "../../api/http";
 
 export default function Register() {
 
@@ -162,6 +14,9 @@ export default function Register() {
         password: "",
         confirmPassword: ""
     });
+    const [showPassword, setShowPassword] = useState(false);
+
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const [loading, setLoading] = useState(false);
 
@@ -181,11 +36,46 @@ export default function Register() {
 
         setError("");
 
-        if (formData.password !== formData.confirmPassword) {
+        const password = formData.password;
 
-            setError("Passwords do not match");
+        if (password !== formData.confirmPassword) {
+
+            setError("Password and Confirm Password must match.");
 
             return;
+
+        }
+
+        if (password.length < 6) {
+
+            setError("Password must be at least 6 characters long.");
+
+            return;
+
+        }
+
+        if (!/[A-Z]/.test(password)) {
+
+            setError("Password must contain at least one uppercase letter.");
+
+            return;
+
+        }
+
+        if (!/[0-9]/.test(password)) {
+
+            setError("Password must contain at least one number.");
+
+            return;
+
+        }
+
+        if (!/[^A-Za-z0-9]/.test(password)) {
+
+            setError("Password must contain at least one special character.");
+
+            return;
+
         }
 
         try {
@@ -199,21 +89,37 @@ export default function Register() {
                 password: formData.password
             });
 
-            navigate("/login");
+            localStorage.setItem(
+                "verificationEmail",
+                formData.email
+            );
+
+            navigate("/verify-email", {
+                state: {
+                    email: formData.email
+                }
+            });
 
         } catch (err) {
 
-            console.error(err);
-
+         
             setError(
-                err.response?.data?.message ||
+                JSON.stringify(err.response?.data) ||
                 "Registration failed"
+           
             );
 
         } finally {
 
             setLoading(false);
         }
+    };
+
+    const passwordChecks = {
+        length: formData.password.length >= 6,
+        uppercase: /[A-Z]/.test(formData.password),
+        number: /\d/.test(formData.password),
+        special: /[^A-Za-z0-9]/.test(formData.password)
     };
 
     return (
@@ -307,14 +213,11 @@ export default function Register() {
                                         First Name
                                     </label>
 
-                                    <input
-                                        type="text"
-                                        name="firstName"
+                                    <input type="text" name="firstName"
                                         className="auth-input"
                                         placeholder="First name"
                                         value={formData.firstName}
-                                        onChange={handleChange}
-                                        required
+                                        onChange={handleChange} required
                                     />
 
                                 </div>
@@ -369,15 +272,53 @@ export default function Register() {
                                 Password
                             </label>
 
-                            <input
-                                type="password"
-                                name="password"
-                                className="auth-input"
-                                placeholder="Create password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                required
-                            />
+                            <div className="password-input-wrapper">
+
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    name="password"
+                                    className="auth-input"
+                                    placeholder="Create password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    required
+                                />
+
+                                <button
+                                    type="button"
+                                    className="password-toggle"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    {showPassword
+                                        ? <FiEyeOff />
+                                        : <FiEye />}
+                                </button>
+
+                            </div>
+
+                            <div className="password-rules">
+
+                                <div className={passwordChecks.length ? "rule valid" : "rule"}>
+                                    {passwordChecks.length ? "✓" : "○"}
+                                    <span>At least 6 characters</span>
+                                </div>
+
+                                <div className={passwordChecks.uppercase ? "rule valid" : "rule"}>
+                                    {passwordChecks.uppercase ? "✓" : "○"}
+                                    <span>One uppercase letter</span>
+                                </div>
+
+                                <div className={passwordChecks.number ? "rule valid" : "rule"}>
+                                    {passwordChecks.number ? "✓" : "○"}
+                                    <span>One number</span>
+                                </div>
+
+                                <div className={passwordChecks.special ? "rule valid" : "rule"}>
+                                    {passwordChecks.special ? "✓" : "○"}
+                                    <span>One special character</span>
+                                </div>
+
+                            </div>
 
                         </div>
 
@@ -387,15 +328,33 @@ export default function Register() {
                                 Confirm Password
                             </label>
 
-                            <input
-                                type="password"
-                                name="confirmPassword"
-                                className="auth-input"
-                                placeholder="Confirm password"
-                                value={formData.confirmPassword}
-                                onChange={handleChange}
-                                required
-                            />
+                            <div className="password-input-wrapper">
+
+                                <input
+                                    type={showConfirmPassword ? "text" : "password"}
+                                    name="confirmPassword"
+                                    className="auth-input"
+                                    placeholder="Confirm password"
+                                    value={formData.confirmPassword}
+                                    onChange={handleChange}
+                                    required
+                                />
+
+                                <button
+                                    type="button"
+                                    className="password-toggle"
+                                    onClick={() =>
+                                        setShowConfirmPassword(
+                                            !showConfirmPassword
+                                        )
+                                    }
+                                >
+                                    {showConfirmPassword
+                                        ? <FiEyeOff />
+                                        : <FiEye />}
+                                </button>
+
+                            </div>
 
                         </div>
 

@@ -1,55 +1,50 @@
-﻿import TemplateSelector from "../../../components/TemplateSelector";
-import "./Tab.css";
+﻿import "./Tab.css";
 
 export default function BrandingTab({
-
     form,
-
     setForm,
-
     uploadLogo
-
 }) {
 
     function update(field, value) {
-
         setForm({
-
             ...form,
-
             [field]: value
-
         });
-
     }
 
     return (
-
         <>
 
-            <h4 className="tab-title">
+            <div className="tab-header">
 
-                Branding
+                <h3 className="tab-title">
+                    Branding
+                </h3>
 
-            </h4>
+                <p className="tab-subtitle">
+                    Customize your company's visual identity.
+                </p>
 
-            <p className="tab-subtitle">
+            </div>
 
-                Customize how your invoices and documents look.
+            {/* ======================================
+                COMPANY LOGO
+            ====================================== */}
 
-            </p>
+            <section className="settings-section">
 
-            {/* Logo */}
+                <div className="section-header">
 
-            <div className="card mb-4">
+                    <h5>Company Logo</h5>
 
-                <div className="card-body">
+                    <small>
+                        Upload the logo that appears on your documents.
+                    </small>
 
-                    <h6 className="mb-3">
+                </div>
 
-                        Company Logo
-
-                    </h6>
+                <div className="logo-upload">
 
                     <input
                         type="file"
@@ -68,7 +63,6 @@ export default function BrandingTab({
                                 await uploadLogo(file);
 
                             }
-
                             catch (err) {
 
                                 console.error(err);
@@ -80,22 +74,14 @@ export default function BrandingTab({
 
                     {(form.logoBase64 || form.logoUrl) && (
 
-                        <div className="text-center mt-4">
+                        <div className="logo-preview">
 
                             <img
-
-                                src={form.logoBase64 ?? form.logoUrl}
-
+                                src={
+                                    form.logoBase64 ??
+                                    form.logoUrl
+                                }
                                 alt="Logo"
-
-                                style={{
-
-                                    maxHeight: 80,
-
-                                    objectFit: "contain"
-
-                                }}
-
                             />
 
                         </div>
@@ -104,251 +90,134 @@ export default function BrandingTab({
 
                 </div>
 
-            </div>
+            </section>
 
-            {/* Brand Colours */}
+            {/* ======================================
+                BRAND COLOURS
+            ====================================== */}
 
-            <div className="card mb-4">
+            <section className="settings-section">
 
-                <div className="card-body">
+                <div className="section-header">
 
-                    <h6 className="mb-4">
+                    <h5>Brand Colours</h5>
 
-                        Brand Colours
+                    <small>
+                        Used throughout generated documents.
+                    </small>
 
-                    </h6>
+                </div>
 
-                    <div className="form-grid">
+                <div className="form-grid">
 
-                        <div className="form-group">
+                    <div className="form-group">
 
-                            <label>
+                        <label>Primary Colour</label>
 
-                                Primary Colour
+                        <input
+                            type="color"
+                            className="form-control form-control-color"
+                            value={form.primaryColor}
+                            onChange={(e) =>
+                                update(
+                                    "primaryColor",
+                                    e.target.value
+                                )
+                            }
+                        />
 
-                            </label>
+                    </div>
 
-                            <input
+                    <div className="form-group">
 
-                                type="color"
+                        <label>Secondary Colour</label>
 
-                                className="form-control form-control-color"
+                        <input
+                            type="color"
+                            className="form-control form-control-color"
+                            value={form.secondaryColor}
+                            onChange={(e) =>
+                                update(
+                                    "secondaryColor",
+                                    e.target.value
+                                )
+                            }
+                        />
 
-                                value={form.primaryColor}
+                    </div>
 
-                                onChange={(e) =>
+                    <div className="form-group">
 
-                                    update(
+                        <label>Accent Colour</label>
 
-                                        "primaryColor",
-
-                                        e.target.value
-
-                                    )
-
-                                }
-
-                            />
-
-                        </div>
-
-                        <div className="form-group">
-
-                            <label>
-
-                                Secondary Colour
-
-                            </label>
-
-                            <input
-
-                                type="color"
-
-                                className="form-control form-control-color"
-
-                                value={form.secondaryColor}
-
-                                onChange={(e) =>
-
-                                    update(
-
-                                        "secondaryColor",
-
-                                        e.target.value
-
-                                    )
-
-                                }
-
-                            />
-
-                        </div>
-
-                        <div className="form-group">
-
-                            <label>
-
-                                Accent Colour
-
-                            </label>
-
-                            <input
-
-                                type="color"
-
-                                className="form-control form-control-color"
-
-                                value={form.accentColor}
-
-                                onChange={(e) =>
-
-                                    update(
-
-                                        "accentColor",
-
-                                        e.target.value
-
-                                    )
-
-                                }
-
-                            />
-
-                        </div>
+                        <input
+                            type="color"
+                            className="form-control form-control-color"
+                            value={form.accentColor}
+                            onChange={(e) =>
+                                update(
+                                    "accentColor",
+                                    e.target.value
+                                )
+                            }
+                        />
 
                     </div>
 
                 </div>
 
-            </div>
+            </section>
 
-            {/* Typography */}
+            {/* ======================================
+                TYPOGRAPHY
+            ====================================== */}
 
-            <div className="card mb-4">
+            <section className="settings-section">
 
-                <div className="card-body">
+                <div className="section-header">
 
-                    <h6 className="mb-3">
+                    <h5>Typography</h5>
 
-                        Typography
-
-                    </h6>
-
-                    <label>
-
-                        Font Family
-
-                    </label>
-
-                    <select
-                        className="form-select"
-                        value={form.fontFamily ?? "Inter"}
-                        onChange={(e) =>
-                            update("fontFamily", e.target.value)
-                        }
-                    >
-                        <option value="Inter">Inter</option>
-                        <option value="Roboto">Roboto</option>
-                        <option value="Poppins">Poppins</option>
-                        <option value="Montserrat">Montserrat</option>
-                        <option value="Open Sans">Open Sans</option>
-                    </select>
-                </div>
-
-            </div>
-
-            {/* Template */}
-
-            <div className="card mb-4">
-
-                <div className="card-body">
-
-                    <h6 className="mb-3">
-
-                        Default Template
-
-                    </h6>
-
-                    <TemplateSelector
-
-                        value={form.documentTemplate}
-
-                        onChange={(value) =>
-
-                            update(
-
-                                "documentTemplate",
-
-                                value
-
-                            )
-
-                        }
-
-                    />
+                    <small>
+                        Select the default font used in documents.
+                    </small>
 
                 </div>
 
-            </div>
+                <select
+                    className="form-select"
+                    value={form.fontFamily ?? "Inter"}
+                    onChange={(e) =>
+                        update(
+                            "fontFamily",
+                            e.target.value
+                        )
+                    }
+                >
+                    <option value="Inter">
+                        Inter
+                    </option>
 
-            {/* Premium */}
+                    <option value="Roboto">
+                        Roboto
+                    </option>
 
-            <div className="card border-warning">
+                    <option value="Poppins">
+                        Poppins
+                    </option>
 
-                <div className="card-body">
+                    <option value="Montserrat">
+                        Montserrat
+                    </option>
 
-                    <h6>
+                    <option value="Open Sans">
+                        Open Sans
+                    </option>
 
-                        Premium Features
+                </select>
 
-                    </h6>
-
-                    <div className="premium-grid">
-
-                        <div className="premium-item">
-
-                            🔒 Background Image
-
-                        </div>
-
-                        <div className="premium-item">
-
-                            🔒 Company Watermark
-
-                        </div>
-
-                        <div className="premium-item">
-
-                            🔒 Company Seal
-
-                        </div>
-
-                        <div className="premium-item">
-
-                            🔒 Signature Upload
-
-                        </div>
-
-                        <div className="premium-item">
-
-                            🔒 Premium Fonts
-
-                        </div>
-
-                        <div className="premium-item">
-
-                            🔒 Brand Removal
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
+            </section>
 
         </>
-
     );
-
 }

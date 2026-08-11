@@ -1,0 +1,346 @@
+﻿.dv-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 24px;
+    padding: 24px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 22px;
+    box-shadow: 0 8px 30px rgba(15,23,42,.05);
+}
+
+.dv-header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.dv-back-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    background: #eff6ff;
+    color: #2563eb;
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: .2s;
+}
+
+    .dv-back-btn:hover {
+        background: #dbeafe;
+    }
+
+.dv-document-title h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.dv-document-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 6px;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.dv-divider {
+    color: #cbd5e1;
+}
+
+.dv-header-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.dv-total {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+
+/* ==========================================
+   KPI CARDS
+========================================== */
+
+.dv-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(220px,1fr));
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.dv-kpi-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    padding: 22px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    transition: transform .18s ease, box-shadow .18s ease;
+}
+
+    .dv-kpi-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 14px 34px rgba(15,23,42,.08);
+    }
+
+.dv-kpi-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+.dv-primary {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.dv-success {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.dv-warning {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.dv-info {
+    background: #e0f2fe;
+    color: #0284c7;
+}
+
+.dv-kpi-content {
+    flex: 1;
+}
+
+.dv-kpi-title {
+    display: block;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.dv-kpi-content h3 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.dv-danger {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+
+@media (max-width:1200px) {
+
+    .dv-kpi-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+
+@media (max-width:768px) {
+
+    .dv-kpi-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================
+   ACTION TOOLBAR
+========================================== */
+
+.dv-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 18px 24px;
+    margin-bottom: 28px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    box-shadow: 0 6px 24px rgba(15,23,42,.05);
+}
+
+.dv-toolbar-left,
+.dv-toolbar-right {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+}
+
+.dv-toolbar button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+@media (max-width:992px) {
+
+    .dv-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .dv-toolbar-left,
+    .dv-toolbar-right {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+
+/* =====================================================
+   DOCUMENT VIEW — STICKY TOOLBAR
+===================================================== */
+
+.dv-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 12px 20px;
+    margin-bottom: 24px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
+    border-radius: 0 0 16px 16px;
+    transition: box-shadow 0.2s ease, background 0.2s ease;
+}
+
+    /* Slightly more opaque + stronger shadow when scrolled */
+    .dv-toolbar.is-stuck {
+        background: rgba(255, 255, 255, 0.97);
+        box-shadow: 0 4px 24px rgba(15, 23, 42, 0.10);
+    }
+
+/* ── Sides ─────────────────────────────────────── */
+
+.dv-toolbar-left,
+.dv-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.dv-toolbar-right {
+    margin-left: auto;
+}
+
+/* ── Button polish ─────────────────────────────── */
+
+.dv-toolbar .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 10px;
+    white-space: nowrap;
+    transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+    .dv-toolbar .btn:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(15, 23, 42, 0.10);
+    }
+
+    .dv-toolbar .btn:active:not(:disabled) {
+        transform: translateY(0);
+    }
+
+    .dv-toolbar .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .dv-toolbar .btn svg {
+        font-size: 15px;
+        flex-shrink: 0;
+    }
+
+/* Stronger shadow on primary/success buttons */
+.dv-toolbar .btn-primary:hover:not(:disabled) {
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.30);
+}
+
+.dv-toolbar .btn-success:hover:not(:disabled) {
+    box-shadow: 0 4px 14px rgba(22, 163, 74, 0.28);
+}
+
+.dv-toolbar .btn-danger:hover:not(:disabled) {
+    box-shadow: 0 4px 14px rgba(220, 38, 38, 0.25);
+}
+
+/* ── Divider between left and right groups ─────── */
+
+.dv-toolbar-left:not(:empty) + .dv-toolbar-right:not(:empty)::before {
+    content: "";
+    width: 1px;
+    height: 28px;
+    background: #e2e8f0;
+    margin: 0 4px;
+    flex-shrink: 0;
+}
+
+/* ── Responsive ────────────────────────────────── */
+
+@media (max-width: 768px) {
+    .dv-toolbar {
+        border-radius: 0;
+        padding: 10px 14px;
+    }
+
+        .dv-toolbar .btn span {
+            display: none; /* icon-only on small screens */
+        }
+
+        .dv-toolbar
+        /* ==========================================
+   SIDE BAR
+========================================== */
+        .document-summary-sidebar {
+            position: sticky;
+            top: 90px;
+        }
+
+    .document-summary-sidebar .card {
+        border-radius: 12px;
+    }
+
+    .document-summary-sidebar .card-header {
+        font-weight: 600;
+    }
+
+    .document-summary-sidebar hr {
+        margin: 12px 0;
+    }
+}

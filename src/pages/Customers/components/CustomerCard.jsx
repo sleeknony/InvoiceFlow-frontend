@@ -45,13 +45,12 @@ export default function CustomerCard({
 
                 {/* Company */}
 
-                <h5 className="fw-bold mb-1">
+                
 
                     <h5 className="fw-bold mb-1 text-default">
                         {customer.companyName}
                     </h5>
 
-                </h5>
 
                 <div className="text-muted mb-4">
 
@@ -110,35 +109,29 @@ export default function CustomerCard({
 
                     </button>
 
-                    <button
-                        className="btn btn-light"
-                        onClick={(e) => {
+                    {customer.canCreateInvoice && (
+                        <button
+                            className="btn btn-light"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onInvoice(customer);
+                            }}
+                        >
+                            <FiFileText />
+                        </button>
+                    )}
 
-                            e.stopPropagation();
-
-                            onInvoice(customer);
-
-                        }}
-                    >
-
-                        <FiFileText />
-
-                    </button>
-
-                    <button
-                        className="btn btn-outline-danger"
-                        onClick={(e) => {
-
-                            e.stopPropagation();
-
-                            onDelete(customer.id);
-
-                        }}
-                    >
-
-                        <FiTrash2 />
-
-                    </button>
+                    {customer.canDeleteCustomer && (
+                        <button
+                            className="btn btn-outline-danger"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onDelete(customer.id);
+                            }}
+                        >
+                            <FiTrash2 />
+                        </button>
+                    )}
 
                 </div>
 

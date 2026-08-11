@@ -13,7 +13,8 @@ import {
 
 export default function CustomerDetailsQuickActions({
 
-    customerId
+    customerId,
+    canCreateInvoice
 
 }) {
     const navigate = useNavigate();
@@ -33,23 +34,22 @@ export default function CustomerDetailsQuickActions({
 
                 <div className="d-grid gap-3">
 
-                    <button
-                        className="btn btn-primary"
-                        onClick={() =>
-                            navigate("/documents/create", {
-                                state: {
-                                    customerId,
-                                    type: "Invoice"
-                                }
-                            })
-                        }
-                    >
-
-                        <FiFileText className="me-2" />
-
-                        Create Invoice
-
-                    </button>
+                    {canCreateInvoice && (
+                        <button
+                            className="btn btn-primary"
+                            onClick={() =>
+                                navigate("/documents/create", {
+                                    state: {
+                                        customerId,
+                                        type: "Invoice"
+                                    }
+                                })
+                            }
+                        >
+                            <FiFileText className="me-2" />
+                            Create Invoice
+                        </button>
+                    )}
 
                     {/*<button*/}
                     {/*    className="btn btn-outline-primary"*/}

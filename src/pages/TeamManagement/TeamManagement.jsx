@@ -9,6 +9,7 @@ import "./TeamManagement.css"
 import { FiUserPlus } from "react-icons/fi";
 import Swal from "sweetalert2";
 import EditMemberModal from "./components/EditMemberModal";
+import toast from "react-hot-toast";
 
 export default function TeamManagement() {
 
@@ -65,7 +66,7 @@ export default function TeamManagement() {
         }
         catch (err) {
 
-            console.error(err);
+            toast.error("Unable to load team members.");
 
             setError(
                 err.response?.data ??
@@ -92,7 +93,7 @@ export default function TeamManagement() {
         }
         catch (err) {
 
-            console.error(err);
+            toast.error("Error getting invitations.");
 
         }
 
@@ -111,7 +112,7 @@ export default function TeamManagement() {
         }
         catch (err) {
 
-            console.error(err);
+            toast.error("Unable to load permissions.");
 
         }
 
@@ -130,7 +131,7 @@ export default function TeamManagement() {
         }
         catch (err) {
 
-            console.error(err);
+            toast.error("Unable to load roles.");
 
         }
 
@@ -194,9 +195,6 @@ export default function TeamManagement() {
         );
 
     };
-
-
-
 
 
 

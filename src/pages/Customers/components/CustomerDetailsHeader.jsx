@@ -51,16 +51,15 @@ export default function CustomerDetailsHeader({
 
                     </div>
 
-                    <button
-                        className="btn btn-primary rounded-pill px-4"
-                        onClick={onEdit}
-                    >
-
-                        <FiEdit2 className="me-2" />
-
-                        Edit Customer
-
-                    </button>
+                    {customer.canEditCustomer && (
+                        <button
+                            className="btn btn-primary rounded-pill px-4"
+                            onClick={onEdit}
+                        >
+                            <FiEdit2 className="me-2" />
+                            Edit Customer
+                        </button>
+                    )}
 
                 </div>
 

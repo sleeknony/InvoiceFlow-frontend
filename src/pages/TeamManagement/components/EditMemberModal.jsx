@@ -38,9 +38,11 @@ export default function EditMemberModal({
         setEmail(member.email);
 
         setRole(member.role);
-
+        console.log("Member:", member);
+        console.log("Permissions:", member.permissions);
         setSelectedPermissions(
             member.permissions ?? []
+
         );
 
         setError("");

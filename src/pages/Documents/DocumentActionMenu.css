@@ -1,0 +1,314 @@
+﻿/* =====================================================
+   DOCUMENT ACTION MENU (DAM)
+===================================================== */
+
+/* ── Wrapper ─────────────────────────────────────── */
+
+.dam-wrap {
+   /* position: relative;*/
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* ── Trigger button ──────────────────────────────── */
+
+.dam-trigger {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    background: #fff;
+    color: #94a3b8;
+    font-size: 17px;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease;
+}
+
+    .dam-trigger:hover {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+        color: #334155;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+    }
+
+.dam-trigger--open,
+.dam-trigger--open:hover {
+    background: #2563eb;
+    border-color: #2563eb;
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+    transform: scale(0.96);
+}
+
+.dam-trigger:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* ── Spinner (while deleting) ────────────────────── */
+
+.dam-spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: dam-spin 0.65s linear infinite;
+    display: inline-block;
+}
+
+@keyframes dam-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ── Dropdown card ───────────────────────────────── */
+
+.dam-menu {
+    position: fixed;
+    width: 240px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(15,23,42,.12), 0 30px 60px rgba(15,23,42,.18);
+}
+/*.dam-menu {
+    position: absolute;
+    right: 0;
+    width: 240px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.06), 0 24px 48px -8px rgba(15, 23, 42, 0.18);
+    z-index: 9999;
+    overflow: hidden;
+    transform-origin: top right;
+}*/
+
+/*.dam-menu--down {
+    top: calc(100% + 8px);
+    animation: dam-slide-down 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.dam-menu--up {
+    bottom: calc(100% + 8px);
+    transform-origin: bottom right;
+    animation: dam-slide-up 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
+}*/
+
+@keyframes dam-slide-down {
+    from {
+        opacity: 0;
+        transform: scale(0.94) translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes dam-slide-up {
+    from {
+        opacity: 0;
+        transform: scale(0.94) translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.dam-menu {
+    animation: dam-popup .16s ease;
+}
+
+@keyframes dam-popup {
+
+    from {
+        opacity: 0;
+        transform: scale(.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ── Header chip ─────────────────────────────────── */
+
+.dam-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px 10px;
+    gap: 8px;
+}
+
+.dam-menu-doc-number {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dam-menu-doc-type {
+    font-size: 10px;
+    font-weight: 600;
+    color: #2563eb;
+    background: #dbeafe;
+    border: 1px solid #bfdbfe;
+    border-radius: 999px;
+    padding: 2px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    text-transform: capitalize;
+}
+
+
+/* ── Divider ─────────────────────────────────────── */
+
+.dam-divider {
+    height: 1px;
+    background: #f1f5f9;
+    margin: 4px 0;
+}
+
+
+/* ── Menu item ───────────────────────────────────── */
+
+.dam-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 14px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 0;
+    transition: background 0.12s ease;
+}
+
+    .dam-item:hover {
+        background: #f8fafc;
+    }
+
+    .dam-item:active {
+        background: #f1f5f9;
+    }
+
+/* Icon container */
+.dam-item-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    font-size: 15px;
+    transition: transform 0.12s ease;
+}
+
+.dam-item:hover .dam-item-icon {
+    transform: scale(1.1);
+}
+
+/* Icon colour variants */
+.dam-item-icon--blue {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.dam-item-icon--indigo {
+    background: #e0e7ff;
+    color: #4f46e5;
+}
+
+.dam-item-icon--slate {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.dam-item-icon--violet {
+    background: #f3e8ff;
+    color: #7c3aed;
+}
+
+.dam-item-icon--teal {
+    background: #ccfbf1;
+    color: #0d9488;
+}
+
+.dam-item-icon--red {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+/* Text block */
+.dam-item-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+}
+
+    .dam-item-text strong {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1e293b;
+        line-height: 1.3;
+    }
+
+    .dam-item-text small {
+        font-size: 11px;
+        font-weight: 400;
+        color: #94a3b8;
+        line-height: 1.3;
+    }
+
+/* Hover text colour — normal items */
+.dam-item:hover .dam-item-text strong {
+    color: #2563eb;
+}
+
+/* ── Danger item ─────────────────────────────────── */
+
+.dam-item--danger:hover {
+    background: #fff1f2;
+}
+
+    .dam-item--danger:hover .dam-item-text strong {
+        color: #dc2626;
+    }
+
+.dam-item--danger .dam-item-text strong {
+    color: #dc2626;
+}
+
+.dam-item--danger .dam-item-text small {
+    color: #fca5a5;
+}
+
+
+/* ── SweetAlert rounding ─────────────────────────── */
+
+.swal-rounded.swal2-popup {
+    border-radius: 20px !important;
+}

@@ -36,6 +36,7 @@ export default function AddPaymentModal({
     const [payment, setPayment] =
         useState(createPaymentForm);
 
+    const [errors, setErrors] = useState({});
 
     // =====================================================
     // RESET FORM WHEN MODAL OPENS
@@ -70,6 +71,7 @@ export default function AddPaymentModal({
             notes: ""
         });
 
+        setErrors({});
     }, [show, balanceDue]);
 
 
@@ -77,43 +79,128 @@ export default function AddPaymentModal({
     // UPDATE FIELD
     // =====================================================
 
-    const updateField =
-        (field, value) => {
+    const updateField = (field, value) => {
 
-            setPayment(current => ({
-                ...current,
-                [field]: value
-            }));
-        };
+        setPayment(current => ({
+            ...current,
+            [field]: value
+        }));
 
+        setErrors(current => ({
+            ...current,
+            [field]: ""
+        }));
 
+    };
+
+    // =====================================================
+    // VALIDATION
+    // =====================================================
+
+    function validate() {
+
+        const validation = {};
+
+        const amount =
+            Number(payment.amount);
+
+        if (!payment.amount) {
+
+            validation.amount =
+                "Amount is required.";
+
+        }
+        else if (
+            !Number.isFinite(amount) ||
+            amount <= 0
+        ) {
+
+            validation.amount =
+                "Amount must be greater than zero.";
+
+        }
+        else if (
+            amount >
+            Number(balanceDue)
+        ) {
+
+            validation.amount =
+                "Amount cannot exceed the outstanding balance.";
+
+        }
+
+        if (!payment.paymentDate) {
+
+            validation.paymentDate =
+                "Payment date is required.";
+
+        }
+        else {
+
+            const selected =
+                new Date(payment.paymentDate);
+
+            const today =
+                new Date();
+
+            today.setHours(0, 0, 0, 0);
+
+            selected.setHours(0, 0, 0, 0);
+
+            if (selected > today) {
+
+                validation.paymentDate =
+                    "Payment date cannot be in the future.";
+
+            }
+
+        }
+
+        if (!payment.paymentMethod) {
+
+            validation.paymentMethod =
+                "Please select a payment method.";
+
+        }
+
+        if (!payment.reference.trim()) {
+
+            validation.reference =
+                "Reference number is required.";
+
+        }
+
+        return validation;
+
+    }
     // =====================================================
     // SAVE
     // =====================================================
 
     const save = () => {
 
-        const amount =
-            Number(payment.amount);
+        const validation =
+            validate();
 
         if (
-            !Number.isFinite(amount) ||
-            amount <= 0
+            Object.keys(validation).length > 0
         ) {
-            return;
-        }
 
-        if (
-            Number(balanceDue) > 0 &&
-            amount > Number(balanceDue)
-        ) {
+            setErrors(validation);
+
             return;
+
         }
 
         onSave({
+
             ...payment,
-            amount
+
+            amount:
+                Number(payment.amount)
+
         });
+
     };
 
 
@@ -158,6 +245,15 @@ export default function AddPaymentModal({
                             )
                         }
                     />
+                    {errors.amount && (
+
+                        <div className="text-danger small mt-1">
+
+                            {errors.amount}
+
+                        </div>
+
+                    )}
 
                     <div className="form-text">
                         Balance due:{" "}
@@ -196,6 +292,16 @@ export default function AddPaymentModal({
                             )
                         }
                     />
+
+                    {errors.paymentDate && (
+
+                        <div className="text-danger small mt-1">
+
+                            {errors.paymentDate}
+
+                        </div>
+
+                    )}
                 </div>
 
 
@@ -244,6 +350,16 @@ export default function AddPaymentModal({
                             Card
                         </option>
                     </select>
+
+                    {errors.paymentMethod && (
+
+                        <div className="text-danger small mt-1">
+
+                            {errors.paymentMethod}
+
+                        </div>
+
+                    )}
                 </div>
 
 
@@ -269,6 +385,16 @@ export default function AddPaymentModal({
                             )
                         }
                     />
+
+                    {errors.reference && (
+
+                        <div className="text-danger small mt-1">
+
+                            {errors.reference}
+
+                        </div>
+
+                    )}
                 </div>
 
 
@@ -308,12 +434,7 @@ export default function AddPaymentModal({
                 <Button
                     variant="primary"
                     onClick={save}
-                    disabled={
-                        !payment.amount ||
-                        Number(payment.amount) <= 0 ||
-                        Number(payment.amount) >
-                        Number(balanceDue)
-                    }
+                    disabled={false}
                 >
                     Save Payment
                 </Button>

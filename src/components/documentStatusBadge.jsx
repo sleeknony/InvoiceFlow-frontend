@@ -1,23 +1,24 @@
-export default function DocumentStatusBadge({
-    status
-}) {
-    const colors = {
-        Draft: "secondary",
-        Issued: "primary",
-        Approved:"success",
-        Sent: "info",
-        PartiallyPaid: "warning",
-        Paid: "success",
-        Overdue: "danger",
-        Cancelled: "dark",
-        Void: "secondary",
-        Rejected:"danger"
+export default function DocumentStatusBadge({ status }) {
 
+    const map = {
+        Draft: "draft",
+        Issued: "issued",
+        Approved: "approved",
+        Sent: "sent",
+        PartiallyPaid: "partial",
+        Paid: "paid",
+        Overdue: "overdue",
+        Cancelled: "cancelled",
+        Void: "void",
+        Rejected: "rejected",
+        Converted: "converted",
+        PendingApproval: "Pending Approval"
+   
     };
 
     return (
         <span
-            className={`badge bg-${colors[status]}`}
+            className={`document-status-badge ${map[status] ?? "default"}`}
         >
             {status}
         </span>

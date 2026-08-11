@@ -1,21 +1,26 @@
-/* =====================================================
+﻿/* =====================================================
    TOPBAR
 ===================================================== */
 
 .app-topbar {
-    min-height: 72px;
+    min-height: 64px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    padding: 0 24px;
+    padding: 0 28px;
     background: #ffffff;
-    border-bottom: 1px solid #e7eaf0;
+    border-bottom: 1px solid #eef0f6;
+    box-shadow: 0 1px 0 #eef0f6;
+    position: sticky;
+    top: 0;
+    z-index: 150 !important;
+  
 }
 
 
 /* =====================================================
-   LEFT
+   LEFT — BREADCRUMB
 ===================================================== */
 
 .topbar-left {
@@ -24,27 +29,30 @@
     align-items: center;
 }
 
-
-.topbar-page-context {
+.topbar-breadcrumb {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 6px;
 }
 
-
-.topbar-context-label {
+.topbar-breadcrumb-section {
+    font-size: 12px;
+    font-weight: 500;
     color: #98a2b3;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
 }
 
-
-.topbar-context-name {
-    margin-top: 2px;
-    color: #344054;
+.topbar-breadcrumb-sep {
+    color: #d0d5dd;
     font-size: 13px;
-    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.topbar-breadcrumb-title {
+    font-size: 14px;
+    font-weight: 650;
+    color: #101828;
+    letter-spacing: -0.1px;
 }
 
 
@@ -55,76 +63,128 @@
 .topbar-right {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
+    flex-shrink: 0;
 }
 
 
 /* =====================================================
-   PLAN BADGE
+   PLAN PILL
 ===================================================== */
 
 .topbar-plan {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 7px;
-    padding: 7px 11px;
-    border: 1px solid #e4e7ec;
+    gap: 6px;
+    padding: 6px 13px 6px 9px;
     border-radius: 20px;
-    background: #ffffff;
-    color: #475467;
-    font-size: 11.5px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 650;
     cursor: pointer;
-    transition: background-color 0.15s ease, border-color 0.15s ease;
+    border: 1.5px solid transparent;
+    transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+/* Free tier */
+.topbar-plan--free {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    color: #475467;
+}
 
-    .topbar-plan:hover {
-        background: #f8fafc;
-        border-color: #d0d5dd;
+    .topbar-plan--free:hover {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
     }
 
+/* Paid tier */
+.topbar-plan--paid {
+    background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
+    border-color: #c7d7fe;
+    color: #3730a3;
+}
 
-.topbar-plan-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    .topbar-plan--paid:hover {
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+    }
+
+.topbar-plan-icon {
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.topbar-plan--free .topbar-plan-icon {
+    color: #94a3b8;
+}
+
+.topbar-plan--paid .topbar-plan-icon {
+    color: #6366f1;
 }
 
 
 /* =====================================================
-   ICON BUTTON
+   NOTIFICATION BUTTON
 ===================================================== */
 
+.topbar-notif-wrap {
+    position: relative;
+}
+
 .topbar-icon-btn {
+    position: relative;
     width: 38px;
     height: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 0;
-    border-radius: 9px;
+    border-radius: 10px;
     background: transparent;
     color: #667085;
     font-size: 18px;
     cursor: pointer;
-    transition: background-color 0.15s ease, color 0.15s ease;
+    transition: background 0.14s ease, color 0.14s ease;
 }
-
 
     .topbar-icon-btn:hover {
         background: #f2f4f7;
         color: #344054;
     }
 
+/* Red notification dot */
+.topbar-notif-dot {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #f04438;
+    border: 1.5px solid #ffffff;
+    animation: topbar-pulse 2s infinite;
+}
+
+@keyframes topbar-pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(240, 68, 56, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 0 4px rgba(240, 68, 56, 0);
+    }
+}
+
+
+/* =====================================================
+   DIVIDER
+===================================================== */
 
 .topbar-divider {
     width: 1px;
-    height: 28px;
-    margin: 0 4px;
+    height: 26px;
     background: #e4e7ec;
+    margin: 0 2px;
+    flex-shrink: 0;
 }
 
 
@@ -136,94 +196,111 @@
     display: flex;
     align-items: center;
     gap: 9px;
-    padding: 5px 7px;
-    border: 0;
-    border-radius: 10px;
+    padding: 4px 6px 4px 4px;
+    border: 1.5px solid transparent;
+    border-radius: 12px;
     background: transparent;
     cursor: pointer;
-    transition: background-color 0.15s ease;
+    transition: background 0.14s ease, border-color 0.14s ease;
 }
-
 
     .topbar-user-btn:hover {
         background: #f8fafc;
+        border-color: #e4e7ec;
     }
 
-
+/* Avatar */
 .topbar-avatar {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
-    background: #2563eb;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     color: #ffffff;
     font-size: 13px;
     font-weight: 700;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
 }
 
-
+/* Name + email */
 .topbar-user-info {
-    max-width: 190px;
     display: flex;
     flex-direction: column;
+    max-width: 160px;
     text-align: left;
 }
 
-
 .topbar-user-name {
-    overflow: hidden;
-    color: #344054;
-    font-size: 12px;
+    font-size: 12.5px;
     font-weight: 650;
-    line-height: 1.3;
-    text-overflow: ellipsis;
+    color: #101828;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
 }
-
 
 .topbar-user-email {
     margin-top: 1px;
-    overflow: hidden;
+    font-size: 10.5px;
     color: #98a2b3;
-    font-size: 10px;
-    text-overflow: ellipsis;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-
 .topbar-chevron {
-    margin-left: 2px;
-    color: #98a2b3;
-    font-size: 14px;
+    color: #c0c8d8;
+    font-size: 13px;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.topbar-user-btn[aria-expanded="true"] .topbar-chevron {
+    transform: rotate(180deg);
 }
 
 
 /* =====================================================
-   DROPDOWN
+   DROPDOWN CARD
 ===================================================== */
 
 .topbar-dropdown {
-    width: 275px;
-    margin-top: 10px !important;
-    padding: 7px;
+    width: 300px;
+    padding: 8px;
+    margin-top: 40px !important;
     border: 1px solid #e4e7ec;
-    border-radius: 12px;
-    box-shadow: 0 12px 30px rgba(16, 24, 40, 0.12);
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(16, 24, 40, 0.06), 0 16px 40px -4px rgba(16, 24, 40, 0.14);
+    animation: topbar-dd-in 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes topbar-dd-in {
+    from {
+        opacity: 0;
+        transform: scale(0.96) translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 
-.topbar-dropdown-header {
+/* ── Header ─────────────────────────────────────── */
+
+.topbar-dd-header {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 9px;
+    gap: 11px;
+    padding: 10px 12px 12px;
 }
 
-
-.topbar-dropdown-avatar {
+.topbar-dd-avatar {
     width: 38px;
     height: 38px;
     flex-shrink: 0;
@@ -231,123 +308,161 @@
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    background: #eff6ff;
-    color: #1d4ed8;
-    font-size: 13px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: #fff;
+    font-size: 14px;
     font-weight: 700;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
 }
 
+.topbar-dd-user-info {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
 
-.topbar-dropdown-name {
-    color: #344054;
-    font-size: 12px;
+.topbar-dd-name {
+    font-size: 13.5px;
     font-weight: 650;
-}
-
-
-.topbar-dropdown-email {
-    max-width: 190px;
-    margin-top: 2px;
-    overflow: hidden;
-    color: #98a2b3;
-    font-size: 10px;
-    text-overflow: ellipsis;
+    color: #101828;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.topbar-dd-email {
+    margin-top: 2px;
+    font-size: 11.5px;
+    color: #98a2b3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
 }
 
 
-/* =====================================================
-   DROPDOWN PLAN
-===================================================== */
+/* ── Plan row ───────────────────────────────────── */
 
-.topbar-dropdown-plan {
+.topbar-dd-plan {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 4px 4px 7px;
-    padding: 8px 9px;
-    border-radius: 8px;
-    background: #f8fafc;
-}
-
-
-    .topbar-dropdown-plan span {
-        color: #98a2b3;
-        font-size: 10px;
-    }
-
-
-    .topbar-dropdown-plan strong {
-        color: #1d4ed8;
-        font-size: 10.5px;
-        font-weight: 700;
-    }
-
-
-/* =====================================================
-   DROPDOWN ITEMS
-===================================================== */
-
-.topbar-dropdown-item {
-    display: flex;
-    align-items: center;
     gap: 10px;
-    padding: 8px 9px;
-    border-radius: 7px;
-    color: #475467;
-    font-size: 11.5px;
-    font-weight: 500;
+    margin: 0 4px 4px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #f0f7ff 0%, #e8f0fe 100%);
+    border: 1px solid #dbeafe;
 }
 
+.topbar-dd-plan-left {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
 
-    .topbar-dropdown-item svg {
-        width: 16px;
-        flex-shrink: 0;
-        color: #667085;
-        font-size: 15px;
-    }
+.topbar-dd-plan-label {
+    font-size: 10px;
+    font-weight: 500;
+    color: #93c5fd;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
 
-
-    .topbar-dropdown-item:hover {
-        background: #f8fafc;
-        color: #1d2939;
-    }
-
-
-.topbar-plan-action {
+.topbar-dd-plan-name {
+    font-size: 13px;
+    font-weight: 700;
     color: #1d4ed8;
 }
 
+.topbar-dd-plan-btn {
+    padding: 5px 11px;
+    border-radius: 8px;
+    border: 1px solid #bfdbfe;
+    background: #fff;
+    color: #1d4ed8;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.13s ease, box-shadow 0.13s ease;
+}
 
-    .topbar-plan-action svg {
-        color: #2563eb;
+    .topbar-dd-plan-btn:hover {
+        background: #eff6ff;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
     }
 
 
-.topbar-logout {
+/* ── Divider ────────────────────────────────────── */
+
+.topbar-dd-divider {
+    margin: 6px 4px !important;
+    border-color: #f1f5f9 !important;
+}
+
+
+/* ── Nav items ──────────────────────────────────── */
+
+.topbar-dd-item {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #344054;
+    transition: background 0.12s ease, color 0.12s ease;
+}
+
+    .topbar-dd-item:hover {
+        background: #f8fafc;
+        color: #101828;
+    }
+
+.topbar-dd-item-icon {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #f1f5f9;
+    color: #667085;
+    font-size: 15px;
+    flex-shrink: 0;
+    transition: background 0.12s ease, color 0.12s ease;
+}
+
+.topbar-dd-item:hover .topbar-dd-item-icon {
+    background: #e0e7ff;
+    color: #4f46e5;
+}
+
+/* Danger — sign out */
+.topbar-dd-item--danger {
+    width: 100%;
+    text-align: left;
+    border: 0;
+    background: none;
     color: #b42318;
 }
 
-
-    .topbar-logout svg {
+    .topbar-dd-item--danger .topbar-dd-item-icon {
+        background: #fff1f0;
         color: #d92d20;
     }
 
-
-    .topbar-logout:hover {
-        background: #fff5f5;
-        color: #b42318;
+    .topbar-dd-item--danger:hover {
+        background: #fff5f5 !important;
+        color: #b42318 !important;
     }
 
-
-/* =====================================================
-   BOOTSTRAP DIVIDER
-===================================================== */
-
-.topbar-dropdown .dropdown-divider {
-    margin: 6px 4px;
-    border-color: #eaecf0;
-}
+        .topbar-dd-item--danger:hover .topbar-dd-item-icon {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
 
 
 /* =====================================================
@@ -360,29 +475,37 @@
     gap: 8px;
 }
 
-
 .topbar-login-btn,
 .topbar-register-btn {
-    padding: 7px 14px;
-    border-radius: 8px;
-    font-size: 11.5px;
+    padding: 7px 15px;
+    border-radius: 9px;
+    font-size: 12px;
     font-weight: 600;
     text-decoration: none;
+    transition: background 0.13s ease, box-shadow 0.13s ease;
 }
 
-
 .topbar-login-btn {
-    border: 1px solid #d0d5dd;
-    background: #ffffff;
+    border: 1.5px solid #d0d5dd;
+    background: #fff;
     color: #344054;
 }
 
+    .topbar-login-btn:hover {
+        background: #f8fafc;
+        border-color: #b8c0cc;
+    }
 
 .topbar-register-btn {
-    border: 1px solid #2563eb;
-    background: #2563eb;
-    color: #ffffff;
+    border: 1.5px solid #2563eb;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
 }
+
+    .topbar-register-btn:hover {
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
 
 
 /* =====================================================
@@ -392,22 +515,18 @@
 @media (max-width: 768px) {
 
     .app-topbar {
-        padding: 0 15px;
+        padding: 0 16px;
     }
 
-    .topbar-user-info {
-        display: none;
-    }
-
-    .topbar-context-label {
-        display: none;
-    }
-
-    .topbar-plan {
-        display: none;
-    }
-
+    .topbar-user-info,
+    .topbar-breadcrumb-section,
+    .topbar-breadcrumb-sep,
+    .topbar-plan,
     .topbar-divider {
         display: none;
+    }
+
+    .topbar-breadcrumb-title {
+        font-size: 15px;
     }
 }

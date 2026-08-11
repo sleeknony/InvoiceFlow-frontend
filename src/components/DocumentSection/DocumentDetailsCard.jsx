@@ -62,6 +62,8 @@ export default function DocumentDetailsCard({
 
                             value={doc.type}
 
+                            disabled={mode === "edit"}
+
                             onChange={(e) =>
 
                                 update("type", e.target.value)
@@ -91,6 +93,16 @@ export default function DocumentDetailsCard({
                             }
 
                         </select>
+
+                        {mode === "edit" && (
+
+                            <small className="text-muted">
+
+                                Document type cannot be edited.
+
+                            </small>
+
+                        )}
 
                     </div>
 

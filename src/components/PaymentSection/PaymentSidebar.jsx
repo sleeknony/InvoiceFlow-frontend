@@ -6,9 +6,19 @@ import {
 
 export default function PaymentSidebar({
 
-    settings
+    bankAccounts
 
 }) {
+
+    const account =
+        bankAccounts?.find(
+            x => x.isDefault
+        ) ||
+        bankAccounts?.[0];
+
+    if (!account) {
+        return null;
+    }
 
     return (
 
@@ -34,7 +44,7 @@ export default function PaymentSidebar({
 
                     <div className="fw-semibold">
 
-                        {settings.bankName || "-"}
+                        {account.bankName || "-"}
 
                     </div>
 
@@ -50,7 +60,7 @@ export default function PaymentSidebar({
 
                     <div className="fw-semibold">
 
-                        {settings.accountName || "-"}
+                        {account.accountName || "-"}
 
                     </div>
 
@@ -68,7 +78,23 @@ export default function PaymentSidebar({
 
                     <div className="fw-semibold">
 
-                        {settings.accountNumber || "-"}
+                        {account.accountNumber || "-"}
+
+                    </div>
+
+                </div>
+
+                <div className="mb-4">
+
+                    <div className="text-muted small">
+
+                       Currency
+
+                    </div>
+
+                    <div className="fw-semibold">
+
+                        {account.currency || "-"}
 
                     </div>
 
@@ -76,7 +102,7 @@ export default function PaymentSidebar({
 
                 {
 
-                    settings.paymentInstructions && (
+                    account.paymentInstructions && (
 
                         <div
                             className="alert alert-light border rounded-4 mb-0">
@@ -93,7 +119,7 @@ export default function PaymentSidebar({
 
                                 {
 
-                                    settings.paymentInstructions
+                                    account.paymentInstructions
 
                                 }
 

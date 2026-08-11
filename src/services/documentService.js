@@ -108,12 +108,18 @@ export const emailDocument =
         return res.data;
     };
 
-export const approveDocument = async (id) => {
-    const res = await http.put(
-        `/documents/${id}/approve`
+export const approveDocument = async (
+    id,
+    comment = ""
+) => {
+    const response = await http.post(
+        `/documents/${id}/approve`,
+        {
+            comment
+        }
     );
 
-    return res.data;
+    return response.data;
 };
 
 export const rejectDocument = async (
@@ -229,7 +235,18 @@ export const downloadDocumentPdf = async (id) => {
 
             throw err;
         }
-    };
+};
+
+
+export async function submitForApproval(id) {
+
+    const { data } =
+        await http.post(
+            `/documents/${id}/submit-for-approval`
+        );
+
+    return data;
+}
 
 //export const reopenDocument =
 //    async (id) => {

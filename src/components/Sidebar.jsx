@@ -32,6 +32,33 @@ export default function Sidebar() {
             ? "Loading..."
             : `${planName || "Free"} Plan`;
 
+    const permissions = (() => {
+        try {
+            return JSON.parse(
+                localStorage.getItem("permissions") || "[]"
+            );
+        }
+        catch {
+            return [];
+        }
+    })();
+
+    const canViewSettings =
+        permissions.includes(
+            "ViewCompanySettings"
+        ) ||
+        permissions.includes(
+            "ManageCompanySettings"
+        );
+
+    const canManageUsers =
+        permissions.includes(
+            "ViewCompanySettings"
+        ) ||
+        permissions.includes(
+            "ManageCompanySettings"
+        );
+
     return (
         <aside className="app-sidebar">
 
@@ -174,21 +201,23 @@ export default function Sidebar() {
 
                         <FiChevronRight className="sidebar-link-arrow" />
                     </NavLink>
-
+                    {canManageUsers && (
                     <NavLink
                         className={getNavClass}
                         to="/team" >
                         <span className="sidebar-link-icon">
                             <FiUserCheck />
                         </span>
-
+                        
                         <span className="sidebar-link-label">
                             Team Management
                         </span>
 
                         <FiChevronRight className="sidebar-link-arrow" />
                     </NavLink>
+                     )}
 
+                    {canViewSettings && (
                     <NavLink
                         className={getNavClass}
                         to="/settings"
@@ -203,7 +232,7 @@ export default function Sidebar() {
 
                         <FiChevronRight className="sidebar-link-arrow" />
                     </NavLink>
-
+                    )}
                 </div>
 
             </div>

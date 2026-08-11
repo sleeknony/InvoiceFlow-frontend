@@ -82,21 +82,15 @@ export default function CustomerDetails() {
             {/* Header */}
 
             <CustomerDetailsHeader
-
                 customer={details.customer}
-
-                onBack={() =>
-
-                    navigate("/customers")
-
+                onBack={() => navigate("/customers")}
+                onEdit={() =>
+                    navigate("/customers", {
+                        state: {
+                            editCustomerId: details.customer.id
+                        }
+                    })
                 }
-
-                onEdit={() => {
-
-                    // We'll wire the edit modal next.
-
-                }}
-
             />
 
             {/* Statistics */}
@@ -183,6 +177,9 @@ export default function CustomerDetails() {
 
                         <CustomerDetailsQuickActions
                             customerId={details.customer.id}
+                            canCreateInvoice={
+                                details.customer.canCreateInvoice
+                            }
                         />
 
                     </div>

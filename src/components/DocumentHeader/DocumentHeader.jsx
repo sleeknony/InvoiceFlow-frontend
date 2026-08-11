@@ -117,15 +117,15 @@ export default function DocumentHeader({
 
                             </button>
 
-                            <button
-                                className="btn btn-outline-primary"
-                                onClick={onPreview}>
+                            {/*<button*/}
+                            {/*    className="btn btn-outline-primary"*/}
+                            {/*    onClick={onPreview}>*/}
 
-                                <FiEye className="me-2" />
+                            {/*    <FiEye className="me-2" />*/}
 
-                                Preview
+                            {/*    Preview*/}
 
-                            </button>
+                            {/*</button>*/}
 
                             <button
                                 className="btn btn-success"
@@ -140,15 +140,15 @@ export default function DocumentHeader({
 
                             </button>
 
-                            <button
-                                className="btn btn-primary"
-                                onClick={onSend}>
+                            {/*<button*/}
+                            {/*    className="btn btn-primary"*/}
+                            {/*    onClick={onSend}>*/}
 
-                                <FiMail className="me-2" />
+                            {/*    <FiMail className="me-2" />*/}
 
-                                Send
+                            {/*    Send*/}
 
-                            </button>
+                            {/*</button>*/}
 
                         </div>
 

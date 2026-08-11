@@ -3,7 +3,7 @@ import { FiPlus } from "react-icons/fi";
 export default function CustomerHeader({
 
     totalCustomers,
-
+    canCreateCustomer,
     onNewCustomer
 
 }) {
@@ -32,16 +32,17 @@ export default function CustomerHeader({
 
                     </div>
 
-                    <button
-                        className="btn btn-primary rounded-pill px-4"
-                        onClick={onNewCustomer}>
 
-                        <FiPlus className="me-2" />
-
-                        New Customer
-
-                    </button>
-
+                    {canCreateCustomer && (
+                        <button
+                            className="btn btn-primary rounded-pill px-4"
+                            onClick={onNewCustomer}
+                        >
+                            <FiPlus className="me-2" />
+                            New Customer
+                        </button>
+                    )}
+                   
                 </div>
 
             </div>

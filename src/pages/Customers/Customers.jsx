@@ -7,7 +7,9 @@ import CustomerModal from "./components/CustomerModal";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { getCustomers, getCustomer, createCustomer, updateCustomer,  deleteCustomer as deleteCustomerApi} from "../../services/customerService";
-import CustomerCard from "../../components/CustomerSection/CustomerCard";
+import { useLocation } from "react-router-dom";
+
+
 
 const emptyForm = {
     companyName: "",
@@ -31,7 +33,7 @@ export default function Customers() {
     const navigate = useNavigate();
     const [search, setSearch] = useState("");
     const [status, setStatus] = useState("All");
-
+    const location = useLocation();
     const [editingId, setEditingId] = useState(null);
     const [showModal, setShowModal] = useState(false);
     // =========================
@@ -53,6 +55,16 @@ export default function Customers() {
         }
     }
 
+    useEffect(() => {
+
+        if (location.state?.editCustomerId) {
+
+            handleEditCustomer(
+                location.state.editCustomerId
+            );
+        }
+
+    }, [location.state]);
     // =========================
     // FILTER
     // =========================
@@ -80,17 +92,11 @@ export default function Customers() {
         return matchesSearch && customer.isDeleted;
 
     });
-    //const filteredCustomers = useMemo(() => {
-    //    if (!search) return customers;
 
-    //    return customers.filter(c =>
-    //        (c.companyName || "")
-    //            .toLowerCase()
-    //            .includes(search.toLowerCase())
-    //    );
-    //}, [customers, search]);
-
-
+    const canCreateCustomer =
+        customers.length > 0
+            ? customers[0].canCreateCustomer
+            : false;
 
     // =========================
     // VALIDATION
@@ -230,6 +236,8 @@ export default function Customers() {
             <CustomerHeader
 
                 totalCustomers={customers.length}
+
+                canCreateCustomer={canCreateCustomer}
 
                 onNewCustomer={() => {
 

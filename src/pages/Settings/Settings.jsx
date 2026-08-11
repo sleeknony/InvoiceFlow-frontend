@@ -2,16 +2,14 @@ import CompanyTab from "./tabs/CompanyTab";
 import BrandingTab from "./tabs/BrandingTab";
 import DocumentsTab from "./tabs/DocumentsTab";
 import PaymentTab from "./tabs/PaymentTab";
-import FooterTab from "./tabs/FooterTab";
 import AdvancedTab from "./tabs/AdvancedTab";
-
-import SettingsPreview from "./preview/SettingsPreview";
-
 import "./Settings.css";
 import {
     getSettings,
     updateSettings,
-    uploadLogo
+    uploadLogo,
+    uploadSignature,
+    toggleSignature
 } from "../../services/settingsService";
 
 import { useEffect, useState } from "react";
@@ -53,6 +51,8 @@ export default function Settings() {
         requireApprovalForQuotes: false,
         requireApprovalForPurchaseOrders: false,
         requireApprovalForProformaInvoices: false,
+        approvalLevelsRequired:1,
+        enableMultiLevelApproval: false
 
     });
 
@@ -67,7 +67,7 @@ export default function Settings() {
     useEffect(() => {
 
         loadSettings();
-
+       
     }, []);
 
     async function loadSettings() {
@@ -76,7 +76,7 @@ export default function Settings() {
 
             const settings =
                 await getSettings();
-
+            
             if (settings) {
                 setForm(prev => ({
                     ...prev,
@@ -124,8 +124,7 @@ export default function Settings() {
             setSaving(true);
         
             await updateSettings(form);
-
-            toast.success(
+                 toast.success(
                 "Settings saved successfully."
             );
 
@@ -146,6 +145,22 @@ export default function Settings() {
         }
 
     }
+
+    const handleSignatureUpload = async (file) => {
+
+        const settings =
+            await uploadSignature(file);
+
+        setForm(settings);
+    };
+
+    const handleSignatureToggle = async (checked) => {
+
+        const settings =
+            await toggleSignature(checked);
+
+        setForm(settings);
+    };
 
     function renderTab() {
 
@@ -213,6 +228,8 @@ export default function Settings() {
                     <AdvancedTab
                         form={form}
                         setForm={setForm}
+                        onSignatureUpload={handleSignatureUpload}
+                        onSignatureToggle={handleSignatureToggle}
                     />
                 );
 
@@ -239,116 +256,130 @@ export default function Settings() {
     }
 
     return (
-
-        /*<div className="settings-layout">*/
-
         <>
-            <div className="d-flex justify-content-between align-items-center mb-4">
+            {/* ==========================================
+            PAGE HEADER
+        ========================================== */}
+
+            <div className="settings-header">
 
                 <div>
 
-                    <h3>Settings</h3>
+                    <h2 className="settings-page-title">
+                        Settings
+                    </h2>
 
-                    <small className="text-muted">
-                        Configure your InvoiceFlow workspace
-                    </small>
+                    <p className="settings-page-subtitle">
+                        Configure your InvoiceFlow workspace.
+                    </p>
 
                 </div>
 
                 <button
-                    className="btn btn-primary"
+                    className="btn btn-primary settings-save-btn"
                     onClick={saveSettings}
                     disabled={saving}
                 >
-                    {saving ? "Saving..." : "Save Settings"}
+                    <i className="bi bi-check2-circle me-2"></i>
+
+                    {saving
+                        ? "Saving..."
+                        : "Save Changes"}
                 </button>
 
             </div>
 
+            {/* ==========================================
+            MAIN LAYOUT
+        ========================================== */}
+
             <div className="settings-layout">
-          
 
-            <div className="settings-left">
+                {/* ================================
+                SIDEBAR
+            ================================= */}
 
-                    <div className="settings-tabs">
+                <aside className="settings-sidebar">
 
-                        <button
-                            className={`tab-btn ${activeTab === "company" ? "active" : ""}`}
-                            onClick={() => setActiveTab("company")}
-                        >
-                            <i className="bi bi-building"></i>
-                            <span>Company</span>
-                        </button>
+                    <div className="settings-sidebar-header">
 
-                        <button
-                            className={`tab-btn ${activeTab === "branding" ? "active" : ""}`}
-                            onClick={() => setActiveTab("branding")}
-                        >
-                            <i className="bi bi-palette"></i>
-                            <span>Branding</span>
-                        </button>
+                        <i className="bi bi-sliders2"></i>
 
-                        <button
-                            className={`tab-btn ${activeTab === "documents" ? "active" : ""}`}
-                            onClick={() => setActiveTab("documents")}
-                        >
-                            <i className="bi bi-file-earmark-text"></i>
-                            <span>Documents</span>
-                        </button>
-
-                        <button
-                            className={`tab-btn ${activeTab === "payment" ? "active" : ""}`}
-                            onClick={() => setActiveTab("payment")}
-                        >
-                            <i className="bi bi-credit-card"></i>
-                            <span>Payment</span>
-                        </button>
-
-                        <button
-                            className={`tab-btn ${activeTab === "footer" ? "active" : ""}`}
-                            onClick={() => setActiveTab("footer")}
-                        >
-                            <i className="bi bi-layout-text-window"></i>
-                            <span>Footer</span>
-                        </button>
-
-                        <button
-                            className={`tab-btn ${activeTab === "advanced" ? "active" : ""}`}
-                            onClick={() => setActiveTab("advanced")}
-                        >
-                            <i className="bi bi-gear"></i>
-                            <span>Advanced</span>
-                        </button>
+                        <span>
+                            Configuration
+                        </span>
 
                     </div>
 
-                <div className="settings-panel">
+                    <nav className="settings-nav">
 
-                    {renderTab()}
+                        <button
+                            className={`settings-nav-item ${activeTab === "company" ? "active" : ""}`}
+                            onClick={() => setActiveTab("company")}
+                        >
+                            <i className="bi bi-building"></i>
 
-                </div>
+                            Company
+                        </button>
+
+                        <button
+                            className={`settings-nav-item ${activeTab === "branding" ? "active" : ""}`}
+                            onClick={() => setActiveTab("branding")}
+                        >
+                            <i className="bi bi-palette"></i>
+
+                            Branding
+                        </button>
+
+                        <button
+                            className={`settings-nav-item ${activeTab === "documents" ? "active" : ""}`}
+                            onClick={() => setActiveTab("documents")}
+                        >
+                            <i className="bi bi-file-earmark-text"></i>
+
+                            Documents
+                        </button>
+
+                        <button
+                            className={`settings-nav-item ${activeTab === "payment" ? "active" : ""}`}
+                            onClick={() => setActiveTab("payment")}
+                        >
+                            <i className="bi bi-credit-card"></i>
+
+                            Payment
+                        </button>
+
+                        <button
+                            className={`settings-nav-item ${activeTab === "advanced" ? "active" : ""}`}
+                            onClick={() => setActiveTab("advanced")}
+                        >
+                            <i className="bi bi-gear"></i>
+
+                            Advanced
+                        </button>
+
+                    </nav>
+
+                </aside>
+
+                {/* ================================
+                CONTENT
+            ================================= */}
+
+                <main className="settings-content">
+
+                    <div className="settings-panel">
+
+                        {renderTab()}
+
+                    </div>
+
+                </main>
+               
 
             </div>
 
-            {/*<div className="settings-right">*/}
-
-            {/*    <SettingsPreview*/}
-
-            {/*        settings={form}*/}
-
-            {/*    />*/}
-
-                {/*</div>*/}
-
-                <div className="settings-right">
-                    <h5>Live Preview</h5>
-
-                    <SettingsPreview settings={form} />
-                </div>
-
-            </div>
         </>
-       
     );
 
 }

@@ -1,9 +1,11 @@
 ﻿
 import { useNavigate } from "react-router-dom";
-import http from "../api/http";
+import http from "../../api/http";
 import { useMemo, useState } from "react";
-import { useAuth } from "../context/useAuth"; 
+import { useAuth } from "../../context/useAuth"; 
 import toast from "react-hot-toast";
+import companyTeamService from "../../services/companyTeamService";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -11,49 +13,112 @@ export default function Login() {
 
     const { login } = useAuth();
     const navigate = useNavigate();
-
-    //const handleLogin = async () => {
-    //    try {
-    //        const res = await http.post("/Auth/login", { email, password });
-
-    //        console.log("LOGIN RESPONSE:", res.data);
-
-    //        login(res.data.token, res.data.user); //  token + user both stored now
-
-    //        navigate("/dashboard");
-    //    } catch (err) {
-    //        alert("Login failed. Please check your credentials.");
-    //    }
-    //};
-
+    const [showPassword, setShowPassword] = useState(false);
+    
     const handleLogin = async () => {
+
         try {
+
             const res = await http.post("/Auth/login", {
+
                 email,
+
                 password
+
             });
 
-            console.log("LOGIN RESPONSE:", res.data);
+            login(
+                res.data.token,
+                res.data.user
+            );
 
-            // Store token and user
-            login(res.data.token, res.data.user);
+            localStorage.setItem(
+                "permissions",
+                JSON.stringify(
+                    res.data.permissions || []
+                )
+            );
 
-            // Return user to the page they were on before session expired
+            localStorage.setItem(
+                "companyRole",
+                res.data.companyRole || ""
+            );
+            const pendingInvitationToken =
+                localStorage.getItem(
+                    "pendingInvitationToken"
+                );
+
+            if (pendingInvitationToken) {
+
+                try {
+
+                    await companyTeamService
+                        .acceptInvitation(
+                            pendingInvitationToken
+                        );
+
+                    localStorage.removeItem(
+                        "pendingInvitationToken"
+                    );
+
+                    toast.success(
+                        "Invitation accepted successfully."
+                    );
+
+                }
+                catch (error) {
+
+                   /* console.error(error);*/
+
+                    toast.error(
+                        error?.response?.data?.message ||
+                        "Unable to accept invitation."
+                    );
+
+                }
+
+            }
             const redirectTo =
                 localStorage.getItem("redirectAfterLogin");
 
             if (redirectTo) {
-                localStorage.removeItem("redirectAfterLogin");
+
+                localStorage.removeItem(
+                    "redirectAfterLogin"
+                );
+
                 navigate(redirectTo);
-            } else {
-                navigate("/dashboard");
+
+                return;
+
             }
 
-        } catch (err) {
-            console.error(err);
-            toast.error("Login failed. Please check your credentials.");
+            if (res.data.onboardingCompleted) {
+
+                navigate("/dashboard");
+
+            }
+            else {
+
+                navigate("/setup-company");
+
+            }
+
         }
+        catch (err) {
+
+            console.error(err);
+
+            toast.error(
+                "Login failed. Please check your credentials."
+            );
+
+        }
+
     };
+
+   
+
 
     return (
 
@@ -146,22 +211,44 @@ export default function Login() {
                         </div>
 
                         <div className="auth-form-group">
+
                             <label className="auth-form-label">
                                 Password
                             </label>
 
-                            <input
-                                type="password"
-                                className="auth-input"
-                                placeholder="Enter your password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
+                            <div className="password-input-wrapper">
+
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    className="auth-input"
+                                    placeholder="Enter your password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
+
+                                <button
+                                    type="button"
+                                    className="password-toggle"
+                                    onClick={() =>
+                                        setShowPassword(!showPassword)
+                                    }
+                                >
+                                    {
+                                        showPassword
+                                            ? <FiEyeOff />
+                                            : <FiEye />
+                                    }
+                                </button>
+
+                            </div>
+
                         </div>
 
                         <button type="submit" className="auth-btn">
                             Login
                         </button>
+
                     </form>
 
                     <div className="auth-footer">

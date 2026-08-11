@@ -1,161 +1,218 @@
-﻿import "./Tab.css";
+﻿import { useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
+import PaymentAccountsTable from "./components/PaymentAccountsTable";
+import PaymentInstructions from "./components/PaymentInstructions";
+import BankAccountModal from "./components/BankAccountModal";
+import "./Tab.css";
+import {
+    getBankAccounts, createBankAccount, updateBankAccount, archiveBankAccount, reorderBankAccounts, setDefaultBankAccount
+} from "../../../services/settingsService";
 
-export default function PaymentTab({ form, setForm }) {
+export default function PaymentTab({
+    form,
+    setForm
+}) {
 
-    function update(field, value) {
-        setForm({
-            ...form,
-            [field]: value
-        });
+   
+    const [accounts, setAccounts] = useState([]);
+
+    const [showModal, setShowModal] =
+        useState(false);
+
+    const [selectedAccount, setSelectedAccount] =
+        useState(null);
+
+    function handleAdd() {
+
+        setSelectedAccount(null);
+
+        setShowModal(true);
+
+    }
+
+    function handleEdit(account) {
+
+        setSelectedAccount(account);
+
+        setShowModal(true);
+
+    }
+
+    async function handleDelete(account) {
+
+        try {
+
+            await archiveBankAccount(account.id);
+
+            await loadAccounts();
+
+            toast.success("Bank account archived.");
+
+        }
+        catch (err) {
+
+            console.error(err);
+
+            toast.error("Unable to archive bank account.");
+
+        }
+
+    }
+
+  
+    useEffect(() => {
+
+        loadAccounts();
+
+    }, []);
+
+    async function loadAccounts() {
+
+        try {
+
+            const result =
+                await getBankAccounts();
+
+            setAccounts(result);
+
+        }
+
+        catch (err) {
+
+            console.error(err);
+
+            toast.error(
+                "Unable to load bank accounts."
+            );
+
+        }
+
+    }
+
+
+    async function handleSave(dto) {
+
+        try {
+
+            if (dto.id > 0) {
+
+                await updateBankAccount(
+                    dto.id,
+                    dto
+                );
+
+                toast.success(
+                    "Bank account updated."
+                );
+
+            }
+            else {
+
+                if (accounts.length >= 3) {
+
+                    toast.error(
+                        "Maximum of 3 bank accounts allowed."
+                    );
+
+                    return;
+
+                }
+
+                await createBankAccount(dto);
+
+                toast.success(
+                    "Bank account added."
+                );
+
+            }
+
+            await loadAccounts();
+
+            setShowModal(false);
+
+            setSelectedAccount(null);
+
+        }
+        catch (err) {
+
+            console.error(err);
+
+            toast.error(
+                err?.response?.data?.message ??
+                "Unable to save bank account."
+            );
+
+        }
+
+    }
+
+    async function handleReorder(reordered) {
+
+        setAccounts(reordered);
+
+        try {
+
+            await reorderBankAccounts(
+                reordered.map((x, index) => ({
+                    id: x.id,
+                    displayOrder: index + 1
+                }))
+            );
+
+        }
+        catch {
+
+            await loadAccounts();
+
+        }
+
     }
 
     return (
         <>
+
             <h4 className="tab-title">
-                Payment Information
+                Payment
             </h4>
 
             <p className="tab-subtitle">
-                Configure the payment details that appear on your documents.
+                Manage the payment accounts that customers can use when paying your invoices.
             </p>
 
-            <div className="card mb-4">
-                <div className="card-body">
+            
+            <PaymentAccountsTable
+                accounts={accounts}
+                onAdd={handleAdd}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                onReorder={handleReorder}
+            />
+            
+            <PaymentInstructions
 
-                    <div className="form-grid">
+                form={form}
 
-                        <div className="form-group">
-                            <label>Bank Name</label>
+                setForm={setForm}
 
-                            <input
-                                className="form-control"
-                                value={form.bankName || ""}
-                                onChange={(e) =>
-                                    update("bankName", e.target.value)
-                                }
-                            />
-                        </div>
+            />
 
-                        <div className="form-group">
-                            <label>Account Name</label>
+            <BankAccountModal
 
-                            <input
-                                className="form-control"
-                                value={form.accountName || ""}
-                                onChange={(e) =>
-                                    update("accountName", e.target.value)
-                                }
-                            />
-                        </div>
+                show={showModal}
 
-                        <div className="form-group">
-                            <label>Account Number</label>
+                account={selectedAccount}
 
-                            <input
-                                className="form-control"
-                                value={form.accountNumber || ""}
-                                onChange={(e) =>
-                                    update("accountNumber", e.target.value)
-                                }
-                            />
-                        </div>
+                onClose={() => {
 
-                        <div className="form-group">
-                            <label>Bank Sort Code</label>
+                    setShowModal(false);
 
-                            <input
-                                className="form-control"
-                                value={form.sortCode || ""}
-                                onChange={(e) =>
-                                    update("sortCode", e.target.value)
-                                }
-                            />
-                        </div>
+                    setSelectedAccount(null);
 
-                        <div className="form-group">
-                            <label>SWIFT Code</label>
+                }}
 
-                            <input
-                                className="form-control"
-                                value={form.swiftCode || ""}
-                                onChange={(e) =>
-                                    update("swiftCode", e.target.value)
-                                }
-                            />
-                        </div>
+                onSave={handleSave}
 
-                        <div className="form-group">
-                            <label>IBAN</label>
-
-                            <input
-                                className="form-control"
-                                value={form.iban || ""}
-                                onChange={(e) =>
-                                    update("iban", e.target.value)
-                                }
-                            />
-                        </div>
-
-                        <div className="form-group full-width">
-
-                            <label>
-                                Payment Instructions
-                            </label>
-
-                            <textarea
-                                rows="5"
-                                className="form-control"
-                                value={form.paymentInstructions || ""}
-                                onChange={(e) =>
-                                    update("paymentInstructions", e.target.value)
-                                }
-                                placeholder="e.g. Kindly make payment within 30 days..."
-                            />
-
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-
-            <div className="card border-warning">
-
-                <div className="card-body">
-
-                    <h6>Premium Features</h6>
-
-                    <div className="premium-grid">
-
-                        <div className="premium-item">
-                            🔒 QR Payment Code
-                        </div>
-
-                        <div className="premium-item">
-                            🔒 Stripe Integration
-                        </div>
-
-                        <div className="premium-item">
-                            🔒 Paystack Integration
-                        </div>
-
-                        <div className="premium-item">
-                            🔒 Flutterwave Integration
-                        </div>
-
-                        <div className="premium-item">
-                            🔒 PayPal
-                        </div>
-
-                        <div className="premium-item">
-                            🔒 Multiple Bank Accounts
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
+            />
 
         </>
     );

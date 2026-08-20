@@ -69,18 +69,38 @@ export default function Topbar() {
         : isFree ? "Upgrade Plan"
             : "Change Plan";
 
-    const permissions =
-        JSON.parse(
-            localStorage.getItem("permissions") || "[]"
+    const permissions = (() => {
+        try {
+            return JSON.parse(
+                localStorage.getItem("permissions") || "[]"
+            );
+        }
+        catch {
+            return [];
+        }
+    })();
+
+    const hasPermission = (permissionName) =>
+        permissions.some(
+            p => p.name === permissionName
         );
 
     const canViewSettings =
-        permissions.includes(
-            "ViewCompanySettings"
-        ) ||
-        permissions.includes(
-            "ManageCompanySettings"
-        );
+        hasPermission("ViewCompanySettings") ||
+        hasPermission("ManageCompanySettings");
+
+    const canCreateDocuments =
+        hasPermission("CreateDocuments");
+
+    const canViewDocuments =
+        hasPermission("ViewDocuments");
+
+    const canManageUsers =
+        hasPermission("ViewUsers") ||
+        hasPermission("ManageUsers");
+
+    const canManageSubscription =
+        hasPermission("ManageCompanySubscriptions");
 
     return (
         <header className="app-topbar">
@@ -164,30 +184,45 @@ export default function Topbar() {
                                 </li>
 
                                 {/* Plan row */}
-                                {!subscriptionLoading && (
-                                    <li>
-                                        <div className="topbar-dd-plan">
-                                            <div className="topbar-dd-plan-left">
-                                                <span className="topbar-dd-plan-label">Current plan</span>
-                                                <span className="topbar-dd-plan-name">{planName || "Free"}</span>
+                                    {canManageSubscription && !subscriptionLoading && (
+                                        <li>
+                                            <div className="topbar-dd-plan">
+                                                <div className="topbar-dd-plan-left">
+                                                    <span className="topbar-dd-plan-label">
+                                                        Current plan
+                                                    </span>
+
+                                                    <span className="topbar-dd-plan-name">
+                                                        {planName || "Free"}
+                                                    </span>
+                                                </div>
+
+                                                <button
+                                                    type="button"
+                                                    className="topbar-dd-plan-btn"
+                                                    onClick={() => navigate("/pricing")}
+                                                >
+                                                    {planActionLabel}
+                                                </button>
                                             </div>
-                                            <button
-                                                type="button"
-                                                className="topbar-dd-plan-btn"
-                                                onClick={() => navigate("/pricing")}
-                                            >
-                                                {planActionLabel}
-                                            </button>
-                                        </div>
-                                    </li>
-                                )}
+                                        </li>
+                                    )}
 
                                 <li><hr className="dropdown-divider topbar-dd-divider" /></li>
 
                                 {/* Nav items */}
                                 {[
-                                    { to: "/dashboard", icon: <FiGrid />, label: "Dashboard" },
-                                    { to: "/documents", icon: <FiFileText />, label: "My Documents" },
+                                        { to: "/dashboard", icon: <FiGrid />, label: "Dashboard" },
+
+                                        ...(canViewDocuments ? [{
+                                            to: "/documents",
+                                            icon: <FiFileText />,
+                                            label:"My Documents"
+
+                                        }]:[]),
+
+                                       
+
                                         ...(canViewSettings
                                             ? [{
                                                 to: "/settings",
@@ -195,7 +230,13 @@ export default function Topbar() {
                                                 label: "Settings"
                                             }]
                                             : []),
-                                    { to: "/subscription/billing", icon: <FiCreditCard />, label: "Subscription & Billing" },
+
+                                        ...(canManageSubscription ? [{
+                                            to: "/subscription/billing",
+                                            icon: <FiCreditCard />,
+                                            label: "Subscription & Billing"
+                                        }]:[])
+                                   
                                     ].map(({ to, icon, label }) => (
 
 

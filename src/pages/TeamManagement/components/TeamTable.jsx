@@ -8,8 +8,6 @@ export default function TeamTable({
 
     onEdit,
 
-    onPermissions,
-
     onToggleStatus,
 
     onRemove
@@ -72,8 +70,6 @@ export default function TeamTable({
                             member={member}
 
                             onEdit={onEdit}
-
-                            onPermissions={onPermissions}
 
                             onToggleStatus={onToggleStatus}
 

@@ -9,8 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { getCustomers, getCustomer, createCustomer, updateCustomer,  deleteCustomer as deleteCustomerApi} from "../../services/customerService";
 import { useLocation } from "react-router-dom";
 
-
-
 const emptyForm = {
     companyName: "",
     contactPerson: "",
@@ -93,10 +91,30 @@ export default function Customers() {
 
     });
 
+
+    const permissions = (() => {
+        try {
+            return JSON.parse(
+                localStorage.getItem("permissions") || "[]"
+            );
+        }
+        catch {
+            return [];
+        }
+    })();
+
+
+    const hasPermission = (permissionName) =>
+        permissions.some(
+            p => p.name === permissionName
+        );
+
+
     const canCreateCustomer =
-        customers.length > 0
-            ? customers[0].canCreateCustomer
-            : false;
+          hasPermission("CreateCustomers");
+
+    
+   
 
     // =========================
     // VALIDATION
@@ -238,6 +256,10 @@ export default function Customers() {
                 totalCustomers={customers.length}
 
                 canCreateCustomer={canCreateCustomer}
+
+                onBulkImport={() =>
+                    navigate("/customers/bulk-import")
+                }
 
                 onNewCustomer={() => {
 

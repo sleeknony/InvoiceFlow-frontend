@@ -3,15 +3,9 @@ import BrandingTab from "./tabs/BrandingTab";
 import DocumentsTab from "./tabs/DocumentsTab";
 import PaymentTab from "./tabs/PaymentTab";
 import AdvancedTab from "./tabs/AdvancedTab";
+import ApiAccessTab from "./tabs/ApiAccessTab";
 import "./Settings.css";
-import {
-    getSettings,
-    updateSettings,
-    uploadLogo,
-    uploadSignature,
-    toggleSignature
-} from "../../services/settingsService";
-
+import { getSettings, updateSettings, uploadLogo, uploadSignature, toggleSignature } from "../../services/settingsService";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -233,6 +227,12 @@ export default function Settings() {
                     />
                 );
 
+            case "api-access":
+
+                return (
+                    <ApiAccessTab />
+                );
+
             default:
 
                 return null;
@@ -275,17 +275,21 @@ export default function Settings() {
 
                 </div>
 
-                <button
-                    className="btn btn-primary settings-save-btn"
-                    onClick={saveSettings}
-                    disabled={saving}
-                >
-                    <i className="bi bi-check2-circle me-2"></i>
+                {activeTab !== "api-access" && (
 
-                    {saving
-                        ? "Saving..."
-                        : "Save Changes"}
-                </button>
+                    <button
+                        className="btn btn-primary settings-save-btn"
+                        onClick={saveSettings}
+                        disabled={saving}
+                    >
+                        <i className="bi bi-check2-circle me-2"></i>
+
+                        {saving
+                            ? "Saving..."
+                            : "Save Changes"}
+                    </button>
+
+                )}
 
             </div>
 
@@ -356,6 +360,20 @@ export default function Settings() {
                             <i className="bi bi-gear"></i>
 
                             Advanced
+                        </button>
+
+                        <button
+                            className={`settings-nav-item ${activeTab === "api-access"
+                                    ? "active"
+                                    : ""
+                                }`}
+                            onClick={() =>
+                                setActiveTab("api-access")
+                            }
+                        >
+                            <i className="bi bi-key"></i>
+
+                            API Access
                         </button>
 
                     </nav>

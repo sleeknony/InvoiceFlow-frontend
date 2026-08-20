@@ -1,48 +1,40 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import companyTeamService from "../../../services/companyTeamService";
-import PermissionChecklist from "./PermissionChecklist";
-
+import toast from "react-hot-toast";
 import "./InviteMemberModal.css";
 
 export default function EditMemberModal({
-
     open,
-
     member,
-
-    roles,
-
-    permissions,
-
+    roles = [],
     onClose,
-
     onSuccess
-
 }) {
 
     const [email, setEmail] = useState("");
 
     const [role, setRole] = useState("");
 
-    const [selectedPermissions, setSelectedPermissions] = useState([]);
-
     const [saving, setSaving] = useState(false);
 
     const [error, setError] = useState("");
+
+
+    // =========================================================
+    // INITIALIZE
+    // =========================================================
 
     useEffect(() => {
 
         if (!open || !member)
             return;
 
-        setEmail(member.email);
+        setEmail(
+            member.email ?? ""
+        );
 
-        setRole(member.role);
-        console.log("Member:", member);
-        console.log("Permissions:", member.permissions);
-        setSelectedPermissions(
-            member.permissions ?? []
-
+        setRole(
+            member.roleId ?? ""
         );
 
         setError("");
@@ -50,18 +42,27 @@ export default function EditMemberModal({
     }, [open, member]);
 
 
+    // =========================================================
+    // DON'T RENDER
+    // =========================================================
 
     if (!open)
         return null;
 
+
+    // =========================================================
+    // SUBMIT
+    // =========================================================
+
     async function handleSubmit() {
 
-        if (role === "") {
+        if (!role) {
 
             setError("Please select a role.");
 
-            return;
+            toast.error("Please select a role.");
 
+            return;
         }
 
         try {
@@ -71,35 +72,36 @@ export default function EditMemberModal({
             setError("");
 
             await companyTeamService.updateMember(
-
                 member.id,
-
                 {
-
-                    role: Number(role),
-
-                    permissions: selectedPermissions
-
+                    roleId: Number(role)
                 }
-
             );
 
-            onSuccess?.();
+            toast.success(
+                "Team member updated successfully."
+            );
+
+            await onSuccess?.();
 
             onClose();
 
         }
         catch (err) {
 
-            setError(
-
-                err.response?.data?.message ||
-
-                err.response?.data ||
-
-                "Unable to update member."
-
+            console.error(
+                "Error updating team member:",
+                err
             );
+
+            const message =
+                err.response?.data?.message ||
+                err.response?.data ||
+                "Unable to update team member.";
+
+            setError(message);
+
+            toast.error(message);
 
         }
         finally {
@@ -107,8 +109,18 @@ export default function EditMemberModal({
             setSaving(false);
 
         }
-
     }
+
+
+    // =========================================================
+    // SELECTED ROLE
+    // =========================================================
+
+    const selectedRole =
+        roles.find(
+            x => x.id === Number(role)
+        );
+
 
     return (
 
@@ -116,116 +128,109 @@ export default function EditMemberModal({
 
             <div className="invite-modal">
 
-                {/* Header */}
+
+                {/* =================================================
+                    HEADER
+                ================================================= */}
 
                 <div className="invite-header">
 
-                    <h2>
+                    <div>
 
-                        Edit Team Member
+                        <h2>
+                            Edit Team Member
+                        </h2>
 
-                    </h2>
+                        <p>
+                            Change the role assigned to this
+                            team member.
+                        </p>
+
+                    </div>
+
 
                     <button
-
+                        type="button"
                         className="invite-close"
-
                         onClick={onClose}
-
                         disabled={saving}
-
                     >
-
-                        x
-
+                        ×
                     </button>
 
                 </div>
 
-                {/* Body */}
+
+                {/* =================================================
+                    BODY
+                ================================================= */}
 
                 <div className="invite-body">
+
 
                     {error && (
 
                         <div className="invite-error">
-
                             {error}
-
                         </div>
 
                     )}
 
+
+                    {/* EMAIL */}
+
                     <div className="invite-field">
 
                         <label>
-
                             Email Address
-
                         </label>
+
                         <input
-
                             type="email"
-
                             value={email}
-
                             readOnly
-
                             disabled
-
                         />
 
                     </div>
 
+
+                    {/* ROLE */}
+
                     <div className="invite-field">
 
                         <label>
-
                             Role
-
                         </label>
 
                         <select
-
                             value={role}
-
                             disabled={saving}
-
-                            onChange={(e) => {
-
-                                const value = Number(e.target.value);
-
-                                setRole(value);
-
-                                const selectedRole =
-                                    roles.find(r => r.value === value);
-
-                                setSelectedPermissions(
-
-                                    selectedRole?.defaultPermissions ?? []
-
-                                );
-
-                            }}
-
+                            onChange={(e) =>
+                                setRole(
+                                    Number(e.target.value)
+                                )
+                            }
                         >
 
+                            <option value="">
+                                Select a role
+                            </option>
+
+
                             {roles
-
-                                .filter(x => x.name !== "Owner")
-
+                                .filter(
+                                    x =>
+                                        x.name !== "Owner" &&
+                                        x.isActive
+                                )
                                 .map(role => (
 
                                     <option
-
-                                        key={role.value}
-
-                                        value={role.value}
-
+                                        key={role.id}
+                                        value={role.id}
                                     >
-
                                         {role.displayName}
-
                                     </option>
 
                                 ))}
@@ -234,62 +239,161 @@ export default function EditMemberModal({
 
                     </div>
 
-                    <div className="invite-field">
 
-                        <label>
+                    {/* =================================================
+                        ROLE PERMISSIONS PREVIEW
+                    ================================================= */}
 
-                            Permissions
+                    {/* =================================================
+    ROLE PERMISSIONS PREVIEW
+================================================= */}
 
-                        </label>
+                    {selectedRole && (
 
-                        <PermissionChecklist
+                        <div className="member-role-permissions">
 
-                            permissions={permissions}
+                            <div className="member-role-permissions-header">
 
-                            selectedPermissions={selectedPermissions}
+                                <div className="member-role-permissions-title">
 
-                            onChange={setSelectedPermissions}
+                                    <div className="member-role-permissions-icon">
+                                        ✓
+                                    </div>
 
-                            disabled={saving}
+                                    <div>
 
-                        />
+                                        <label>
+                                            Role Permissions
+                                        </label>
 
-                    </div>
+                                        <p>
+                                            Permissions inherited from the selected role.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+
+                                <span className="member-role-permission-count">
+
+                                    {selectedRole.permissions?.length ?? 0}
+
+                                    {" "}
+
+                                    {(selectedRole.permissions?.length ?? 0) === 1
+                                        ? "permission"
+                                        : "permissions"}
+
+                                </span>
+
+                            </div>
+
+
+                            {selectedRole.permissions?.length > 0 ? (
+
+                                <div className="member-role-permission-list">
+
+                                    {selectedRole.permissions.map(
+                                        permission => (
+
+                                            <div
+                                                key={permission.id}
+                                                className="member-role-permission"
+                                            >
+
+                                                <div className="member-role-permission-check">
+                                                    ✓
+                                                </div>
+
+                                                <div className="member-role-permission-content">
+
+                                                    <strong>
+                                                        {
+                                                            permission.displayName ??
+                                                            permission.name
+                                                        }
+                                                    </strong>
+
+                                                    {permission.description && (
+
+                                                        <small>
+                                                            {
+                                                                permission.description
+                                                            }
+                                                        </small>
+
+                                                    )}
+
+                                                </div>
+
+                                            </div>
+
+                                        )
+                                    )}
+
+                                </div>
+
+                            ) : (
+
+                                <div className="member-role-no-permissions">
+
+                                    <div className="member-role-no-permissions-icon">
+                                        !
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            No permissions assigned
+                                        </strong>
+
+                                        <span>
+                                            This role currently does not have any
+                                            permissions configured.
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            )}
+
+                        </div>
+
+                    )}
 
                 </div>
 
-                {/* Footer */}
+
+                {/* =================================================
+                    FOOTER
+                ================================================= */}
 
                 <div className="invite-footer">
 
                     <button
-
+                        type="button"
                         className="btn-secondary"
-
                         disabled={saving}
-
                         onClick={onClose}
-
                     >
-
                         Cancel
-
                     </button>
 
+
                     <button
-
+                        type="button"
                         className="btn-primary"
-
-                        disabled={saving}
-
+                        disabled={
+                            saving ||
+                            !role
+                        }
                         onClick={handleSubmit}
-
                     >
 
                         {saving
-
                             ? "Updating..."
-
                             : "Update Member"}
 
                     </button>
@@ -301,5 +405,4 @@ export default function EditMemberModal({
         </div>
 
     );
-
 }

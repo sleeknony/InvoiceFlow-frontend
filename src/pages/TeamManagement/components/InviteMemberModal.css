@@ -1,3 +1,7 @@
+/* =========================================================
+   INVITE MODAL OVERLAY
+========================================================= */
+
 .invite-overlay {
 	position: fixed;
 	inset: 0;
@@ -9,6 +13,11 @@
 	padding: 24px;
 }
 
+
+/* =========================================================
+   MODAL
+========================================================= */
+
 .invite-modal {
 	width: 100%;
 	max-width: 760px;
@@ -18,9 +27,10 @@
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
-	box-shadow: 0 20px 50px rgba(0, 0, 0, .2);
-	animation: inviteModal .2s ease;
+	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.20);
+	animation: inviteModal 0.2s ease;
 }
+
 
 @keyframes inviteModal {
 
@@ -35,57 +45,127 @@
 	}
 }
 
+
+/* =========================================================
+   HEADER
+========================================================= */
+
 .invite-header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	gap: 20px;
 	padding: 20px 24px;
 	border-bottom: 1px solid #edf0f5;
+	flex-shrink: 0;
 }
+
 
 	.invite-header h2 {
 		margin: 0;
 		font-size: 22px;
+		font-weight: 700;
 		color: #1e293b;
 	}
+
+
+	.invite-header p {
+		margin: 5px 0 0;
+		font-size: 13px;
+		line-height: 1.5;
+		color: #64748b;
+	}
+
+
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
 
 .invite-close {
 	width: 36px;
 	height: 36px;
+	flex-shrink: 0;
 	border: none;
 	border-radius: 8px;
 	background: transparent;
 	font-size: 22px;
 	cursor: pointer;
 	color: #64748b;
-	transition: .2s;
+	transition: background-color 0.2s ease, color 0.2s ease;
 }
+
 
 	.invite-close:hover {
 		background: #f1f5f9;
+		color: #334155;
 	}
+
+
+	.invite-close:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+
+/* =========================================================
+   BODY
+========================================================= */
 
 .invite-body {
 	flex: 1;
+	min-height: 0;
 	overflow-y: auto;
+	overflow-x: hidden;
 	padding: 24px;
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
 }
 
+
+	/* =========================================================
+   BODY SCROLLBAR
+========================================================= */
+
+	.invite-body::-webkit-scrollbar {
+		width: 7px;
+	}
+
+
+	.invite-body::-webkit-scrollbar-track {
+		background: #f8fafc;
+	}
+
+
+	.invite-body::-webkit-scrollbar-thumb {
+		background: #cbd5e1;
+		border-radius: 10px;
+	}
+
+
+		.invite-body::-webkit-scrollbar-thumb:hover {
+			background: #94a3b8;
+		}
+
+
+/* =========================================================
+   FORM FIELD
+========================================================= */
+
 .invite-field {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
-	margin-bottom: 22px;
+	width: 100%;
 }
+
 
 	.invite-field label {
 		font-size: 14px;
 		font-weight: 600;
 		color: #334155;
 	}
+
 
 	.invite-field input,
 	.invite-field select {
@@ -94,26 +174,319 @@
 		padding: 0 14px;
 		border: 1px solid #d9dee8;
 		border-radius: 10px;
+		background: #ffffff;
 		font-size: 14px;
-		transition: .2s;
+		color: #334155;
+		box-sizing: border-box;
+		transition: border-color 0.2s ease, box-shadow 0.2s ease;
 	}
+
+
+		.invite-field input::placeholder {
+			color: #94a3b8;
+		}
+
 
 		.invite-field input:focus,
 		.invite-field select:focus {
 			outline: none;
 			border-color: #2563eb;
-			box-shadow: 0 0 0 3px rgba(37, 99, 235, .08);
+			box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
 		}
 
+
+		.invite-field input:disabled,
+		.invite-field select:disabled {
+			background: #f8fafc;
+			color: #64748b;
+			cursor: not-allowed;
+		}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
 .invite-error {
-	margin-bottom: 20px;
 	padding: 12px 16px;
 	border-radius: 10px;
 	background: #fef2f2;
 	color: #dc2626;
 	border: 1px solid #fecaca;
 	font-size: 14px;
+	line-height: 1.5;
 }
+
+
+/* =========================================================
+   ROLE PERMISSIONS PREVIEW
+========================================================= */
+
+.invite-role-permissions {
+	width: 100%;
+	border: 1px solid #e2e8f0;
+	border-radius: 12px;
+	background: #ffffff;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+}
+
+
+/* =========================================================
+   ROLE PERMISSIONS HEADER
+========================================================= */
+
+.invite-role-permissions-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 14px 16px;
+	background: #f8fafc;
+	border-bottom: 1px solid #e2e8f0;
+	flex-shrink: 0;
+}
+
+
+.invite-role-permissions-title {
+	display: flex;
+	align-items: center;
+	gap: 11px;
+	min-width: 0;
+}
+
+
+/* =========================================================
+   ROLE PERMISSIONS ICON
+========================================================= */
+
+.invite-role-permissions-icon {
+	width: 30px;
+	height: 30px;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 8px;
+	background: #eff6ff;
+	border: 1px solid #dbeafe;
+	color: #2563eb;
+	font-size: 14px;
+	font-weight: 700;
+}
+
+
+/* =========================================================
+   ROLE PERMISSIONS TITLE
+========================================================= */
+
+.invite-role-permissions-title label {
+	display: block;
+	margin: 0;
+	font-size: 13px;
+	font-weight: 700;
+	color: #1e293b;
+}
+
+
+.invite-role-permissions-title p {
+	margin: 3px 0 0;
+	font-size: 11px;
+	line-height: 1.4;
+	color: #64748b;
+}
+
+
+/* =========================================================
+   PERMISSION COUNT
+========================================================= */
+
+.invite-role-permission-count {
+	flex-shrink: 0;
+	padding: 5px 9px;
+	border-radius: 999px;
+	background: #eff6ff;
+	border: 1px solid #dbeafe;
+	color: #2563eb;
+	font-size: 11px;
+	font-weight: 600;
+}
+
+
+/* =========================================================
+   PERMISSION LIST
+
+   IMPORTANT:
+   This is intentionally scrollable.
+
+   The modal can contain many permissions without
+   pushing the footer outside the viewport.
+========================================================= */
+
+.invite-permission-list {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 8px;
+	padding: 12px;
+	max-height: 300px;
+	min-height: 0;
+	overflow-y: auto;
+	overflow-x: hidden;
+	box-sizing: border-box;
+}
+
+
+	/* =========================================================
+   PERMISSION LIST SCROLLBAR
+========================================================= */
+
+	.invite-permission-list::-webkit-scrollbar {
+		width: 7px;
+	}
+
+
+	.invite-permission-list::-webkit-scrollbar-track {
+		background: #f8fafc;
+		border-radius: 10px;
+	}
+
+
+	.invite-permission-list::-webkit-scrollbar-thumb {
+		background: #cbd5e1;
+		border-radius: 10px;
+	}
+
+
+		.invite-permission-list::-webkit-scrollbar-thumb:hover {
+			background: #94a3b8;
+		}
+
+
+/* =========================================================
+   PERMISSION ITEM
+========================================================= */
+
+.invite-permission-item {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	min-width: 0;
+	padding: 10px 11px;
+	border: 1px solid #e2e8f0;
+	border-radius: 9px;
+	background: #ffffff;
+	box-sizing: border-box;
+	transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+
+	.invite-permission-item:hover {
+		background: #f8fafc;
+		border-color: #cbd5e1;
+	}
+
+
+/* =========================================================
+   PERMISSION CHECK
+========================================================= */
+
+.invite-permission-check {
+	width: 18px;
+	height: 18px;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 1px;
+	border-radius: 5px;
+	background: #2563eb;
+	color: #ffffff;
+	font-size: 11px;
+	font-weight: 700;
+}
+
+
+/* =========================================================
+   PERMISSION CONTENT
+========================================================= */
+
+.invite-permission-content {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	gap: 2px;
+}
+
+
+	.invite-permission-content strong {
+		display: block;
+		font-size: 12px;
+		font-weight: 600;
+		line-height: 1.4;
+		color: #334155;
+	}
+
+
+	.invite-permission-content small {
+		display: block;
+		font-size: 10px;
+		line-height: 1.4;
+		color: #64748b;
+	}
+
+
+/* =========================================================
+   NO PERMISSIONS
+========================================================= */
+
+.invite-no-permissions {
+	display: flex;
+	align-items: center;
+	gap: 11px;
+	margin: 12px;
+	padding: 14px;
+	border: 1px dashed #cbd5e1;
+	border-radius: 9px;
+	background: #f8fafc;
+}
+
+
+.invite-no-permissions-icon {
+	width: 26px;
+	height: 26px;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	background: #fef3c7;
+	color: #b45309;
+	font-size: 12px;
+	font-weight: 700;
+}
+
+
+.invite-no-permissions strong {
+	display: block;
+	font-size: 12px;
+	color: #334155;
+}
+
+
+.invite-no-permissions span {
+	display: block;
+	margin-top: 2px;
+	font-size: 11px;
+	line-height: 1.4;
+	color: #64748b;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
 
 .invite-footer {
 	display: flex;
@@ -122,19 +495,13 @@
 	padding: 18px 24px;
 	border-top: 1px solid #edf0f5;
 	background: #ffffff;
+	flex-shrink: 0;
 }
 
-.invite-field:last-child {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-}
 
-	.invite-field:last-child .permission-checklist {
-		max-height: 320px;
-		overflow-y: auto;
-		padding-right: 8px;
-	}
+/* =========================================================
+   SECONDARY BUTTON
+========================================================= */
 
 .btn-secondary {
 	padding: 11px 22px;
@@ -144,31 +511,391 @@
 	color: #334155;
 	font-weight: 600;
 	cursor: pointer;
-	transition: .2s;
+	transition: background-color 0.2s ease, border-color 0.2s ease;
 }
+
 
 	.btn-secondary:hover {
 		background: #f8fafc;
+		border-color: #cbd5e1;
 	}
 
-	.btn-secondary:disabled,
-	.btn-primary:disabled {
-		opacity: .6;
+
+	.btn-secondary:disabled {
+		opacity: 0.6;
 		cursor: not-allowed;
 	}
 
+
+/* =========================================================
+   PRIMARY BUTTON
+========================================================= */
+
+.btn-primary {
+	padding: 11px 22px;
+	border: 1px solid #2563eb;
+	border-radius: 10px;
+	background: #2563eb;
+	color: #ffffff;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+
+	.btn-primary:hover {
+		background: #1d4ed8;
+		border-color: #1d4ed8;
+	}
+
+
+	.btn-primary:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
+
+
+/* =========================================================
+   EDIT MEMBER - ROLE PERMISSIONS
+========================================================= */
+
+.member-role-permissions {
+	width: 100%;
+	border: 1px solid #e2e8f0;
+	border-radius: 12px;
+	background: #ffffff;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.member-role-permissions-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 14px 16px;
+	background: #f8fafc;
+	border-bottom: 1px solid #e2e8f0;
+	flex-shrink: 0;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.member-role-permissions-title {
+	display: flex;
+	align-items: center;
+	gap: 11px;
+	min-width: 0;
+}
+
+
+	.member-role-permissions-title > div:last-child {
+		min-width: 0;
+	}
+
+
+	.member-role-permissions-title label {
+		display: block;
+		margin: 0;
+		font-size: 13px;
+		font-weight: 700;
+		color: #1e293b;
+	}
+
+
+	.member-role-permissions-title p {
+		margin: 3px 0 0;
+		font-size: 11px;
+		line-height: 1.4;
+		color: #64748b;
+	}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.member-role-permissions-icon {
+	width: 30px;
+	height: 30px;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 8px;
+	background: #eff6ff;
+	border: 1px solid #dbeafe;
+	color: #2563eb;
+	font-size: 14px;
+	font-weight: 700;
+}
+
+
+/* =========================================================
+   PERMISSION COUNT
+========================================================= */
+
+.member-role-permission-count {
+	flex-shrink: 0;
+	padding: 5px 9px;
+	border-radius: 999px;
+	background: #eff6ff;
+	border: 1px solid #dbeafe;
+	color: #2563eb;
+	font-size: 11px;
+	font-weight: 600;
+}
+
+
+/* =========================================================
+   PERMISSION LIST
+
+   IMPORTANT:
+   Keep the list scrollable so all permissions are
+   accessible without stretching the modal.
+========================================================= */
+
+.member-role-permission-list {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 8px;
+	padding: 12px;
+	max-height: 300px;
+	min-height: 0;
+	overflow-y: auto;
+	overflow-x: hidden;
+	box-sizing: border-box;
+}
+
+
+	/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+	.member-role-permission-list::-webkit-scrollbar {
+		width: 7px;
+	}
+
+
+	.member-role-permission-list::-webkit-scrollbar-track {
+		background: #f8fafc;
+		border-radius: 10px;
+	}
+
+
+	.member-role-permission-list::-webkit-scrollbar-thumb {
+		background: #cbd5e1;
+		border-radius: 10px;
+	}
+
+
+		.member-role-permission-list::-webkit-scrollbar-thumb:hover {
+			background: #94a3b8;
+		}
+
+
+/* =========================================================
+   PERMISSION ITEM
+========================================================= */
+
+.member-role-permission {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	min-width: 0;
+	padding: 10px 11px;
+	border: 1px solid #e2e8f0;
+	border-radius: 9px;
+	background: #ffffff;
+	box-sizing: border-box;
+	transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+
+	.member-role-permission:hover {
+		background: #f8fafc;
+		border-color: #cbd5e1;
+	}
+
+
+/* =========================================================
+   CHECK ICON
+========================================================= */
+
+.member-role-permission-check {
+	width: 18px;
+	height: 18px;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 1px;
+	border-radius: 5px;
+	background: #2563eb;
+	color: #ffffff;
+	font-size: 11px;
+	font-weight: 700;
+}
+
+
+/* =========================================================
+   PERMISSION CONTENT
+========================================================= */
+
+.member-role-permission-content {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	gap: 2px;
+}
+
+
+	.member-role-permission-content strong {
+		display: block;
+		font-size: 12px;
+		font-weight: 600;
+		line-height: 1.4;
+		color: #334155;
+	}
+
+
+	.member-role-permission-content small {
+		display: block;
+		font-size: 10px;
+		line-height: 1.4;
+		color: #64748b;
+	}
+
+
+/* =========================================================
+   NO PERMISSIONS
+========================================================= */
+
+.member-role-no-permissions {
+	display: flex;
+	align-items: center;
+	gap: 11px;
+	margin: 12px;
+	padding: 14px;
+	border: 1px dashed #cbd5e1;
+	border-radius: 9px;
+	background: #f8fafc;
+}
+
+
+.member-role-no-permissions-icon {
+	width: 26px;
+	height: 26px;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	background: #fef3c7;
+	color: #b45309;
+	font-size: 12px;
+	font-weight: 700;
+}
+
+
+.member-role-no-permissions strong {
+	display: block;
+	font-size: 12px;
+	color: #334155;
+}
+
+
+.member-role-no-permissions span {
+	display: block;
+	margin-top: 2px;
+	font-size: 11px;
+	line-height: 1.4;
+	color: #64748b;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+
+	.member-role-permissions-header {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+
+
+	.member-role-permission-count {
+		align-self: flex-start;
+	}
+
+
+	.member-role-permission-list {
+		grid-template-columns: 1fr;
+		max-height: 280px;
+	}
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+
+	.invite-role-permissions-header {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+
+
+	.invite-role-permission-count {
+		align-self: flex-start;
+	}
+
+
+	.invite-permission-list {
+		grid-template-columns: 1fr;
+		max-height: 280px;
+	}
+}
+
+
+/* =========================================================
+   SMALL SCREENS
+========================================================= */
+
 @media (max-width: 768px) {
+
+	.invite-overlay {
+		padding: 0;
+	}
+
 
 	.invite-modal {
 		max-width: 100%;
-		max-height: 100%;
-		height: 100%;
+		width: 100%;
+		max-height: 100vh;
+		height: 100vh;
 		border-radius: 0;
 	}
+
 
 	.invite-footer {
 		flex-direction: column-reverse;
 	}
+
 
 	.btn-primary,
 	.btn-secondary {

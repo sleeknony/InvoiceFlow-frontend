@@ -27,11 +27,25 @@ export default function Login() {
 
             });
 
+            console.log("Login Response:", res.data);
+            console.log("Permissions:", res.data.permissions);
+
+            localStorage.setItem(
+                "permissions",
+                JSON.stringify(res.data.permissions || [])
+            );
+
+            console.log(
+                "Saved permissions:",
+                localStorage.getItem("permissions")
+            );
+
             login(
                 res.data.token,
                 res.data.user
             );
 
+           
             localStorage.setItem(
                 "permissions",
                 JSON.stringify(
@@ -39,10 +53,13 @@ export default function Login() {
                 )
             );
 
+           
+
             localStorage.setItem(
                 "companyRole",
                 res.data.companyRole || ""
             );
+
             const pendingInvitationToken =
                 localStorage.getItem(
                     "pendingInvitationToken"
@@ -66,15 +83,19 @@ export default function Login() {
                     );
 
                 }
-                catch (error) {
+                catch (err) {
 
-                   /* console.error(error);*/
+                    console.error(err);
 
-                    toast.error(
-                        error?.response?.data?.message ||
-                        "Unable to accept invitation."
+                    console.log("API Error:",
+                        err.response?.data
                     );
 
+                    toast.error(
+                        err.response?.data?.message ||
+                        err.response?.data ||
+                        "Login failed."
+                    );
                 }
 
             }
@@ -117,7 +138,6 @@ export default function Login() {
 
     };
 
-   
 
 
     return (

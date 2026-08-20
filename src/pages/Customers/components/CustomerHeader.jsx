@@ -1,11 +1,13 @@
-import { FiPlus } from "react-icons/fi";
+import {
+    FiPlus,
+    FiUpload
+} from "react-icons/fi";
 
 export default function CustomerHeader({
-
     totalCustomers,
     canCreateCustomer,
-    onNewCustomer
-
+    onNewCustomer,
+    onBulkImport
 }) {
 
     return (
@@ -19,30 +21,53 @@ export default function CustomerHeader({
                     <div>
 
                         <h2 className="fw-bold mb-1">
-
                             Customers
-
                         </h2>
 
                         <p className="text-muted mb-0">
-
                             Manage your customers and billing profiles
-
                         </p>
 
                     </div>
 
 
                     {canCreateCustomer && (
-                        <button
-                            className="btn btn-primary rounded-pill px-4"
-                            onClick={onNewCustomer}
-                        >
-                            <FiPlus className="me-2" />
-                            New Customer
-                        </button>
+
+                        <div className="d-flex align-items-center gap-2">
+
+                            {/* BULK IMPORT */}
+
+                            <button
+                                type="button"
+                                className="btn btn-outline-secondary rounded-pill px-4"
+                                onClick={onBulkImport}
+                            >
+
+                                <FiUpload className="me-2" />
+
+                                Bulk Import
+
+                            </button>
+
+
+                            {/* NEW CUSTOMER */}
+
+                            <button
+                                type="button"
+                                className="btn btn-primary rounded-pill px-4"
+                                onClick={onNewCustomer}
+                            >
+
+                                <FiPlus className="me-2" />
+
+                                New Customer
+
+                            </button>
+
+                        </div>
+
                     )}
-                   
+
                 </div>
 
             </div>
@@ -50,5 +75,4 @@ export default function CustomerHeader({
         </div>
 
     );
-
 }

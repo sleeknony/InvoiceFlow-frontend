@@ -13,6 +13,12 @@
         margin: 0;
     }
 
+.team-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .team-table {
     width: 100%;
     border-collapse: collapse;
@@ -65,3 +71,28 @@
         transform: none;
         box-shadow: none;
     }
+
+.team-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    .team-header-actions button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+@media (max-width: 768px) {
+    .team-header-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+        .team-header-actions button {
+            width: 100%;
+        }
+}
+

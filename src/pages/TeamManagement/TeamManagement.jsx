@@ -6,10 +6,13 @@ import TeamTable from "./components/TeamTable";
 import PendingInvitations from "./components/PendingInvitations";
 import InviteMemberModal from "./components/InviteMemberModal";
 import "./TeamManagement.css"
-import { FiUserPlus } from "react-icons/fi";
+import { FiUserPlus, FiDownload } from "react-icons/fi";
 import Swal from "sweetalert2";
 import EditMemberModal from "./components/EditMemberModal";
 import toast from "react-hot-toast";
+import { FiUpload } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+/*import BulkInviteModal from "./BulkInvite/BulkInviteModal";*/
 
 export default function TeamManagement() {
 
@@ -29,14 +32,19 @@ export default function TeamManagement() {
 
     const [showInviteModal, setShowInviteModal] = useState(false);
 
+    /*const [showBulkInviteModal, setShowBulkInviteModal] =   useState(false);*/
+
     const [roles, setRoles] = useState([]);
 
-    const [permissions, setPermissions] = useState([]);
+   /* const [permissions, setPermissions] = useState([]);*/
 
     const [showEditModal, setShowEditModal] = useState(false);
 
     const [selectedMember, setSelectedMember] = useState(null);
 
+   
+
+    const navigate = useNavigate();
   
     useEffect(() => {
 
@@ -44,7 +52,7 @@ export default function TeamManagement() {
 
         loadInvitations();
 
-        loadAvailablePermissions();
+       /* loadAvailablePermissions();*/
 
         loadRoles();
 
@@ -99,24 +107,24 @@ export default function TeamManagement() {
 
     }
 
-    async function loadAvailablePermissions() {
+    //async function loadAvailablePermissions() {
 
-        try {
+    //    try {
 
-            const data =
-                await companyTeamService
-                    .getAvailablePermissions();
+    //        const data =
+    //            await companyTeamService
+    //                .getAvailablePermissions();
 
-            setPermissions(data);
+    //        setPermissions(data);
 
-        }
-        catch (err) {
+    //    }
+    //    catch (err) {
 
-            toast.error("Unable to load permissions.");
+    //        toast.error("Unable to load permissions.");
 
-        }
+    //    }
 
-    }
+    //}
 
     async function loadRoles() {
 
@@ -196,8 +204,113 @@ export default function TeamManagement() {
 
     };
 
+    async function handleToggleStatus(member) {
+
+        const action =
+            member.isActive
+                ? "deactivate"
+                : "activate";
+
+        const result = await Swal.fire({
+            title: `${action === "deactivate" ? "Deactivate" : "Activate"} member?`,
+            text:
+                action === "deactivate"
+                    ? `${member.firstName} ${member.lastName} will no longer be able to access the company.`
+                    : `${member.firstName} ${member.lastName} will regain access to the company.`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText:
+                action === "deactivate"
+                    ? "Yes, deactivate"
+                    : "Yes, activate",
+            cancelButtonText: "Cancel"
+        });
+
+        if (!result.isConfirmed)
+            return;
+
+        try {
+
+            if (member.isActive) {
+
+                await companyTeamService
+                    .deactivateMember(member.id);
+
+            }
+            else {
+
+                await companyTeamService
+                    .reactivateMember(member.id);
+
+            }
+
+            await loadMembers();
+
+            toast.success(
+                member.isActive
+                    ? "Member deactivated successfully."
+                    : "Member activated successfully."
+            );
+
+        }
+        catch (err) {
+
+            toast.error(
+                err?.response?.data?.message ||
+                err?.response?.data ||
+                `Unable to ${action} member.`
+            );
+
+        }
+    }
 
 
+    async function handleRemoveMember(member) {
+
+        const result = await Swal.fire({
+
+            title: "Remove team member?",
+
+            text:
+                `${member.firstName} ${member.lastName} will be removed from this company.`,
+
+            icon: "warning",
+
+            showCancelButton: true,
+
+            confirmButtonText: "Yes, remove member",
+
+            cancelButtonText: "Cancel",
+
+            confirmButtonColor: "#dc2626"
+
+        });
+
+        if (!result.isConfirmed)
+            return;
+
+        try {
+
+            await companyTeamService
+                .removeMember(member.id);
+
+            await loadMembers();
+
+            toast.success(
+                "Team member removed successfully."
+            );
+
+        }
+        catch (err) {
+
+            toast.error(
+                err?.response?.data?.message ||
+                err?.response?.data ||
+                "Unable to remove team member."
+            );
+
+        }
+    }
 
     const filteredMembers = members.filter(member => {
 
@@ -238,15 +351,31 @@ export default function TeamManagement() {
 
                 </div>
 
-              
+                <div className="team-header-actions">
 
-                <button
-                    className="btn-primary"
-                    onClick={() => setShowInviteModal(true)}
-                >
-                    <FiUserPlus />
-                    Invite Member
-                </button>
+                    <button
+                        type="button"
+                        className="btn-secondary"
+                        onClick={() =>
+                            navigate("/team/bulk-invite")
+                        }
+                    >
+                        <FiUpload />
+                        Bulk Invite
+                    </button>
+
+                    <button
+                        type="button"
+                        className="btn-primary"
+                        onClick={() =>
+                            setShowInviteModal(true)
+                        }
+                    >
+                        <FiUserPlus />
+                        Invite Member
+                    </button>
+
+                </div>
 
             </div>
 
@@ -279,8 +408,9 @@ export default function TeamManagement() {
                 <TeamTable
 
                     members={filteredMembers}
-
                     onEdit={handleEditMember}
+                    onToggleStatus={handleToggleStatus}
+                    onRemove={handleRemoveMember}
 
                 />
 
@@ -310,8 +440,26 @@ export default function TeamManagement() {
 
                 }}
                 roles={roles}
-                permissions={permissions}
+               
             />
+
+            {/*<BulkInviteModal*/}
+
+            {/*    open={showBulkInviteModal}*/}
+
+            {/*    onClose={() =>*/}
+            {/*        setShowBulkInviteModal(false)*/}
+            {/*    }*/}
+
+            {/*    onSuccess={async () => {*/}
+
+            {/*        await loadInvitations();*/}
+
+            {/*        await loadMembers();*/}
+
+            {/*    }}*/}
+
+            {/*/>*/}
 
             <EditMemberModal
 
@@ -321,7 +469,7 @@ export default function TeamManagement() {
 
                 roles={roles}
 
-                permissions={permissions}
+               
 
                 onClose={() => {
 

@@ -8,7 +8,8 @@ import {
     FiSettings,
     FiChevronRight,
     FiZap,
-    FiUserCheck
+    FiUserCheck,
+    FiShield
 } from "react-icons/fi";
 
 import { useSubscription } from "../context/useSubscription";
@@ -43,22 +44,35 @@ export default function Sidebar() {
         }
     })();
 
+    
+    const hasPermission = (permissionName) =>
+        permissions.some(
+            p => p.name === permissionName
+        );
+
+   
+    const canViewCustomers =
+        hasPermission("ViewCustomers") ||
+        hasPermission("CreateCustomers");
+
+    const canCreateDocuments =
+        hasPermission("CreateDocuments");
+
+    const canViewDocuments =
+        hasPermission("ViewDocuments");
+
     const canViewSettings =
-        permissions.includes(
-            "ViewCompanySettings"
-        ) ||
-        permissions.includes(
-            "ManageCompanySettings"
-        );
+        hasPermission("ViewCompanySettings");
 
-    const canManageUsers =
-        permissions.includes(
-            "ViewCompanySettings"
-        ) ||
-        permissions.includes(
-            "ManageCompanySettings"
-        );
+    const canViewUsers =
+        hasPermission("ViewUsers");
 
+    const canManageRoles =
+        hasPermission("ManageUsers");
+
+    const canManageSubscription =
+        hasPermission("ManageCompanySubscriptions");
+    
     return (
         <aside className="app-sidebar">
 
@@ -84,7 +98,6 @@ export default function Sidebar() {
 
             </div>
 
-
             {/* ==========================================
                 NAVIGATION
             ========================================== */}
@@ -99,11 +112,10 @@ export default function Sidebar() {
                         Workspace
                     </div>
 
-
                     <NavLink
                         className={getNavClass}
-                        to="/dashboard"
-                    >
+                        to="/dashboard" >
+
                         <span className="sidebar-link-icon">
                             <FiGrid />
                         </span>
@@ -115,7 +127,7 @@ export default function Sidebar() {
                         <FiChevronRight className="sidebar-link-arrow" />
                     </NavLink>
 
-
+                    {canViewCustomers &&(
                     <NavLink
                         className={getNavClass}
                         to="/customers"
@@ -130,24 +142,26 @@ export default function Sidebar() {
 
                         <FiChevronRight className="sidebar-link-arrow" />
                     </NavLink>
-
+                    )}
                 </div>
 
 
                 {/* DOCUMENTS */}
 
                 <div className="sidebar-section">
+                    {(canViewDocuments ||
+                        canCreateDocuments) && (
+                            <div className="sidebar-section-label">
+                                Documents
+                            </div>
+                        )}
 
-                    <div className="sidebar-section-label">
-                        Documents
-                    </div>
-
-
-                    <NavLink
+                    {canViewDocuments && (
+                        <NavLink
+                    end
                         className={getNavClass}
-                        to="/documents"
-                        end
-                    >
+                            to="/documents">
+
                         <span className="sidebar-link-icon">
                             <FiFileText />
                         </span>
@@ -158,130 +172,138 @@ export default function Sidebar() {
 
                         <FiChevronRight className="sidebar-link-arrow" />
                     </NavLink>
+                    )}
 
+                    {canCreateDocuments && (
+                        <NavLink
+                            className={getNavClass}
+                            to="/documents/create"
+                        >
+                            <span className="sidebar-link-icon">
+                                <FiPlus />
+                            </span>
 
-                    <NavLink
-                        className={getNavClass}
-                        to="/documents/create"
-                    >
-                        <span className="sidebar-link-icon">
-                            <FiPlus />
-                        </span>
+                            <span className="sidebar-link-label">
+                                Create Document
+                            </span>
 
-                        <span className="sidebar-link-label">
-                            Create Document
-                        </span>
-
-                        <FiChevronRight className="sidebar-link-arrow" />
-                    </NavLink>
-
-                </div>
-
-
-                {/* ACCOUNT */}
-
-                <div className="sidebar-section">
-
-                    <div className="sidebar-section-label">
-                        Account
-                    </div>
-
-
-                    <NavLink
-                        className={getNavClass}
-                        to="/subscription/billing"
-                    >
-                        <span className="sidebar-link-icon">
-                            <FiCreditCard />
-                        </span>
-
-                        <span className="sidebar-link-label">
-                            Subscription
-                        </span>
-
-                        <FiChevronRight className="sidebar-link-arrow" />
-                    </NavLink>
-                    {canManageUsers && (
-                    <NavLink
-                        className={getNavClass}
-                        to="/team" >
-                        <span className="sidebar-link-icon">
-                            <FiUserCheck />
-                        </span>
-                        
-                        <span className="sidebar-link-label">
-                            Team Management
-                        </span>
-
-                        <FiChevronRight className="sidebar-link-arrow" />
-                    </NavLink>
-                     )}
-
-                    {canViewSettings && (
-                    <NavLink
-                        className={getNavClass}
-                        to="/settings"
-                    >
-                        <span className="sidebar-link-icon">
-                            <FiSettings />
-                        </span>
-
-                        <span className="sidebar-link-label">
-                            Settings
-                        </span>
-
-                        <FiChevronRight className="sidebar-link-arrow" />
-                    </NavLink>
+                            <FiChevronRight className="sidebar-link-arrow" />
+                        </NavLink>
                     )}
                 </div>
 
-            </div>
+                {/* ==========================================
+    ACCOUNT
+========================================== */}
+
+                <div className="sidebar-section">
+
+                    {(canViewUsers ||
+                        canManageRoles ||
+                        canManageSubscription ||
+                        canViewSettings) && (
+
+                            <div className="sidebar-section-label">
+                                Account
+                            </div>
+
+                        )}
 
 
-            {/* ==========================================
-                SUBSCRIPTION CARD
-            ========================================== */}
+                    {/* SUBSCRIPTION */}
 
-            <div className="sidebar-footer">
+                    {canManageSubscription && (
 
-                <div className="sidebar-plan-card">
+                        <NavLink
+                            className={getNavClass}
+                            to="/subscription/billing"
+                        >
 
-                    <div className="sidebar-plan-header">
-
-                        <div className="sidebar-plan-icon">
-                            <FiZap />
-                        </div>
-
-                        <div>
-                            <span className="sidebar-plan-label">
-                                Current plan
+                            <span className="sidebar-link-icon">
+                                <FiCreditCard />
                             </span>
 
-                            <strong className="sidebar-plan-name">
-                                {displayPlanName}
-                            </strong>
-                        </div>
+                            <span className="sidebar-link-label">
+                                Subscription
+                            </span>
 
-                    </div>
+                            <FiChevronRight className="sidebar-link-arrow" />
+
+                        </NavLink>
+
+                    )}
 
 
-                    {!subscriptionLoading && (
+                    {/* TEAM MANAGEMENT */}
 
-                        <button
-                            type="button"
-                            className="sidebar-plan-button"
-                            onClick={() =>
-                                navigate("/pricing")
-                            }
+                    {canViewUsers && (
+
+                        <NavLink
+                        end
+                            className={getNavClass}
+                            to="/team"
                         >
-                            {isEnterprise
-                                ? "Manage Plan"
-                                : isFree
-                                    ? "Upgrade Plan"
-                                    : "Change Plan"}
 
-                            <FiChevronRight />
-                        </button>
+                            <span className="sidebar-link-icon">
+                                <FiUserCheck />
+                            </span>
+
+                            <span className="sidebar-link-label">
+                                Team Management
+                            </span>
+
+                            <FiChevronRight className="sidebar-link-arrow" />
+
+                        </NavLink>
+
+                    )}
+
+
+                    {/* ROLE MANAGEMENT */}
+
+                    {canManageRoles && (
+
+                        <NavLink
+                            className={getNavClass}
+                            to="/settings/roles"
+                        >
+
+                            <span className="sidebar-link-icon">
+                                <FiShield />
+                            </span>
+
+                            <span className="sidebar-link-label">
+                                Role Management
+                            </span>
+
+                            <FiChevronRight className="sidebar-link-arrow" />
+
+                        </NavLink>
+
+                    )}
+
+
+                    {/* SETTINGS */}
+
+                    {canViewSettings && (
+
+                        <NavLink
+                        end
+                            className={getNavClass}
+                            to="/settings"
+                        >
+
+                            <span className="sidebar-link-icon">
+                                <FiSettings />
+                            </span>
+
+                            <span className="sidebar-link-label">
+                                Settings
+                            </span>
+
+                            <FiChevronRight className="sidebar-link-arrow" />
+
+                        </NavLink>
 
                     )}
 

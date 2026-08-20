@@ -17,6 +17,8 @@ import SubscriptionBilling from "./pages/Subscription/SubscriptionBilling";
 import CustomerDetails from "./pages/Customers/CustomerDetails";
 import TeamManagement from "./pages/TeamManagement/TeamManagement";
 import SetupCompany from "./pages/Company/SetupCompany";
+import BulkInvite from "./pages/TeamManagement/BulkInvite/BulkInvite";
+import BulkCustomerImport  from "./pages/Customers/BulkCustomerImport";
 
 // Auth
 import Login from "./pages/Auth/Login";
@@ -25,7 +27,8 @@ import VerifyEmail from "./pages/Auth/VerifyEmail";
 import AcceptInvitation from "./pages/Auth/AcceptInvitation";
 import InvitationRegister  from "./pages/Auth/InvitationRegister";
 import Unauthorized from "./pages/Unauthorized.jsx";
-import PermissionRoute from "./pages/PermissionRoute.jsx";
+import PermissionRoute from "./components/PermissionRoute.jsx";
+import RoleManagement from "./pages/RoleManagement/RoleManagement";
 
 export default function App() {
     return (
@@ -34,11 +37,10 @@ export default function App() {
             {/* PUBLIC ROUTES */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/verify-email" element={<VerifyEmail />}/>
+            <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/accept-invitation/:token" element={<AcceptInvitation />} />
             <Route path="/invitation-register/:token" element={<InvitationRegister />} />
-            <Route  path="/unauthorized" element={<Unauthorized />}
-            />
+            <Route path="/unauthorized" element={<Unauthorized />} />
 
             {/* PROTECTED APP */}
             <Route
@@ -48,39 +50,59 @@ export default function App() {
                     </ProtectedRoute>
                 }
             >
-
-                {/* Default redirect */}
                 <Route path="/" element={<Navigate to="/dashboard" />} />
 
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/customers" element={<Customers />} />
-                <Route path="/customers/:id" element={<CustomerDetails />}
+                <Route
+                    path="/customers/bulk-import"
+                    element={<BulkCustomerImport />}
                 />
+
+                <Route path="/customers/:id" element={<CustomerDetails />} />
 
                 <Route
                     path="/documents/create"
-                    element={<DocumentEditor mode="create" />}
+                    element={
+                        <PermissionRoute permission="CreateDocuments">
+                        <DocumentEditor mode="create" />
+                        </PermissionRoute>
+                    }
                 />
 
                 <Route
                     path="/documents/edit/:id"
-                    element={<DocumentEditor mode="edit" />}
+                    element={
+                        <PermissionRoute permission="EditDocuments">
+                        <DocumentEditor mode="edit" />
+                        </PermissionRoute>
+                    }
                 />
+
                 <Route
                     path="/settings"
                     element={
                         <PermissionRoute
-                            permission="ManageCompanySettings"
+                            permission="ViewCompanySettings"
                         >
                             <Settings />
                         </PermissionRoute>
                     }
                 />
 
-                <Route path="/documents" element={<Documents />} />
+                <Route path="/documents" element={
+                <PermissionRoute permission="ViewDocuments">
+                        <Documents />
+
+                    </PermissionRoute>}
+                    
+                    />
+
                 <Route
                     path="/documents/:id"
-                    element={<DocumentViewer />}
+                    element={ <PermissionRoute permission="ViewDocuments">
+                        <DocumentViewer /> </PermissionRoute>
+                    }
                 />
 
                 <Route
@@ -95,28 +117,45 @@ export default function App() {
 
                 <Route
                     path="/subscription/billing"
-                    element={<SubscriptionBilling />}
+                    element={ <PermissionRoute permission="ManageCompanySubscriptions">
+                    <SubscriptionBilling />
+                    </PermissionRoute>}
                 />
 
                 <Route
                     path="/team"
-                    element={<TeamManagement />}
+       
+                    element={<PermissionRoute permission= "ViewUsers">
+                        <TeamManagement />
+                       </PermissionRoute>
+                    }
                 />
 
                 <Route
                     path="/setup-company"
-                    element={
-                        <ProtectedRoute>
-                            <SetupCompany />
-                        </ProtectedRoute>
-                    }
+                    element={<SetupCompany />}
                 />
 
+                <Route
+                    path="/settings/roles"
+                    element={<RoleManagement />}
+                />
+
+                <Route
+                    path="/team/bulk-invite"
+                    element={
+                        <BulkInvite
+                            onBack={() =>
+                                navigate("/team")
+                            }
+                        />
+                    }
+                />
             </Route>
 
-            {/* 404 */}
             <Route path="*" element={<NotFound />} />
 
         </Routes>
     );
 }
+

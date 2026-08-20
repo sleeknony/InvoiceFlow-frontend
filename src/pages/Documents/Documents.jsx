@@ -24,8 +24,22 @@ export default function Documents() {
     const [sortField, setSortField] =
         useState("issueDate");
 
-    const [sortDirection, setSortDirection] =
-        useState("desc");
+    const [sortDirection, setSortDirection] = useState("desc");
+
+    let permissions = [];
+
+    try {
+        permissions = JSON.parse(
+            localStorage.getItem("permissions") || "[]"
+        );
+    }
+    catch {
+        permissions = [];
+    }
+
+    const canCreateDocuments =
+        permissions.includes("CreateDocuments");
+
 
     useEffect(() => {
         loadDocuments();
@@ -264,12 +278,13 @@ export default function Documents() {
                 title="Documents"
                 subtitle="Invoices, quotes, receipts, delivery notes and more"
                 actions={
-                    <Link
-                        className="btn btn-primary"
-                        to="/documents/create"
-                    >
-                        Create Document
-                    </Link>
+                    canCreateDocuments && (
+                        <Link
+                            className="btn btn-primary"
+                            to="/documents/create" >
+                            Create Document
+                        </Link>
+                    )
                 }
             />
 

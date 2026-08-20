@@ -1,6 +1,5 @@
 import {
     FiEdit,
-    FiShield,
     FiUserCheck,
     FiUserX,
     FiTrash2
@@ -9,25 +8,23 @@ import {
 import "./TeamActionMenu.css";
 
 export default function TeamActionMenu({
-
     member,
-
     onEdit,
-
-    onPermissions,
-
     onToggleStatus,
-
     onRemove
-
 }) {
-    const isOwner = member.roleName === "Owner";
+    const isOwner =
+        member.roleName === "Owner";
 
     return (
-
         <div className="team-action-menu">
 
+            {/* =====================================================
+                EDIT MEMBER
+            ===================================================== */}
+
             <button
+                type="button"
                 disabled={isOwner}
                 onClick={() => onEdit(member)}
             >
@@ -35,40 +32,43 @@ export default function TeamActionMenu({
                 Edit Member
             </button>
 
-            <button
-                onClick={() => onPermissions(member)}
-            >
-                <FiShield />
 
-                Permissions
-            </button>
+            {/* =====================================================
+                ACTIVATE / DEACTIVATE
+            ===================================================== */}
 
             <button
-                onClick={() =>
-                    onToggleStatus(member)
-                }
+                type="button"
+                disabled={isOwner}
+                onClick={() => onToggleStatus(member)}
             >
-                {member.isActive
-                    ? <FiUserX />
-                    : <FiUserCheck />}
+                {member.isActive ? (
+                    <FiUserX />
+                ) : (
+                    <FiUserCheck />
+                )}
 
                 {member.isActive
                     ? "Deactivate"
-                    : "Activate"}
-
+                    : "Activate"
+                }
             </button>
 
+
+            {/* =====================================================
+                REMOVE MEMBER
+            ===================================================== */}
+
             <button
+                type="button"
                 className="danger"
+                disabled={isOwner}
                 onClick={() => onRemove(member)}
             >
                 <FiTrash2 />
-
                 Remove Member
             </button>
 
         </div>
-
     );
-
 }

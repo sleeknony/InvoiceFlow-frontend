@@ -1,60 +1,271 @@
 .permission-checklist {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
+    width: 100%;
 }
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.permission-checklist-empty {
+    padding: 24px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 10px;
+    background: #f8fafc;
+    color: #64748b;
+    text-align: center;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   PERMISSION GROUP
+========================================================= */
 
 .permission-group {
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 18px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #ffffff;
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-    .permission-group h4 {
-        margin: 0 0 14px;
-        font-size: 15px;
-        font-weight: 600;
+    .permission-group:hover {
+        border-color: #cbd5e1;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    }
+
+
+/* =========================================================
+   GROUP HEADER
+========================================================= */
+
+.permission-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 16px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.permission-group-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+    .permission-group-title h4 {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 700;
         color: #1e293b;
     }
+
+    .permission-group-title span {
+        font-size: 11px;
+        font-weight: 500;
+        color: #64748b;
+        padding: 3px 8px;
+        background: #e2e8f0;
+        border-radius: 999px;
+    }
+
+.permission-group-selected {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 600;
+    color: #2563eb;
+    padding: 4px 9px;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    border-radius: 999px;
+}
+
+
+/* =========================================================
+   PERMISSION LIST
+========================================================= */
 
 .permission-items {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px 20px;
+    gap: 8px;
+    padding: 12px;
 }
+
+
+/* =========================================================
+   PERMISSION ITEM
+========================================================= */
 
 .permission-item {
+    position: relative;
     display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
-    color: #334155;
+    align-items: flex-start;
+    gap: 11px;
+    min-width: 0;
+    padding: 11px 12px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    background: #ffffff;
     cursor: pointer;
     user-select: none;
-    line-height: 1.4;
+    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-    .permission-item input[type="checkbox"] {
-        width: 16px;
-        height: 16px;
-        margin: 0;
-        flex-shrink: 0;
-        cursor: pointer;
+    .permission-item:hover {
+        background: #f8fafc;
+        border-color: #e2e8f0;
     }
 
-    .permission-item span {
-        flex: 1;
+    .permission-item.selected {
+        background: #f8fbff;
+        border-color: #bfdbfe;
     }
+
+    .permission-item.disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+
+    /* =========================================================
+   HIDE NATIVE CHECKBOX
+========================================================= */
+
+    .permission-item input[type="checkbox"] {
+        position: absolute;
+        opacity: 0;
+        width: 1px;
+        height: 1px;
+        pointer-events: none;
+    }
+
+
+/* =========================================================
+   CUSTOM CHECKBOX
+========================================================= */
+
+.permission-checkbox {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 5px;
+    background: #ffffff;
+    color: #ffffff;
+    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+    .permission-checkbox span {
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+
+/* SELECTED CHECKBOX */
+
+.permission-item.selected .permission-checkbox {
+    background: #2563eb;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.08);
+}
+
+
+/* =========================================================
+   KEYBOARD ACCESSIBILITY
+========================================================= */
+
+.permission-item input[type="checkbox"]:focus-visible + .permission-checkbox {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+
+/* =========================================================
+   PERMISSION CONTENT
+========================================================= */
+
+.permission-content {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 2px;
+}
+
+.permission-name {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #334155;
+}
+
+.permission-item.selected .permission-name {
+    color: #1e40af;
+}
+
+.permission-description {
+    font-size: 11px;
+    line-height: 1.4;
+    color: #64748b;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
 
 .permission-loading {
     padding: 20px;
     text-align: center;
     color: #64748b;
+    font-size: 14px;
 }
 
-@media (max-width: 768px) {
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
 
     .permission-items {
         grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .permission-group-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .permission-group-selected {
+        align-self: flex-start;
+    }
+
+    .permission-items {
+        padding: 10px;
+    }
+
+    .permission-item {
+        padding: 10px;
     }
 }

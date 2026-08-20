@@ -39,13 +39,7 @@ const companyTeamService = {
         return data;
     },
 
-    async removeMember(id) {
-        const { data } = await http.delete(
-            `/company/member/${id}`
-        );
-        return data;
-    },
-
+   
     async getAvailablePermissions() {
 
         const { data } =
@@ -133,6 +127,110 @@ const companyTeamService = {
 
         return data;
     },
+
+
+    async deactivateMember(id) {
+        const { data } = await http.put(
+            `/company/team/member/${id}/deactivate`
+        );
+
+        return data;
+    },
+
+    async reactivateMember(id) {
+        const { data } = await http.put(
+            `/company/team/member/${id}/reactivate`
+        );
+
+        return data;
+    },
+
+    async removeMember(id) {
+        const { data } = await http.delete(
+            `/company/team/member/${id}`
+        );
+
+        return data;
+    },
+
+
+    async downloadTeamInvitationTemplate() {
+
+        const response =
+            await http.get(
+                "/company/team/import/template",
+                {
+                    responseType: "blob"
+                }
+            );
+
+        const url =
+            window.URL.createObjectURL(
+                new Blob([response.data])
+            );
+
+        const link =
+            document.createElement("a");
+
+        link.href = url;
+
+        link.setAttribute(
+            "download",
+            "InvoiceFlow-Team-Invitation-Template.xlsx"
+        );
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        link.remove();
+
+        window.URL.revokeObjectURL(url);
+    },
+
+    // =========================================================
+    // BULK INVITATIONS
+    // =========================================================
+
+    async previewBulkInvitations(file) {
+
+        const formData =
+            new FormData();
+
+        formData.append(
+            "file",
+            file
+        );
+
+        const { data } =
+            await http.post(
+                "/company/team/bulk-invitations/preview",
+                formData,
+                {
+                    headers: {
+                        "Content-Type":
+                            "multipart/form-data"
+                    }
+                }
+            );
+
+        return data;
+    },
+
+
+
+    async importBulkInvitations(rows) {
+
+        const response =
+        await http.post(
+            "/company/team/bulk-invitations/import",
+            {
+                rows
+            }
+        );
+
+return response.data;
+}
 
 };
 

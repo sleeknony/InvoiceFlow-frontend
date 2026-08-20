@@ -28,7 +28,6 @@ export default function DocumentActionsToolbar({
     handleDownload,
     handleEmail,
     handleDelete,
-
     setShowPaymentModal
 
 }) {
@@ -60,19 +59,18 @@ export default function DocumentActionsToolbar({
 
                 {/* APPROVE */}
 
-                {document.status === "Draft" && (
+                {document.approvalWorkflowEnabled &&
+                    document.canSubmitForApproval && (
+                        <button
+                            className="btn btn-warning"
+                            onClick={handleSubmitForApproval}
+                        >
+                            <FiSend />
+                            <span>Send For Approval</span>
+                        </button>
+                    )}
 
-                    <button
-                        className="btn btn-warning"
-                        onClick={handleSubmitForApproval}
-                    >
-                        <FiSend />
-                        <span>Send For Approval</span>
-                    </button>
-
-                )}
-
-                {document.status === "PendingApproval" && document.canApprove && (
+                {document.canApprove && (
 
                     <button
                         className="btn btn-success"
@@ -84,7 +82,7 @@ export default function DocumentActionsToolbar({
 
                 )}
 
-                {document.status === "PendingApproval" && document.canReject && (
+                {document.canReject && (
 
                     <button
                         className="btn btn-danger"
@@ -194,24 +192,31 @@ export default function DocumentActionsToolbar({
 
                 {/* DOWNLOAD */}
 
-                <button
-                    className="btn btn-outline-secondary"
-                    onClick={handleDownload}
-                >
-                    <FiDownload />
-                    <span>Download</span>
-                </button>
+                {document.canDownload && (
 
+                    <button
+                        className="btn btn-outline-secondary"
+                        onClick={handleDownload}
+                    >
+                        <FiDownload />
+                        <span>Download</span>
+                    </button>
+
+                )}
 
                 {/* EMAIL */}
 
-                <button
-                    className="btn btn-outline-secondary"
-                    onClick={handleEmail}
-                >
-                    <FiMail />
-                    <span>Email</span>
-                </button>
+                {document.canEmail && (
+
+                    <button
+                        className="btn btn-outline-secondary"
+                        onClick={handleEmail}
+                    >
+                        <FiMail />
+                        <span>Email</span>
+                    </button>
+
+                )}
 
 
                 {/* DELETE */}

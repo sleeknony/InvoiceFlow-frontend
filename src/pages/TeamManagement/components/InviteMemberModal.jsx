@@ -1,33 +1,28 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import companyTeamService from "../../../services/companyTeamService";
-import PermissionChecklist from "./PermissionChecklist";
 import toast from "react-hot-toast";
 
 import "./InviteMemberModal.css";
 
 export default function InviteMemberModal({
-
     open,
-
     onClose,
-
     onSuccess,
-
-    roles = [],
-
-    permissions = []
-
+    roles = []
 }) {
 
     const [email, setEmail] = useState("");
 
     const [role, setRole] = useState("");
 
-    const [selectedPermissions, setSelectedPermissions] = useState([]);
-
     const [saving, setSaving] = useState(false);
 
     const [error, setError] = useState("");
+
+
+    // =========================================================
+    // INITIALIZE
+    // =========================================================
 
     useEffect(() => {
 
@@ -35,46 +30,60 @@ export default function InviteMemberModal({
             return;
 
         setEmail("");
-
         setRole("");
-
-        setSelectedPermissions([]);
-
         setError("");
 
     }, [open]);
 
-    if (!open)
-        return null;
+
+    // =========================================================
+    // SELECTED ROLE
+    // =========================================================
+
+    const selectedRole =
+        roles.find(
+            x => x.id === Number(role)
+        );
+
+
+    // =========================================================
+    // SUBMIT
+    // =========================================================
 
     async function handleSubmit() {
 
         if (!email.trim()) {
 
-            setError("Email is required.");
+            setError(
+                "Email is required."
+            );
 
             return;
-
         }
+
 
         const emailRegex =
             /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if (!emailRegex.test(email)) {
+        if (!emailRegex.test(email.trim())) {
 
-            setError("Please enter a valid email address.");
-
-            return;
-
-        }
-
-        if (role === "") {
-
-            setError("Please select a role.");
+            setError(
+                "Please enter a valid email address."
+            );
 
             return;
-
         }
+
+
+        if (!role) {
+
+            setError(
+                "Please select a role."
+            );
+
+            return;
+        }
+
 
         try {
 
@@ -82,29 +91,43 @@ export default function InviteMemberModal({
 
             setError("");
 
-            const response =
-                await companyTeamService.inviteMember({
-                    email: email.trim(),
-                    role: Number(role),
-                    permissions: selectedPermissions
-                });
+
+            // IMPORTANT:
+            // Invitation only sends Email and RoleId.
+            await companyTeamService.inviteMember({
+
+                email: email.trim(),
+
+                roleId: Number(role)
+
+            });
+
 
             toast.success(
-                response?.message ||
                 "Invitation sent successfully."
             );
 
-            onSuccess?.();
+
+            await onSuccess?.();
 
             onClose();
 
         }
         catch (err) {
 
-            toast.error(
-                err?.response?.data?.message ||
-                "Unable to send invitation."
+            console.error(
+                "Error sending invitation:",
+                err
             );
+
+            const message =
+                err?.response?.data?.message ||
+                err?.response?.data ||
+                "Unable to send invitation.";
+
+            setError(message);
+
+            toast.error(message);
 
         }
         finally {
@@ -112,7 +135,21 @@ export default function InviteMemberModal({
             setSaving(false);
 
         }
+
     }
+
+
+    // =========================================================
+    // DON'T RENDER
+    // =========================================================
+
+    if (!open)
+        return null;
+
+
+    const rolePermissions =
+        selectedRole?.permissions ?? [];
+
 
     return (
 
@@ -120,127 +157,117 @@ export default function InviteMemberModal({
 
             <div className="invite-modal">
 
-                {/* Header */}
+
+                {/* =================================================
+                    HEADER
+                ================================================= */}
 
                 <div className="invite-header">
 
-                    <h2>
+                    <div>
 
-                        Invite Team Member
+                        <h2>
+                            Invite Team Member
+                        </h2>
 
-                    </h2>
+                        <p>
+                            Invite a user and assign them a role.
+                        </p>
+
+                    </div>
+
 
                     <button
-
+                        type="button"
                         className="invite-close"
-
                         onClick={onClose}
-
                         disabled={saving}
-
                     >
-
-                        x
-
+                        ×
                     </button>
 
                 </div>
 
-                {/* Body */}
+
+                {/* =================================================
+                    BODY
+                ================================================= */}
 
                 <div className="invite-body">
+
 
                     {error && (
 
                         <div className="invite-error">
-
                             {error}
-
                         </div>
 
                     )}
 
+
+                    {/* =================================================
+                        EMAIL
+                    ================================================= */}
+
                     <div className="invite-field">
 
                         <label>
-
                             Email Address
-
                         </label>
 
                         <input
-
                             type="email"
-
                             placeholder="john@example.com"
-
                             value={email}
-
                             disabled={saving}
-
                             onChange={(e) =>
-                                setEmail(e.target.value)
+                                setEmail(
+                                    e.target.value
+                                )
                             }
-
                         />
 
                     </div>
 
+
+                    {/* =================================================
+                        ROLE
+                    ================================================= */}
+
                     <div className="invite-field">
 
                         <label>
-
                             Role
-
                         </label>
 
                         <select
-
                             value={role}
-
                             disabled={saving}
-
-                            onChange={(e) => {
-
-                                const value = Number(e.target.value);
-
-                                console.log("Selected Role Value:", value);
-
-                                const selectedRole =
-                                    roles.find(r => r.value === value);
-
-                                console.log("Selected Role:", selectedRole);
-
-                                setRole(value);
-
-                                setSelectedPermissions(
-                                    selectedRole?.defaultPermissions ?? []
-                                );
-
-                            }}
-
+                            onChange={(e) =>
+                                setRole(
+                                    Number(e.target.value)
+                                )
+                            }
                         >
 
                             <option value="">
-
                                 Select Role
-
                             </option>
 
+
                             {roles
-                                .filter(x => x.name !== "Owner")
+                                .filter(
+                                    x =>
+                                        x.name !== "Owner" &&
+                                        x.isActive
+                                )
                                 .map(role => (
 
                                     <option
-
-                                        key={role.value}
-
-                                        value={role.value}
-
+                                        key={role.id}
+                                        value={role.id}
                                     >
-
                                         {role.displayName}
-
                                     </option>
 
                                 ))}
@@ -249,56 +276,161 @@ export default function InviteMemberModal({
 
                     </div>
 
-                    <div className="invite-field">
 
-                        <label>
+                    {/* =================================================
+                        ROLE PERMISSIONS
+                    ================================================= */}
 
-                            Permissions
+                    {selectedRole && (
 
-                        </label>
+                        <div className="invite-role-permissions">
 
-                        <PermissionChecklist
 
-                            permissions={permissions}
+                            {/* HEADER */}
 
-                            selectedPermissions={selectedPermissions}
+                            <div className="invite-role-permissions-header">
 
-                            onChange={setSelectedPermissions}
+                                <div className="invite-role-permissions-title">
 
-                            disabled={saving}
+                                    <div className="invite-role-permissions-icon">
+                                        ✓
+                                    </div>
 
-                        />
+                                    <div>
 
-                    </div>
+                                        <label>
+                                            Role Permissions
+                                        </label>
+
+                                        <p>
+                                            These permissions will be inherited
+                                            by this team member.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+
+                                <span className="invite-role-permission-count">
+
+                                    {rolePermissions.length}
+
+                                    {" "}
+
+                                    {rolePermissions.length === 1
+                                        ? "permission"
+                                        : "permissions"}
+
+                                </span>
+
+                            </div>
+
+
+                            {/* =================================================
+                                PERMISSION LIST
+                            ================================================= */}
+
+                            {rolePermissions.length > 0 ? (
+
+                                <div className="invite-permission-list">
+
+                                    {rolePermissions.map(
+                                        permission => (
+
+                                            <div
+                                                key={permission.id}
+                                                className="invite-permission-item"
+                                            >
+
+                                                <div className="invite-permission-check">
+                                                    ✓
+                                                </div>
+
+                                                <div className="invite-permission-content">
+
+                                                    <strong>
+                                                        {
+                                                            permission.displayName ??
+                                                            permission.name
+                                                        }
+                                                    </strong>
+
+                                                    {permission.description && (
+
+                                                        <small>
+                                                            {
+                                                                permission.description
+                                                            }
+                                                        </small>
+
+                                                    )}
+
+                                                </div>
+
+                                            </div>
+
+                                        )
+                                    )}
+
+                                </div>
+
+                            ) : (
+
+                                <div className="invite-no-permissions">
+
+                                    <div className="invite-no-permissions-icon">
+                                        !
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            No permissions assigned
+                                        </strong>
+
+                                        <span>
+                                            This role currently has no
+                                            permissions configured.
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            )}
+
+                        </div>
+
+                    )}
 
                 </div>
 
-                {/* Footer */}
+
+                {/* =================================================
+                    FOOTER
+                ================================================= */}
 
                 <div className="invite-footer">
 
                     <button
-
+                        type="button"
                         className="btn-secondary"
-
                         disabled={saving}
-
                         onClick={onClose}
-
                     >
-
                         Cancel
-
                     </button>
 
+
                     <button
-
+                        type="button"
                         className="btn-primary"
-
-                        disabled={saving}
-
+                        disabled={
+                            saving ||
+                            !role
+                        }
                         onClick={handleSubmit}
-
                     >
 
                         {saving
@@ -314,5 +446,4 @@ export default function InviteMemberModal({
         </div>
 
     );
-
 }

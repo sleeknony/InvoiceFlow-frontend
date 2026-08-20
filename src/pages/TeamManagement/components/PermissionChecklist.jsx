@@ -1,120 +1,199 @@
-import "./PermissionChecklist.css";
+﻿import "./PermissionChecklist.css";
 
 export default function PermissionChecklist({
-
     permissions = [],
-
     selectedPermissions = [],
-
     onChange,
-
     disabled = false
-
 }) {
 
-    function togglePermission(value) {
+    function togglePermission(permissionId) {
 
         if (disabled)
             return;
 
-        const exists =
-            selectedPermissions.includes(value);
-
-        if (exists) {
+        if (selectedPermissions.includes(permissionId)) {
 
             onChange(
-                selectedPermissions.filter(x => x !== value)
+                selectedPermissions.filter(
+                    x => x !== permissionId
+                )
             );
 
             return;
-
         }
 
         onChange([
             ...selectedPermissions,
-            value
+            permissionId
         ]);
-
     }
 
-    const grouped =
-        permissions.reduce((groups, permission) => {
+    const grouped = permissions.reduce(
+        (groups, permission) => {
 
-            if (!groups[permission.category]) {
+            const category =
+                permission.category || "Other";
 
-                groups[permission.category] = [];
-
+            if (!groups[category]) {
+                groups[category] = [];
             }
 
-            groups[permission.category].push(permission);
+            groups[category].push(permission);
 
             return groups;
 
-        }, {});
+        },
+        {}
+    );
+
+    if (permissions.length === 0) {
+
+        return (
+            <div className="permission-checklist-empty">
+                No permissions available.
+            </div>
+        );
+    }
 
     return (
 
         <div className="permission-checklist">
 
             {Object.entries(grouped).map(
+                ([category, items]) => {
 
-                ([category, items]) => (
+                    const selectedCount =
+                        items.filter(permission =>
+                            selectedPermissions.includes(
+                                permission.id
+                            )
+                        ).length;
 
-                    <div
-                        key={category}
-                        className="permission-group"
-                    >
+                    return (
 
-                        <h4>
+                        <div
+                            key={category}
+                            className="permission-group"
+                        >
 
-                            {category}
+                            {/* CATEGORY HEADER */}
 
-                        </h4>
+                            <div className="permission-group-header">
 
-                        <div className="permission-items">
+                                <div className="permission-group-title">
 
-                            {items.map(permission => (
-
-                                <label
-                                    key={permission.value}
-                                    className="permission-item"
-                                >
-
-                                    <input
-                                        type="checkbox"
-                                        disabled={disabled}
-                                        checked={
-                                            selectedPermissions.includes(
-                                                permission.value
-                                            )
-                                        }
-                                        onChange={() =>
-                                            togglePermission(
-                                                permission.value
-                                            )
-                                        }
-                                    />
+                                    <h4>
+                                        {category}
+                                    </h4>
 
                                     <span>
+                                        {items.length}{" "}
+                                        {items.length === 1
+                                            ? "permission"
+                                            : "permissions"}
+                                    </span>
 
-                                        {permission.displayName}
+                                </div>
+
+                                {selectedCount > 0 && (
+
+                                    <span className="permission-group-selected">
+
+                                        {selectedCount} selected
 
                                     </span>
 
-                                </label>
+                                )}
 
-                            ))}
+                            </div>
+
+
+                            {/* PERMISSIONS */}
+
+                            <div className="permission-items">
+
+                                {items.map(permission => {
+
+                                    const selected =
+                                        selectedPermissions.includes(
+                                            permission.id
+                                        );
+
+                                    return (
+
+                                        <label
+                                            key={permission.id}
+                                            className={
+                                                `permission-item ${selected
+                                                    ? "selected"
+                                                    : ""
+                                                } ${disabled
+                                                    ? "disabled"
+                                                    : ""
+                                                }`
+                                            }
+                                        >
+
+                                            <input
+                                                type="checkbox"
+                                                disabled={disabled}
+                                                checked={selected}
+                                                onChange={() =>
+                                                    togglePermission(
+                                                        permission.id
+                                                    )
+                                                }
+                                            />
+
+                                            <span className="permission-checkbox">
+
+                                                {selected && (
+                                                    <span>
+                                                        ✓
+                                                    </span>
+                                                )}
+
+                                            </span>
+
+                                            <span className="permission-content">
+
+                                                <span className="permission-name">
+
+                                                    {permission.displayName ??
+                                                        permission.name}
+
+                                                </span>
+
+                                                {permission.description && (
+
+                                                    <span className="permission-description">
+
+                                                        {
+                                                            permission.description
+                                                        }
+
+                                                    </span>
+
+                                                )}
+
+                                            </span>
+
+                                        </label>
+
+                                    );
+
+                                })}
+
+                            </div>
 
                         </div>
 
-                    </div>
+                    );
 
-                )
-
+                }
             )}
 
         </div>
-
     );
-
 }

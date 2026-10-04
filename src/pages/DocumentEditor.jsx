@@ -112,10 +112,10 @@ export default function DocumentEditor({ mode }) {
             const accounts =
                 await getBankAccounts();
 
-            console.log(
-                "BANK ACCOUNTS:",
-                accounts
-            );
+            //console.log(
+            //    "BANK ACCOUNTS:",
+            //    accounts
+            //);
 
             setBankAccounts(accounts);
 

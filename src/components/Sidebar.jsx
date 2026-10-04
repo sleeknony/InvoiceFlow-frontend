@@ -13,6 +13,7 @@ import {
 } from "react-icons/fi";
 
 import { useSubscription } from "../context/useSubscription";
+import invoiceNgineLogo from "../assets/images/IN_logo.png";
 import "./Sidebar.css";
 
 export default function Sidebar() {
@@ -82,13 +83,15 @@ export default function Sidebar() {
 
             <div className="sidebar-brand">
 
-                <div className="sidebar-brand-icon">
-                    <FiFileText />
-                </div>
+                <img
+                    src={invoiceNgineLogo}
+                    alt="invoiceNgine"
+                    className="sidebar-logo"
+                />
 
                 <div className="sidebar-brand-text">
                     <span className="sidebar-brand-name">
-                        InvoiceFlow
+                        invoiceNgine
                     </span>
 
                     <span className="sidebar-brand-caption">

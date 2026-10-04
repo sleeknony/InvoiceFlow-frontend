@@ -18,6 +18,18 @@
   
 }
 
+.topbar-company-name {
+    max-width: 220px;
+    min-width: 0;
+    margin-right: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    font-weight: 900;
+    color: #344054;
+}
+
 
 /* =====================================================
    LEFT — BREADCRUMB

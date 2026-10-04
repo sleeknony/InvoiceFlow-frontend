@@ -170,8 +170,22 @@ export const getReceivables =
         return res.data;
     };
 
-export const getPreviewUrl = (id) =>
-    `${http.defaults.baseURL}/documents/${id}/preview`;
+//export const getPreviewUrl = (id) =>
+//    `${http.defaults.baseURL}/documents/${id}/preview`;
+
+
+export const getDocumentPreview = async (id) => {
+
+    const response =
+        await http.get(
+            `/documents/${id}/preview`,
+            {
+                responseType: "blob"
+            }
+        );
+
+    return response.data;
+};
 
 
 export const downloadDocumentPdf = async (id) => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FiAlertTriangle, FiCheck, FiCopy, FiKey, FiPlus,FiRefreshCw, FiShield,  FiTrash2,  FiX } from "react-icons/fi";
 import toast from "react-hot-toast";
-import { createApiKey, getApiKeys, regenerateApiKey, revokeApiKey } from "../../../services/apiKeyService";
+import { createApiKey, getApiKeys, getApiScopes, regenerateApiKey, revokeApiKey } from "../../../services/apiKeyService";
 
 import "./Tab.css";
 
@@ -28,6 +28,12 @@ export default function ApiAccessTab() {
     const [processingId, setProcessingId] =
         useState(null);
 
+    const [apiScopes, setApiScopes] =
+        useState([]);
+
+    const [selectedScopes, setSelectedScopes] =
+        useState([]);
+
 
     // =========================================================
     // LOAD API KEYS
@@ -36,9 +42,35 @@ export default function ApiAccessTab() {
     useEffect(() => {
 
         loadApiKeys();
+        loadApiScopes();
 
     }, []);
 
+    async function loadApiScopes() {
+
+        try {
+
+            const data =
+                await getApiScopes();
+
+            setApiScopes(
+                data ?? []
+            );
+
+        }
+        catch (err) {
+
+            console.error(
+                "Unable to load API scopes:",
+                err
+            );
+
+            toast.error(
+                "Unable to load API permissions."
+            );
+
+        }
+    }
 
     async function loadApiKeys() {
 
@@ -73,6 +105,27 @@ export default function ApiAccessTab() {
         }
     }
 
+    function toggleScope(scopeName) {
+
+        setSelectedScopes(prev => {
+
+            if (prev.includes(scopeName)) {
+
+                return prev.filter(
+                    scope =>
+                        scope !== scopeName
+                );
+
+            }
+
+            return [
+                ...prev,
+                scopeName
+            ];
+
+        });
+
+    }
 
     // =========================================================
     // CREATE API KEY
@@ -98,7 +151,8 @@ export default function ApiAccessTab() {
 
             const result =
                 await createApiKey(
-                    name
+                    name,
+                    selectedScopes
                 );
 
             setNewSecret(
@@ -106,6 +160,8 @@ export default function ApiAccessTab() {
             );
 
             setKeyName("");
+
+            setSelectedScopes([]);
 
             setShowCreate(false);
 
@@ -348,7 +404,7 @@ export default function ApiAccessTab() {
 
                 <p className="tab-subtitle">
                     Manage API keys used by external applications
-                    to securely access your InvoiceFlow workspace.
+                    to securely access your invoiceNgine workspace.
                 </p>
 
             </div>
@@ -374,7 +430,7 @@ export default function ApiAccessTab() {
                     <div className="mt-1">
 
                         API keys provide programmatic access
-                        to your InvoiceFlow company data.
+                        to your invoiceNgine company data.
                         Keep your keys private and never
                         expose them in client-side applications.
 
@@ -447,9 +503,15 @@ export default function ApiAccessTab() {
                             <button
                                 type="button"
                                 className="btn btn-sm btn-light"
-                                onClick={() =>
-                                    setShowCreate(false)
-                                }
+                                onClick={() => {
+
+                                    setShowCreate(false);
+
+                                    setKeyName("");
+
+                                    setSelectedScopes([]);
+
+                                }}
                                 disabled={creating}
                             >
 
@@ -489,6 +551,81 @@ export default function ApiAccessTab() {
 
                         </small>
 
+                        <div className="mt-4">
+
+                            <label className="form-label fw-semibold">
+                                API Permissions
+                            </label>
+
+                            <small className="text-muted d-block mb-3">
+                                Select what this API key is allowed to access.
+                            </small>
+
+                            {apiScopes.length === 0 ? (
+
+                                <div className="text-muted">
+                                    No API permissions available.
+                                </div>
+
+                            ) : (
+
+                                <div className="border rounded">
+
+                                        {apiScopes.map((scope, index) => (
+                                            <div
+                                                key={scope.id ?? `scope-${index}`}
+                                                className="p-3 border-bottom"
+                                            >
+
+                                            <div className="form-check">
+
+                                                <input
+                                                    type="checkbox"
+                                                    className="form-check-input"
+                                                    id={`scope-${scope.id}`}
+                                                    checked={
+                                                        selectedScopes.includes(
+                                                            scope.name
+                                                        )
+                                                    }
+                                                    onChange={() =>
+                                                        toggleScope(
+                                                            scope.name
+                                                        )
+                                                    }
+                                                    disabled={creating}
+                                                />
+
+                                                <label
+                                                    className="form-check-label"
+                                                    htmlFor={`scope-${scope.id}`}
+                                                >
+
+                                                    <strong>
+                                                        {scope.displayName}
+                                                    </strong>
+
+                                                    <div className="small text-muted">
+                                                        {scope.description}
+                                                    </div>
+
+                                                    <div className="small font-monospace text-muted mt-1">
+                                                        {scope.name}
+                                                    </div>
+
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+
+                                    ))}
+
+                                </div>
+
+                            )}
+
+                        </div>
 
                         <div className="d-flex gap-2 mt-3">
 
@@ -523,6 +660,8 @@ export default function ApiAccessTab() {
                                     setShowCreate(false);
 
                                     setKeyName("");
+
+                                    setSelectedScopes([]);
 
                                 }}
                                 disabled={creating}
@@ -565,7 +704,7 @@ export default function ApiAccessTab() {
                             <p className="mb-3">
 
                                 This is the only time the complete
-                                secret will be shown. InvoiceFlow
+                                secret will be shown. invoiceNgine
                                 does not store the original secret.
 
                             </p>
@@ -661,7 +800,7 @@ export default function ApiAccessTab() {
                         <p className="text-muted mb-0">
 
                             Create an API key to connect
-                            external applications to InvoiceFlow.
+                            external applications to invoiceNgine.
 
                         </p>
 
@@ -671,12 +810,11 @@ export default function ApiAccessTab() {
 
                     <div className="d-flex flex-column gap-3">
 
-                        {apiKeys.map(apiKey => (
-
-                            <div
-                                key={apiKey.id}
-                                className="border rounded p-3"
-                            >
+                                {apiKeys.map((apiKey, index) => (
+                                    <div
+                                        key={apiKey.id ?? `api-key-${index}`}
+                                        className="border rounded p-3"
+                                    >
 
                                 <div className="d-flex justify-content-between align-items-start gap-3">
 
@@ -706,6 +844,32 @@ export default function ApiAccessTab() {
                                                 {"********"}
 
                                             </div>
+
+
+                                            {apiKey.scopes?.length > 0 && (
+
+                                                <div className="mt-2">
+
+                                                    <small className="text-muted d-block mb-1">
+                                                        Permissions
+                                                    </small>
+
+                                                    <div className="d-flex flex-wrap gap-1">
+
+                                                                {[...new Set(apiKey.scopes ?? [])].map(scope => (
+                                                                    <span
+                                                                        key={scope}
+                                                                        className="badge bg-light text-dark border"
+                                                                    >
+                                                                        {scope}
+                                                                    </span>
+                                                                ))}
+
+                                                    </div>
+
+                                                </div>
+
+                                            )}
 
 
                                             <small className="text-muted d-block mt-2">

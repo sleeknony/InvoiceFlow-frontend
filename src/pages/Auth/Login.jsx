@@ -1,8 +1,7 @@
-﻿
-import { useNavigate } from "react-router-dom";
+﻿import { useNavigate } from "react-router-dom";
 import http from "../../api/http";
-import { useMemo, useState } from "react";
-import { useAuth } from "../../context/useAuth"; 
+import { useState } from "react";
+import { useAuth } from "../../context/useAuth";
 import toast from "react-hot-toast";
 import companyTeamService from "../../services/companyTeamService";
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -13,52 +12,103 @@ export default function Login() {
 
     const { login } = useAuth();
     const navigate = useNavigate();
+
     const [showPassword, setShowPassword] = useState(false);
-    
+
     const handleLogin = async () => {
-
         try {
-
             const res = await http.post("/Auth/login", {
-
                 email,
-
                 password
-
             });
 
-            console.log("Login Response:", res.data);
-            console.log("Permissions:", res.data.permissions);
+            // =====================================================
+            // SAVE PERMISSIONS
+            // =====================================================
 
             localStorage.setItem(
                 "permissions",
                 JSON.stringify(res.data.permissions || [])
             );
 
-            console.log(
-                "Saved permissions:",
-                localStorage.getItem("permissions")
-            );
+            // =====================================================
+            // SAVE AUTHENTICATION
+            // =====================================================
+
+            //login(
+            //    res.data.token,
+            //    res.data.user
+            //);
 
             login(
                 res.data.token,
-                res.data.user
+                {
+                    ...res.data.user,
+                    roles: res.data.roles || []
+                }
             );
 
-           
-            localStorage.setItem(
-                "permissions",
-                JSON.stringify(
-                    res.data.permissions || []
-                )
-            );
-
-           
+            // =====================================================
+            // SAVE COMPANY ROLE
+            // =====================================================
 
             localStorage.setItem(
                 "companyRole",
-                res.data.companyRole || ""
+                JSON.stringify(res.data.companyRole || null)
             );
+
+            // =====================================================
+            // DETERMINE IDENTITY ROLES
+            //
+            // SuperAdmin is an ASP.NET Identity role and is
+            // separate from company-level SystemRoles.
+            // =====================================================
+
+            const roles = Array.isArray(res.data.roles)
+                ? res.data.roles
+                : [res.data.roles];
+
+            const isSuperAdmin =
+                roles.some(
+                    role =>
+                        String(role).toLowerCase() ===
+                        "superadmin"
+                );
+
+            // =====================================================
+            // SUPERADMIN ROUTING
+            //
+            // SuperAdmin must NEVER go through:
+            // - Dashboard
+            // - Setup Company
+            // - Company-level pages
+            // - redirectAfterLogin
+            //
+            // SuperAdmin always starts at the platform area.
+            // =====================================================
+
+            if (isSuperAdmin) {
+                // A previous company-level redirect must not
+                // override SuperAdmin routing.
+                localStorage.removeItem(
+                    "redirectAfterLogin"
+                );
+
+                navigate(
+                    "/superadmin/companies",
+                    {
+                        replace: true
+                    }
+                );
+
+                return;
+            }
+
+            // =====================================================
+            // PENDING INVITATION
+            //
+            // This applies only to normal company users.
+            // =====================================================
 
             const pendingInvitationToken =
                 localStorage.getItem(
@@ -66,9 +116,7 @@ export default function Login() {
                 );
 
             if (pendingInvitationToken) {
-
                 try {
-
                     await companyTeamService
                         .acceptInvitation(
                             pendingInvitationToken
@@ -81,15 +129,9 @@ export default function Login() {
                     toast.success(
                         "Invitation accepted successfully."
                     );
-
                 }
                 catch (err) {
-
                     console.error(err);
-
-                    console.log("API Error:",
-                        err.response?.data
-                    );
 
                     toast.error(
                         err.response?.data?.message ||
@@ -97,51 +139,63 @@ export default function Login() {
                         "Login failed."
                     );
                 }
-
             }
+
+            // =====================================================
+            // NORMAL USER REDIRECT
+            // =====================================================
+
             const redirectTo =
-                localStorage.getItem("redirectAfterLogin");
+                localStorage.getItem(
+                    "redirectAfterLogin"
+                );
 
             if (redirectTo) {
-
                 localStorage.removeItem(
                     "redirectAfterLogin"
                 );
 
-                navigate(redirectTo);
+                navigate(
+                    redirectTo,
+                    {
+                        replace: true
+                    }
+                );
 
                 return;
-
             }
+
+            // =====================================================
+            // NORMAL USER ONBOARDING
+            // =====================================================
 
             if (res.data.onboardingCompleted) {
-
-                navigate("/dashboard");
-
+                navigate(
+                    "/dashboard",
+                    {
+                        replace: true
+                    }
+                );
             }
             else {
-
-                navigate("/setup-company");
-
+                navigate(
+                    "/setup-company",
+                    {
+                        replace: true
+                    }
+                );
             }
-
         }
         catch (err) {
-
             console.error(err);
 
             toast.error(
                 "Login failed. Please check your credentials."
             );
-
         }
-
     };
 
-
-
     return (
-
         <div className="auth-wrapper">
 
             <div className="auth-container">
@@ -158,7 +212,7 @@ export default function Login() {
                         <br />
                         Business With
                         <br />
-                        <span>InvoiceFlow</span>
+                        <span>invoiceNgine</span>
                     </h1>
 
                     <p className="auth-text">
@@ -195,6 +249,7 @@ export default function Login() {
                         </div>
 
                     </div>
+
                 </div>
 
                 {/* RIGHT SIDE */}
@@ -205,10 +260,9 @@ export default function Login() {
                     </h2>
 
                     <p className="auth-card-subtitle">
-                        Login to continue to InvoiceFlow
+                        Login to continue to invoiceNgine
                     </p>
 
-                    
                     <form
                         className="auth-form"
                         onSubmit={(e) => {
@@ -216,7 +270,9 @@ export default function Login() {
                             handleLogin();
                         }}
                     >
+
                         <div className="auth-form-group">
+
                             <label className="auth-form-label">
                                 Email
                             </label>
@@ -226,8 +282,12 @@ export default function Login() {
                                 className="auth-input"
                                 placeholder="Enter your email"
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChange={(e) =>
+                                    setEmail(e.target.value)
+                                }
+                                required
                             />
+
                         </div>
 
                         <div className="auth-form-group">
@@ -239,11 +299,19 @@ export default function Login() {
                             <div className="password-input-wrapper">
 
                                 <input
-                                    type={showPassword ? "text" : "password"}
+                                    type={
+                                        showPassword
+                                            ? "text"
+                                            : "password"
+                                    }
                                     className="auth-input"
                                     placeholder="Enter your password"
                                     value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    onChange={(e) =>
+                                        setPassword(
+                                            e.target.value
+                                        )
+                                    }
                                     required
                                 />
 
@@ -251,7 +319,9 @@ export default function Login() {
                                     type="button"
                                     className="password-toggle"
                                     onClick={() =>
-                                        setShowPassword(!showPassword)
+                                        setShowPassword(
+                                            !showPassword
+                                        )
                                     }
                                 >
                                     {
@@ -265,18 +335,24 @@ export default function Login() {
 
                         </div>
 
-                        <button type="submit" className="auth-btn">
+                        <button
+                            type="submit"
+                            className="auth-btn"
+                        >
                             Login
                         </button>
 
                     </form>
 
                     <div className="auth-footer">
+
                         Don’t have an account?
                         {" "}
+
                         <a href="/register">
                             Register
                         </a>
+
                     </div>
 
                 </div>
@@ -284,6 +360,6 @@ export default function Login() {
             </div>
 
         </div>
-        
     );
 }
+

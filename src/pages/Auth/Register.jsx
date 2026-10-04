@@ -139,11 +139,11 @@ export default function Register() {
                         <br />
                         Your Business With
                         <br />
-                        <span>InvoiceFlow</span>
+                        <span>invoiceNgine</span>
                     </h1>
 
                     <p className="auth-text">
-                        Join businesses using InvoiceFlow
+                        Join businesses using invoiceNgine
                         to generate invoices, manage customers,
                         track payments, and streamline billing
                         operations from one secure platform.
@@ -187,7 +187,7 @@ export default function Register() {
                     </h2>
 
                     <p className="auth-card-subtitle">
-                        Register to start using InvoiceFlow
+                        Register to start using invoiceNgine
                     </p>
 
                     {

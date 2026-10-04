@@ -1,6 +1,7 @@
 ﻿import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import http from "../../api/http";
+import { useSubscription } from "../../context/useSubscription";
 
 export default function PaymentResult() {
 
@@ -16,6 +17,7 @@ export default function PaymentResult() {
     // Prevent React StrictMode from verifying twice
     // during development.
     const verificationStarted = useRef(false);
+    const { refreshSubscription } = useSubscription();
 
     useEffect(() => {
 
@@ -80,6 +82,16 @@ export default function PaymentResult() {
 
             setResult(data);
 
+            try {
+                await refreshSubscription();
+            }
+            catch (refreshError) {
+                console.error(
+                    "Subscription refresh failed after successful payment:",
+                    refreshError
+                );
+            }
+
             setStatus("success");
 
             setMessage(
@@ -104,6 +116,8 @@ export default function PaymentResult() {
             );
         }
     }
+
+  
 
     return (
 

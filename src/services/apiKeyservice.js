@@ -16,16 +16,32 @@ export async function getApiKeys() {
 
 
 // ============================================================
+// GET API SCOPES
+// ============================================================
+
+export async function getApiScopes() {
+
+    const response =
+        await http.get(
+            "/v1/api-scopes"
+        );
+
+    return response.data;
+}
+
+
+// ============================================================
 // CREATE API KEY
 // ============================================================
 
-export async function createApiKey(name) {
+export async function createApiKey(name,scopes) {
 
     const response =
         await http.post(
             "/api-keys",
             {
-                name
+                name,
+                scopes
             }
         );
 

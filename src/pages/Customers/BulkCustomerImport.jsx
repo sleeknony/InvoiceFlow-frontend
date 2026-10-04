@@ -401,7 +401,7 @@ export default function BulkCustomerImport() {
                             </h2>
 
                             <p>
-                                Use the InvoiceFlow customer
+                                Use the invoiceNgine customer
                                 import template.
                             </p>
 

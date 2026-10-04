@@ -7,3 +7,24 @@ export async function getSubscriptionPlans() {
 
     return response.data;
 }
+
+
+// =====================================================
+// CREATE SUBSCRIPTION CHECKOUT
+// =====================================================
+
+export async function createSubscriptionCheckout(
+    plan,
+    billingCycle
+) {
+    const response =
+        await http.post(
+            "/subscription/checkout",
+            {
+                plan,
+                billingCycle
+            }
+        );
+
+    return response.data;
+}

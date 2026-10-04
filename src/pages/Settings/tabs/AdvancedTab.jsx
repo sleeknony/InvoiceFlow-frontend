@@ -33,7 +33,7 @@ export default function AdvancedTab({
             </h4>
 
             <p className="tab-subtitle">
-                Configure how InvoiceFlow behaves while you work.
+                Configure how invoiceNgine behaves while you work.
             </p>
 
             <div className="settings-section mt-4">

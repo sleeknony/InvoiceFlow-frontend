@@ -88,7 +88,7 @@ export default function FooterTab({ form, setForm }) {
 
                         <label className="form-check-label">
 
-                            Show "Powered by InvoiceFlow"
+                            Show "Powered by invoiceNgine"
 
                         </label>
 

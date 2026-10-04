@@ -227,11 +227,11 @@ export default function Settings() {
                     />
                 );
 
-            case "api-access":
+            //case "api-access":
 
-                return (
-                    <ApiAccessTab />
-                );
+            //    return (
+            //        <ApiAccessTab />
+            //    );
 
             default:
 
@@ -270,7 +270,7 @@ export default function Settings() {
                     </h2>
 
                     <p className="settings-page-subtitle">
-                        Configure your InvoiceFlow workspace.
+                        Configure your invoiceNgine workspace.
                     </p>
 
                 </div>
@@ -362,19 +362,19 @@ export default function Settings() {
                             Advanced
                         </button>
 
-                        <button
-                            className={`settings-nav-item ${activeTab === "api-access"
-                                    ? "active"
-                                    : ""
-                                }`}
-                            onClick={() =>
-                                setActiveTab("api-access")
-                            }
-                        >
-                            <i className="bi bi-key"></i>
+                        {/*<button*/}
+                        {/*    className={`settings-nav-item ${activeTab === "api-access"*/}
+                        {/*            ? "active"*/}
+                        {/*            : ""*/}
+                        {/*        }`}*/}
+                        {/*    onClick={() =>*/}
+                        {/*        setActiveTab("api-access")*/}
+                        {/*    }*/}
+                        {/*>*/}
+                        {/*    <i className="bi bi-key"></i>*/}
 
-                            API Access
-                        </button>
+                        {/*    API Access*/}
+                        {/*</button>*/}
 
                     </nav>
 

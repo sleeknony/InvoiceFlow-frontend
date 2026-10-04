@@ -334,35 +334,32 @@ export default function DocumentDetailsCard({
 
                     }
 
-                    <div className="col-md-6">
+                    {
+                        behavior.showPurchaseOrderNumber && (
 
-                        <label className="form-label">
+                            <div className="col-md-6">
 
-                            PO Number
+                                <label className="form-label">
+                                    PO Number
+                                </label>
 
-                        </label>
+                                <input
+                                    className="form-control"
+                                    value={
+                                        doc.purchaseOrderNumber || ""
+                                    }
+                                    onChange={(e) =>
+                                        update(
+                                            "purchaseOrderNumber",
+                                            e.target.value
+                                        )
+                                    }
+                                />
 
-                        <input
+                            </div>
 
-                            className="form-control"
-
-                            value={doc.purchaseOrderNumber || ""}
-
-                            onChange={(e) =>
-
-                                update(
-
-                                    "purchaseOrderNumber",
-
-                                    e.target.value
-
-                                )
-
-                            }
-
-                        />
-
-                    </div>
+                        )
+                    }
 
                     <div className="col-md-6">
 

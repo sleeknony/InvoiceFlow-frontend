@@ -176,7 +176,7 @@ const companyTeamService = {
 
         link.setAttribute(
             "download",
-            "InvoiceFlow-Team-Invitation-Template.xlsx"
+            "invoiceNgine-Team-Invitation-Template.xlsx"
         );
 
         document.body.appendChild(link);

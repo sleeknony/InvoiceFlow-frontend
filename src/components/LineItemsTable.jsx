@@ -20,8 +20,7 @@ export default function LineItemsTable({ items, onChange, defaultVatRate, allowN
                     quantity: 1,
                     unitPrice: 0,
                     discountPercent: 0,
-                    taxRatePercent: defaultVatRate || 0
-
+                    taxRatePercent: 0
                 },
             ]);
         }

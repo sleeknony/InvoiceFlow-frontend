@@ -258,7 +258,7 @@ export default function InvitationRegister() {
 
                         You have been invited
                         to join this company
-                        on InvoiceFlow.
+                        on invoiceNgine.
 
                     </p>
 

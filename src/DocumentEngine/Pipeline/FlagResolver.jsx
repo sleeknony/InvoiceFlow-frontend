@@ -36,8 +36,8 @@ class FlagResolver {
             showQrCode:
                 features.showQrCode === true,
 
-            showInvoiceFlowBranding:
-                subscription.showInvoiceFlowBranding === true
+            showinvoiceNgineBranding:
+                subscription.showinvoiceNgineBranding === true
 
         };
 

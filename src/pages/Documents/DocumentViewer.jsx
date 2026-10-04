@@ -12,7 +12,7 @@ import PdfDocumentViewer from "../../components/PdfDocumentViewer";
 import DocumentViewerHeader from "./components/DocumentViewerHeader";
 import DocumentKPICards  from "./components/DocumentKPICards";
 import {getDocument,getApprovalHistory,getPayments, updateDocumentStatus, approveDocument, rejectDocument, duplicateDocument,  deleteDocument,
-    convertDocument, emailDocument, addPayment, getPreviewUrl, downloadDocumentPdf, submitForApproval} from "../../services/documentService";
+    convertDocument, emailDocument, addPayment, getDocumentPreview, downloadDocumentPdf, submitForApproval} from "../../services/documentService";
 import { getSettings } from "../../services/settingsService";
 import { useSubscription } from "../../context/useSubscription";
 import { SUBSCRIPTION_FEATURES } from "../../utils/constants";
@@ -80,6 +80,12 @@ export default function DocumentViewer() {
             message: ""
         });
 
+    const [previewUrl, setPreviewUrl] =
+        useState(null);
+
+    const [previewLoading, setPreviewLoading] =
+        useState(false);
+
 
     // =====================================================
     // LOAD DOCUMENT
@@ -134,6 +140,71 @@ export default function DocumentViewer() {
         }
     }
 
+    // =====================================================
+    // DOCUMENT PREVIEW
+    //
+    // =====================================================
+
+    useEffect(() => {
+
+        if (!document?.id)
+            return;
+
+        let objectUrl = null;
+
+        async function loadPreview() {
+
+            try {
+
+                setPreviewLoading(true);
+
+                const blob =
+                    await getDocumentPreview(
+                        document.id
+                    );
+
+                objectUrl =
+                    URL.createObjectURL(blob);
+
+                setPreviewUrl(objectUrl);
+
+            }
+            catch (err) {
+
+                console.error(
+                    "Unable to load document preview:",
+                    err
+                );
+
+                toast.error(
+                    "Unable to load document preview."
+                );
+
+                setPreviewUrl(null);
+
+            }
+            finally {
+
+                setPreviewLoading(false);
+
+            }
+        }
+
+        loadPreview();
+
+        return () => {
+
+            if (objectUrl) {
+
+                URL.revokeObjectURL(
+                    objectUrl
+                );
+
+            }
+
+        };
+
+    }, [document?.id]);
 
     // =====================================================
     // LOAD PAYMENTS
@@ -925,7 +996,7 @@ export default function DocumentViewer() {
 
             <DocumentActionsToolbar
                 document={document}
-               
+                subscriptionLoading={subscriptionLoading}
                 canReceivePayment={canReceivePayment}
                 canTrackPayments={canTrackPayments}
                 handleEdit={handleEdit}
@@ -959,11 +1030,27 @@ export default function DocumentViewer() {
                     >
                         <Card.Body className="text-center">
 
-                            <PdfDocumentViewer
-                                url={getPreviewUrl(document.id)}
-                                maxPages={settings?.maxDocumentPages}
-                                subscriptionPlan={settings?.subscriptionPlan}
-                            />
+                            {previewLoading ? (
+
+                                <div className="py-5 text-muted">
+                                    Loading document preview...
+                                </div>
+
+                            ) : previewUrl ? (
+
+                                <PdfDocumentViewer
+                                    url={previewUrl}
+                                    maxPages={settings?.maxDocumentPages}
+                                    subscriptionPlan={settings?.subscriptionPlan}
+                                />
+
+                            ) : (
+
+                                <div className="py-5 text-muted">
+                                    Unable to load document preview.
+                                </div>
+
+                            )}
 
                         </Card.Body>
 

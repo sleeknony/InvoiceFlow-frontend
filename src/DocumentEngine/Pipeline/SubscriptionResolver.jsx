@@ -20,7 +20,7 @@ class SubscriptionResolver {
             canRemoveBranding:
                 Boolean(rules.allowBrandRemoval) && !isFree,
 
-            showInvoiceFlowBranding:
+            showinvoiceNgineBranding:
                 !(Boolean(rules.allowBrandRemoval) && !isFree),
 
             canUseCustomFonts:

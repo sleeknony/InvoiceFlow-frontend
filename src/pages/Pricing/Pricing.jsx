@@ -1,31 +1,100 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 import {
     getSubscriptionPlans
 } from "../../services/subscriptionService";
 
+import http from "../../api/http";
+import { useSubscription } from "../../context/useSubscription";
+
+import Footer from "../../components/Footer";
+import { FiArrowLeft, FiCheck, FiX } from "react-icons/fi";
 import "./Pricing.css";
+
+
+// ============================================================
+// PLAN ORDER
+// ============================================================
+
+const PLAN_ORDER = {
+    free: 1,
+    professional: 2,
+    business: 3,
+    enterprise: 4
+};
+
+
+// ============================================================
+// COMPONENT
+// ============================================================
 
 export default function Pricing() {
 
     const navigate = useNavigate();
 
-    const [plans, setPlans] = useState([]);
+
+    // =========================================================
+    // SUBSCRIPTION CONTEXT
+    // =========================================================
+
+    const {
+        subscription,
+        refreshSubscription
+    } = useSubscription();
+
+
+    // =========================================================
+    // STATE
+    // =========================================================
+
+    const [plans, setPlans] =
+        useState([]);
+
     const [billingCycle, setBillingCycle] =
         useState("monthly");
 
     const [loading, setLoading] =
         useState(true);
 
-    // ============================================================
+    const [actionLoadingPlan, setActionLoadingPlan] =
+        useState(null);
+
+
+    // =========================================================
     // LOAD PLANS
-    // ============================================================
+    // =========================================================
 
     useEffect(() => {
+
         loadPlans();
+
     }, []);
+
+
+    // =========================================================
+    // ALIGN DISPLAY BILLING CYCLE WITH CURRENT SUBSCRIPTION
+    // =========================================================
+
+    useEffect(() => {
+
+        const currentCycle =
+            subscription?.billingCycleName
+                ?.toLowerCase();
+
+
+        if (
+            currentCycle === "monthly" ||
+            currentCycle === "annual"
+        ) {
+            setBillingCycle(currentCycle);
+        }
+
+    }, [subscription?.billingCycleName]);
+
 
     async function loadPlans() {
 
@@ -33,14 +102,17 @@ export default function Pricing() {
 
             setLoading(true);
 
+
             const data =
                 await getSubscriptionPlans();
+
 
             setPlans(
                 Array.isArray(data)
                     ? data
                     : []
             );
+
         }
         catch (error) {
 
@@ -49,19 +121,23 @@ export default function Pricing() {
                 error
             );
 
+
             toast.error(
                 "Unable to load subscription plans."
             );
+
         }
         finally {
 
             setLoading(false);
+
         }
     }
 
-    // ============================================================
+
+    // =========================================================
     // PRICE
-    // ============================================================
+    // =========================================================
 
     function getPrice(plan) {
 
@@ -70,47 +146,109 @@ export default function Pricing() {
             : plan.annualPrice;
     }
 
-    function formatPrice(amount, currency) {
+
+    function formatPrice(
+        amount,
+        currency
+    ) {
 
         return new Intl.NumberFormat(
             "en-NG",
             {
-                style: "currency",
-                currency: currency || "NGN",
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
+                style:
+                    "currency",
+
+                currency:
+                    currency || "NGN",
+
+                minimumFractionDigits:
+                    0,
+
+                maximumFractionDigits:
+                    0
             }
-        ).format(amount ?? 0);
+        ).format(
+            amount ?? 0
+        );
     }
 
-    // ============================================================
+
+    // =========================================================
+    // DATE
+    // =========================================================
+
+    function formatDate(value) {
+
+        if (!value) {
+            return "the end of your current billing period";
+        }
+
+
+        const date =
+            new Date(value);
+
+
+        if (Number.isNaN(
+            date.getTime()
+        )) {
+            return "the end of your current billing period";
+        }
+
+
+        return new Intl.DateTimeFormat(
+            "en-NG",
+            {
+                day:
+                    "2-digit",
+
+                month:
+                    "short",
+
+                year:
+                    "numeric"
+            }
+        ).format(date);
+    }
+
+
+    // =========================================================
     // DESCRIPTION
-    // ============================================================
+    // =========================================================
 
-    function getPlanDescription(planName) {
+    function getPlanDescription(
+        planName
+    ) {
 
-        switch (planName?.toLowerCase()) {
+        switch (
+        planName?.toLowerCase()
+        ) {
 
             case "free":
-                return "Essential tools for getting started with InvoiceFlow.";
+
+                return "Essential tools for getting started with invoiceNgine.";
 
             case "professional":
+
                 return "More flexibility for professionals and growing businesses.";
 
             case "business":
+
                 return "Advanced capabilities for businesses and teams.";
 
             case "enterprise":
-                return "Full InvoiceFlow capabilities for larger organizations.";
+
+                return "Full invoiceNgine capabilities for larger organizations.";
 
             default:
+
                 return "";
         }
     }
 
-    // ============================================================
+
+    // =========================================================
     // LIMIT FORMATTER
-    // ============================================================
+    // =========================================================
 
     function formatLimit(
         value,
@@ -120,28 +258,48 @@ export default function Pricing() {
     ) {
 
         if (unlimited) {
+
             return `Unlimited ${plural}`;
         }
 
+
         const safeValue =
-            Number(value ?? 0);
+            Number(
+                value ?? 0
+            );
+
 
         return `${safeValue.toLocaleString()} ${safeValue === 1
-                ? singular
-                : plural
+            ? singular
+            : plural
             }`;
     }
 
-    // ============================================================
+
+    // =========================================================
     // CORE PLAN LIMITS
-    // ============================================================
+    // =========================================================
 
     function getPlanLimits(plan) {
 
         return [
 
             {
-                key: "documents",
+                key:
+                    "users",
+
+                label:
+                    plan.unlimitedUsers
+                        ? "Unlimited users"
+                        : `${plan.userLimit ?? 0} ${plan.userLimit === 1
+                            ? "user"
+                            : "users"
+                        }`
+            },
+
+            {
+                key:
+                    "documents",
 
                 label:
                     formatLimit(
@@ -153,7 +311,8 @@ export default function Pricing() {
             },
 
             {
-                key: "pages",
+                key:
+                    "pages",
 
                 label:
                     plan.unlimitedDocumentPages
@@ -165,7 +324,8 @@ export default function Pricing() {
             },
 
             {
-                key: "templates",
+                key:
+                    "templates",
 
                 label:
                     plan.unlimitedTemplates
@@ -177,7 +337,8 @@ export default function Pricing() {
             },
 
             {
-                key: "pdf-downloads",
+                key:
+                    "pdf-downloads",
 
                 label:
                     formatLimit(
@@ -189,7 +350,8 @@ export default function Pricing() {
             },
 
             {
-                key: "emails",
+                key:
+                    "emails",
 
                 label:
                     formatLimit(
@@ -201,7 +363,8 @@ export default function Pricing() {
             },
 
             {
-                key: "document-conversions",
+                key:
+                    "document-conversions",
 
                 label:
                     formatLimit(
@@ -211,152 +374,481 @@ export default function Pricing() {
                         "document conversions"
                     )
             }
+
         ];
     }
 
-    // ============================================================
-    // FEATURES
-    // ============================================================
 
-    /*
-     * Some features are already represented more clearly
-     * by the limits above.
-     *
-     * Example:
-     *
-     * Feature.PdfDownload
-     *      -> whether PDF downloading is allowed
-     *
-     * PdfDownloadLimit
-     *      -> how many downloads are available
-     *
-     * We show the quantitative limit rather than repeating:
-     * "PDF Downloads".
-     */
+    // =========================================================
+    // FEATURES
+    // =========================================================
 
     const limitRepresentedFeatures = [
+
         "CreateDocuments",
         "PdfDownload",
         "EmailDocuments",
         "DocumentConversion"
+
     ];
+
+
+    const hiddenFeatures = [
+
+        "ApiAccess",
+        "CustomTemplates",
+        "MultipleCompanies"
+
+    ];
+
 
     function getAdditionalFeatures(plan) {
 
-        if (!Array.isArray(plan.features)) {
+        if (!Array.isArray(
+            plan.features
+        )) {
+
             return [];
         }
 
-        return plan.features
-            .filter(feature =>
-                !limitRepresentedFeatures.includes(
-                    feature.key
-                )
-            )
-            .map(feature => ({
-                key: feature.key,
 
-                label: feature.label,
+        return plan.features
+
+            .filter(feature => {
+
+                if (
+                    limitRepresentedFeatures.includes(
+                        feature.key
+                    )
+                ) {
+                    return false;
+                }
+
+
+                if (
+                    hiddenFeatures.includes(
+                        feature.key
+                    )
+                ) {
+                    return false;
+                }
+
+
+                return true;
+
+            })
+
+            .map(feature => ({
+
+                key:
+                    feature.key,
+
+                label:
+                    feature.label,
 
                 available:
-                    Boolean(feature.available)
+                    Boolean(
+                        feature.available
+                    )
+
             }));
     }
 
-    // ============================================================
-    // PLAN ACTION
-    // ============================================================
 
-    function handlePlan(plan) {
+    // =========================================================
+    // PLAN ACTION
+    // =========================================================
+
+    function getPlanAction(plan) {
 
         if (plan.isCurrentPlan) {
-            return;
+            return "current";
         }
 
-        const planName =
-            plan.name?.toLowerCase();
 
-        if (planName === "free") {
-
-            /*
-             * Downgrade flow will be implemented
-             * separately.
-             */
-
-            toast(
-                "Plan downgrade will be available from subscription management."
+        const currentPlan =
+            plans.find(
+                x =>
+                    x.isCurrentPlan
             );
 
-            return;
+
+        if (!currentPlan) {
+            return "upgrade";
         }
 
-        if (planName === "enterprise") {
 
-            /*
-             * We can later replace this with
-             * an Enterprise contact/sales flow.
-             */
+        const currentOrder =
+            PLAN_ORDER[
+            currentPlan.name
+                ?.toLowerCase()
+            ] ?? 0;
 
-            toast(
-                "Enterprise subscription flow will be connected next."
-            );
 
-            return;
+        const targetOrder =
+            PLAN_ORDER[
+            plan.name
+                ?.toLowerCase()
+            ] ?? 0;
+
+
+        return targetOrder >
+            currentOrder
+            ? "upgrade"
+            : "downgrade";
+    }
+
+
+    // =========================================================
+    // SCHEDULED TARGET
+    // =========================================================
+
+    function isScheduledPlan(plan) {
+
+        if (
+            !subscription?.scheduledPlan
+        ) {
+            return false;
         }
 
-        /*
-         * BATCH 3
-         *
-         * Flutterwave checkout starts here.
-         *
-         * We will send:
-         *
-         * plan.plan
-         * billingCycle
-         *
-         * The backend will determine the actual
-         * amount. React must never be trusted
-         * to determine the amount charged.
-         */
 
-        toast(
-            `${plan.name} ${billingCycle} checkout will be connected in Batch 3.`
+        return Number(
+            subscription.scheduledPlan
+        ) === Number(
+            plan.plan
         );
     }
 
-    // ============================================================
-    // PLAN ORDER
-    // ============================================================
+
+    // =========================================================
+    // UPGRADE
+    // =========================================================
+
+    async function handleUpgrade(plan) {
+
+        try {
+
+            setActionLoadingPlan(
+                plan.plan
+            );
+
+
+            const response =
+                await http.post(
+                    "/subscription/checkout",
+                    {
+                        plan:
+                            plan.plan,
+
+                        billingCycle:
+                            billingCycle ===
+                                "monthly"
+                                ? 1
+                                : 2
+                    }
+                );
+
+
+            const data =
+                response.data;
+
+
+            if (!data?.checkoutUrl) {
+
+                throw new Error(
+                    "Checkout URL was not returned by the server."
+                );
+            }
+
+
+            window.location.href =
+                data.checkoutUrl;
+
+        }
+        catch (error) {
+
+            console.error(
+                "Subscription checkout failed:",
+                error
+            );
+
+
+            toast.error(
+                error?.response?.data?.message ||
+                error?.response?.data?.title ||
+                error?.message ||
+                "Unable to start subscription checkout."
+            );
+
+
+            setActionLoadingPlan(
+                null
+            );
+        }
+    }
+
+
+    // =========================================================
+    // DOWNGRADE
+    // =========================================================
+
+    async function handleDowngrade(plan) {
+
+        const targetName =
+            plan.name ||
+            "selected plan";
+
+
+        const effectiveDate =
+            formatDate(
+                subscription?.endDate
+            );
+
+
+        const isFreeTarget =
+            targetName
+                .toLowerCase() ===
+            "free";
+
+
+        const currentBillingCycle =
+            subscription
+                ?.billingCycleName;
+
+
+        const result =
+            await Swal.fire({
+
+                title:
+                    `Downgrade to ${targetName}?`,
+
+                html:
+                    isFreeTarget
+                        ? `
+                            <div style="text-align:left;">
+                                <p>
+                                    Your current plan will remain active until
+                                    <strong>${effectiveDate}</strong>.
+                                </p>
+                                <p>
+                                    After that date, your subscription will change
+                                    to the Free plan and no renewal payment will be charged.
+                                </p>
+                            </div>
+                          `
+                        : `
+                            <div style="text-align:left;">
+                                <p>
+                                    Your current plan will remain active until
+                                    <strong>${effectiveDate}</strong>.
+                                </p>
+                                <p>
+                                    On that date, invoiceNgine will charge the
+                                    ${targetName} price using your saved payment authorization.
+                                </p>
+                                ${currentBillingCycle
+                            ? `
+                                    <p>
+                                        Your current
+                                        <strong>${currentBillingCycle}</strong>
+                                        billing cycle will continue.
+                                    </p>
+                                  `
+                            : ""
+                        }
+                            </div>
+                          `,
+
+                icon:
+                    "warning",
+
+                showCancelButton:
+                    true,
+
+                confirmButtonText:
+                    `Schedule ${targetName} downgrade`,
+
+                cancelButtonText:
+                    "Keep current plan",
+
+                reverseButtons:
+                    true,
+
+                confirmButtonColor:
+                    "#0d6efd",
+
+                cancelButtonColor:
+                    "#6c757d"
+            });
+
+
+        if (!result.isConfirmed) {
+            return;
+        }
+
+
+        try {
+
+            setActionLoadingPlan(
+                plan.plan
+            );
+
+
+            // IMPORTANT:
+            //
+            // Backend endpoint currently expects:
+            //
+            // [FromBody] SubscriptionPlan plan
+            //
+            // Therefore the request body is the enum
+            // value itself, not { plan: value }.
+
+            await http.post("/subscription/downgrade", {
+                plan: plan.plan
+            });
+
+
+            await Promise.all([
+                refreshSubscription(),
+                loadPlans()
+            ]);
+
+
+            toast.success(
+                `Downgrade to ${targetName} scheduled successfully.`
+            );
+
+
+            await Swal.fire({
+
+                title:
+                    "Downgrade Scheduled",
+
+                html:
+                    `
+                        <p>
+                            Your current subscription remains active until
+                            <strong>${effectiveDate}</strong>.
+                        </p>
+                        <p>
+                            It will then change to
+                            <strong>${targetName}</strong>.
+                        </p>
+                    `,
+
+                icon:
+                    "success",
+
+                confirmButtonText:
+                    "OK",
+
+                confirmButtonColor:
+                    "#0d6efd"
+            });
+
+        }
+        catch (error) {
+
+            console.error(
+                "Unable to schedule subscription downgrade:",
+                error
+            );
+
+
+            await Swal.fire({
+
+                title:
+                    "Downgrade Failed",
+
+                text:
+                    error?.response?.data?.message ||
+                    error?.response?.data?.title ||
+                    "Unable to schedule the subscription downgrade.",
+
+                icon:
+                    "error",
+
+                confirmButtonText:
+                    "OK",
+
+                confirmButtonColor:
+                    "#dc3545"
+            });
+
+        }
+        finally {
+
+            setActionLoadingPlan(
+                null
+            );
+        }
+    }
+
+
+    // =========================================================
+    // HANDLE PLAN
+    // =========================================================
+
+    async function handlePlan(plan) {
+
+        if (
+            plan.isCurrentPlan ||
+            isScheduledPlan(plan)
+        ) {
+            return;
+        }
+
+
+        const action =
+            getPlanAction(plan);
+
+
+        if (action === "downgrade") {
+
+            await handleDowngrade(
+                plan
+            );
+
+            return;
+        }
+
+
+        await handleUpgrade(
+            plan
+        );
+    }
+
+
+    // =========================================================
+    // ORDER PLANS
+    // =========================================================
 
     const orderedPlans =
         useMemo(() => {
 
-            const order = {
-                free: 1,
-                professional: 2,
-                business: 3,
-                enterprise: 4
-            };
-
             return [...plans].sort(
                 (a, b) =>
                     (
-                        order[
-                        a.name?.toLowerCase()
+                        PLAN_ORDER[
+                        a.name
+                            ?.toLowerCase()
                         ] ?? 99
-                    ) -
+                    )
+                    -
                     (
-                        order[
-                        b.name?.toLowerCase()
+                        PLAN_ORDER[
+                        b.name
+                            ?.toLowerCase()
                         ] ?? 99
                     )
             );
 
         }, [plans]);
 
-    // ============================================================
+
+    // =========================================================
     // LOADING
-    // ============================================================
+    // =========================================================
 
     if (loading) {
 
@@ -369,6 +861,7 @@ export default function Pricing() {
                     role="status"
                 />
 
+
                 <div className="mt-3">
                     Loading plans...
                 </div>
@@ -377,11 +870,14 @@ export default function Pricing() {
         );
     }
 
-    // ============================================================
-    // NO PLANS
-    // ============================================================
 
-    if (orderedPlans.length === 0) {
+    // =========================================================
+    // NO PLANS
+    // =========================================================
+
+    if (
+        orderedPlans.length === 0
+    ) {
 
         return (
 
@@ -390,6 +886,7 @@ export default function Pricing() {
                 <div className="mb-3">
                     No subscription plans are available.
                 </div>
+
 
                 <button
                     type="button"
@@ -403,39 +900,60 @@ export default function Pricing() {
         );
     }
 
-    // ============================================================
+
+    // =========================================================
     // UI
-    // ============================================================
+    // =========================================================
 
     return (
 
         <div className="pricing-page">
 
-            {/* ====================================================
+
+            {/* =================================================
                 HEADER
-            ==================================================== */}
+            ================================================= */}
 
             <div className="pricing-header">
 
+                {/*<button*/}
+                {/*    type="button"*/}
+                {/*    className="pricing-back"*/}
+                {/*    onClick={() =>*/}
+                {/*        navigate(-1)*/}
+                {/*    }*/}
+                {/*    disabled={*/}
+                {/*        actionLoadingPlan !==*/}
+                {/*        null*/}
+                {/*    }*/}
+                {/*>*/}
+
+                {/*    <i className="bi bi-arrow-left" />*/}
+
+                {/*    Back*/}
+
+                {/*</button>*/}
                 <button
                     type="button"
                     className="pricing-back"
                     onClick={() => navigate(-1)}
+                    disabled={actionLoadingPlan !== null}
                 >
-                    <i className="bi bi-arrow-left" />
-
-                    Back
+                    <FiArrowLeft className="pricing-back-icon" />
+                    <span>Back</span>
                 </button>
 
                 <div className="pricing-heading">
 
                     <span className="pricing-eyebrow">
-                        InvoiceFlow Plans
+                        invoiceNgine Plans
                     </span>
+
 
                     <h1>
                         Choose the plan that works for you
                     </h1>
+
 
                     <p>
                         Start free and upgrade as your
@@ -444,35 +962,51 @@ export default function Pricing() {
 
                 </div>
 
-                {/* ================================================
+
+                {/* =============================================
                     BILLING TOGGLE
-                ================================================ */}
+                ============================================= */}
 
                 <div className="billing-toggle">
 
                     <button
                         type="button"
                         className={
-                            billingCycle === "monthly"
+                            billingCycle ===
+                                "monthly"
                                 ? "active"
                                 : ""
                         }
                         onClick={() =>
-                            setBillingCycle("monthly")
+                            setBillingCycle(
+                                "monthly"
+                            )
+                        }
+                        disabled={
+                            actionLoadingPlan !==
+                            null
                         }
                     >
                         Monthly
                     </button>
 
+
                     <button
                         type="button"
                         className={
-                            billingCycle === "annual"
+                            billingCycle ===
+                                "annual"
                                 ? "active"
                                 : ""
                         }
                         onClick={() =>
-                            setBillingCycle("annual")
+                            setBillingCycle(
+                                "annual"
+                            )
+                        }
+                        disabled={
+                            actionLoadingPlan !==
+                            null
                         }
                     >
                         Annual
@@ -482,281 +1016,388 @@ export default function Pricing() {
 
             </div>
 
-            {/* ====================================================
+
+            {/* =================================================
+                SCHEDULED CHANGE NOTICE
+            ================================================= */}
+
+            {subscription?.scheduledPlan && (
+
+                <div
+                    className="alert alert-info"
+                    role="alert"
+                >
+
+                    <strong>
+                        Plan change scheduled.
+                    </strong>
+
+                    {" "}
+
+                    Your current plan remains active until{" "}
+
+                    <strong>
+                        {formatDate(
+                            subscription
+                                .scheduledPlanDate ||
+                            subscription
+                                .endDate
+                        )}
+                    </strong>,
+
+                    {" "}when it will change to{" "}
+
+                    <strong>
+                        {subscription
+                            .scheduledPlanName ||
+                            "the selected plan"}
+                    </strong>.
+
+                </div>
+
+            )}
+
+
+            {/* =================================================
                 PLAN CARDS
-            ==================================================== */}
+            ================================================= */}
 
             <div className="pricing-grid">
 
-                {orderedPlans.map(plan => {
+                {orderedPlans.map(
+                    plan => {
 
-                    const planName =
-                        plan.name?.toLowerCase();
+                        const planName =
+                            plan.name
+                                ?.toLowerCase();
 
-                    const isProfessional =
-                        planName === "professional";
 
-                    const isEnterprise =
-                        planName === "enterprise";
+                        const isProfessional =
+                            planName ===
+                            "professional";
 
-                    const isFree =
-                        planName === "free";
 
-                    const price =
-                        getPrice(plan);
+                        const isFree =
+                            planName ===
+                            "free";
 
-                    const limits =
-                        getPlanLimits(plan);
 
-                    const features =
-                        getAdditionalFeatures(plan);
+                        const price =
+                            getPrice(plan);
 
-                    return (
 
-                        <div
-                            key={plan.plan}
-                            className={[
-                                "pricing-card",
+                        const limits =
+                            getPlanLimits(plan);
 
-                                isProfessional
-                                    ? "pricing-card-featured"
-                                    : "",
 
-                                plan.isCurrentPlan
-                                    ? "pricing-card-current"
-                                    : ""
-                            ]
-                                .filter(Boolean)
-                                .join(" ")}
-                        >
+                        const features =
+                            getAdditionalFeatures(
+                                plan
+                            );
 
-                            {/* ====================================
-                                BADGES
-                            ==================================== */}
 
-                            {isProfessional && (
-                                <div className="popular-badge">
-                                    Popular
-                                </div>
-                            )}
+                        const action =
+                            getPlanAction(plan);
 
-                            {plan.isCurrentPlan && (
-                                <div className="current-badge">
-                                    Current Plan
-                                </div>
-                            )}
 
-                            {/* ====================================
-                                PLAN NAME
-                            ==================================== */}
+                        const scheduled =
+                            isScheduledPlan(plan);
 
-                            <div className="pricing-card-top">
 
-                                <h3>
-                                    {plan.name}
-                                </h3>
+                        const actionLoading =
+                            actionLoadingPlan ===
+                            plan.plan;
 
-                                <p>
-                                    {getPlanDescription(
-                                        plan.name
-                                    )}
-                                </p>
 
-                            </div>
+                        return (
 
-                            {/* ====================================
-                                PRICE
-                            ==================================== */}
+                            <div
+                                key={
+                                    plan.plan
+                                }
+                                className={[
+                                    "pricing-card",
 
-                            <div className="pricing-price">
+                                    isProfessional
+                                        ? "pricing-card-featured"
+                                        : "",
 
-                                {isFree ? (
+                                    plan.isCurrentPlan
+                                        ? "pricing-card-current"
+                                        : ""
+                                ]
+                                    .filter(Boolean)
+                                    .join(" ")}
+                            >
 
-                                    <>
-                                        <span className="price-main">
-                                            Free
-                                        </span>
 
-                                        <span className="price-period">
-                                            forever
-                                        </span>
-                                    </>
+                                {/* =============================
+                                    BADGES
+                                ============================= */}
 
-                                ) : (
+                                {isProfessional && (
 
-                                    <>
-                                        <span className="price-main">
-
-                                            {formatPrice(
-                                                price,
-                                                plan.currency
-                                            )}
-
-                                        </span>
-
-                                        <span className="price-period">
-
-                                            /
-                                            {billingCycle ===
-                                                "monthly"
-                                                ? "month"
-                                                : "year"}
-
-                                        </span>
-                                    </>
+                                    <div className="popular-badge">
+                                        Popular
+                                    </div>
 
                                 )}
 
-                            </div>
 
-                            <div className="pricing-divider" />
+                                {plan.isCurrentPlan && (
 
-                            {/* ====================================
-                                PLAN LIMITS
-                            ==================================== */}
-
-                            <div className="pricing-section-title">
-                                Included
-                            </div>
-
-                            <div className="pricing-features">
-
-                                {limits.map(item => (
-
-                                    <div
-                                        className="pricing-feature"
-                                        key={item.key}
-                                    >
-
-                                        <span className="feature-check">
-                                            <i className="bi bi-check-lg" />
-                                        </span>
-
-                                        <span>
-                                            {item.label}
-                                        </span>
-
+                                    <div className="current-badge">
+                                        Current Plan
                                     </div>
 
-                                ))}
+                                )}
 
-                            </div>
 
-                            {/* ====================================
-                                FEATURE ENTITLEMENTS
-                            ==================================== */}
+                                {scheduled && (
 
-                            {features.length > 0 && (
-
-                                <>
-                                    <div className="pricing-divider pricing-divider-small" />
-
-                                    <div className="pricing-section-title">
-                                        Features
+                                    <div className="current-badge">
+                                        Scheduled
                                     </div>
 
-                                    <div className="pricing-features">
+                                )}
 
-                                        {features.map(feature => (
+
+                                {/* =============================
+                                    PLAN NAME
+                                ============================= */}
+
+                                <div className="pricing-card-top">
+
+                                    <h3>
+                                        {plan.name}
+                                    </h3>
+
+
+                                    <p>
+                                        {getPlanDescription(
+                                            plan.name
+                                        )}
+                                    </p>
+
+                                </div>
+
+
+                                {/* =============================
+                                    PRICE
+                                ============================= */}
+
+                                <div className="pricing-price">
+
+                                    {isFree ? (
+
+                                        <>
+
+                                            <span className="price-main">
+                                                Free
+                                            </span>
+
+                                            <span className="price-period">
+                                                forever
+                                            </span>
+
+                                        </>
+
+                                    ) : (
+
+                                        <>
+
+                                            <span className="price-main">
+
+                                                {formatPrice(
+                                                    price,
+                                                    plan.currency
+                                                )}
+
+                                            </span>
+
+
+                                            <span className="price-period">
+
+                                                /
+
+                                                {billingCycle ===
+                                                    "monthly"
+                                                    ? "month"
+                                                    : "year"}
+
+                                            </span>
+
+                                        </>
+
+                                    )}
+
+                                </div>
+
+
+                                <div className="pricing-divider" />
+
+
+                                {/* =============================
+                                    LIMITS
+                                ============================= */}
+
+                                <div className="pricing-section-title">
+                                    Included
+                                </div>
+
+
+                                <div className="pricing-features">
+
+                                    {limits.map(
+                                        item => (
 
                                             <div
-                                                className={`pricing-feature ${feature.available
-                                                        ? "pricing-feature-available"
-                                                        : "pricing-feature-unavailable"
-                                                    }`}
-                                                key={feature.key}
+                                                className="pricing-feature"
+                                                key={item.key}
                                             >
 
-                                                <span
-                                                    className={`feature-status ${feature.available
-                                                            ? "feature-status-available"
-                                                            : "feature-status-unavailable"
-                                                        }`}
-                                                >
-                                                    <i
-                                                        className={
-                                                            feature.available
-                                                                ? "bi bi-check-lg"
-                                                                : "bi bi-x-lg"
-                                                        }
-                                                    />
+                                                <span className="feature-check">
+                                                    <FiCheck />
                                                 </span>
 
                                                 <span>
-                                                    {feature.label}
+                                                    {item.label}
                                                 </span>
 
                                             </div>
 
-                                        ))}
+                                        )
+                                    )}
 
-                                    </div>
-                                </>
+                                </div>
 
-                            )}
 
-                            {/* ====================================
-                                ACTION
-                            ==================================== */}
+                                {/* =============================
+                                    FEATURES
+                                ============================= */}
 
-                            <div className="pricing-card-action">
+                                {features.length > 0 && (
 
-                                {plan.isCurrentPlan ? (
+                                    <>
 
-                                    <button
-                                        type="button"
-                                        className="btn btn-secondary w-100"
-                                        disabled
-                                    >
-                                        Current Plan
-                                    </button>
+                                        <div className="pricing-divider pricing-divider-small" />
 
-                                ) : isFree ? (
 
-                                    <button
-                                        type="button"
-                                        className="btn btn-outline-secondary w-100"
-                                        onClick={() =>
-                                            handlePlan(plan)
-                                        }
-                                    >
-                                        Free Plan
-                                    </button>
+                                        <div className="pricing-section-title">
+                                            Features
+                                        </div>
 
-                                ) : isEnterprise ? (
 
-                                    <button
-                                        type="button"
-                                        className="btn btn-outline-primary w-100"
-                                        onClick={() =>
-                                            handlePlan(plan)
-                                        }
-                                    >
-                                        Contact Sales
-                                    </button>
+                                        <div className="pricing-features">
 
-                                ) : (
+                                            {features.map(feature => (
 
-                                    <button
-                                        type="button"
-                                        className="btn btn-primary w-100"
-                                        onClick={() =>
-                                            handlePlan(plan)
-                                        }
-                                    >
-                                        Upgrade to {plan.name}
-                                    </button>
+                                                <div
+                                                    className={`pricing-feature ${feature.available
+                                                            ? "pricing-feature-available"
+                                                            : "pricing-feature-unavailable"
+                                                        }`}
+                                                    key={feature.key}
+                                                >
+
+                                                    <span
+                                                        className={`feature-status ${feature.available
+                                                                ? "feature-status-available"
+                                                                : "feature-status-unavailable"
+                                                            }`}
+                                                    >
+                                                        {feature.available ? <FiCheck /> : <FiX />}
+                                                    </span>
+
+                                                    <span>
+                                                        {feature.label}
+                                                    </span>
+
+                                                </div>
+
+                                            ))}
+
+                                        </div>
+
+                                    </>
 
                                 )}
 
+
+                                {/* =============================
+                                    ACTION
+                                ============================= */}
+
+                                <div className="pricing-card-action">
+
+                                    {plan.isCurrentPlan ? (
+
+                                        <button
+                                            type="button"
+                                            className="btn btn-secondary w-100"
+                                            disabled
+                                        >
+                                            Current Plan
+                                        </button>
+
+                                    ) : scheduled ? (
+
+                                        <button
+                                            type="button"
+                                            className="btn btn-outline-secondary w-100"
+                                            disabled
+                                        >
+                                            Downgrade Scheduled
+                                        </button>
+
+                                    ) : (
+
+                                        <button
+                                            type="button"
+                                            className={
+                                                action ===
+                                                    "downgrade"
+                                                    ? "btn btn-outline-primary w-100"
+                                                    : "btn btn-primary w-100"
+                                            }
+                                            onClick={() =>
+                                                handlePlan(
+                                                    plan
+                                                )
+                                            }
+                                            disabled={
+                                                actionLoadingPlan !==
+                                                null
+                                            }
+                                        >
+
+                                            {actionLoading
+                                                ? action ===
+                                                    "downgrade"
+                                                    ? "Scheduling..."
+                                                    : "Opening Checkout..."
+                                                : action ===
+                                                    "downgrade"
+                                                    ? `Downgrade to ${plan.name}`
+                                                    : `Upgrade to ${plan.name}`}
+
+                                        </button>
+
+                                    )}
+
+                                </div>
+
                             </div>
 
-                        </div>
+                        );
 
-                    );
-                })}
+                    }
+                )}
 
             </div>
+
+
+            
 
         </div>
     );

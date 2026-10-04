@@ -51,11 +51,11 @@ export default function DocumentFooter() {
 
                     </span>
 
-                    {flags.showInvoiceFlowBranding && (
+                    {flags.showinvoiceNgineBranding && (
 
                         <span className="footer-brand">
 
-                            Powered by <strong>InvoiceFlow</strong>
+                            Powered by <strong>invoiceNgine</strong>
 
                         </span>
 

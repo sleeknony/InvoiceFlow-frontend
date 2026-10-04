@@ -1,0 +1,359 @@
+```css
+/* ============================================================
+   INVOICENGINE LEGAL PAGES
+   ============================================================ */
+.legal-page {
+    min-height: 100vh;
+    background: linear-gradient( 180deg, #f5f7fb 0%, #f8f9fc 45%, #ffffff 100% );
+    color: #172033;
+    padding: 0;
+}
+
+
+/* ============================================================
+   MAIN CONTAINER
+   ============================================================ */
+
+.legal-container {
+    width: min(100% - 32px, 980px);
+    margin: 0 auto;
+    padding: 36px 0 70px;
+}
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.legal-header {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid #e7eaf0;
+    border-radius: 18px;
+    padding: 30px 36px 32px;
+    margin-bottom: 22px;
+    box-shadow: 0 8px 30px rgba(23, 32, 51, 0.06);
+}
+
+
+/* ============================================================
+   BACK BUTTON
+   ============================================================ */
+
+.legal-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    height: 38px;
+    padding: 0 14px;
+    margin-bottom: 28px;
+    border: 1px solid #dfe4ec;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #475467;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(16, 24, 40, 0.05);
+    transition: all 0.18s ease;
+}
+
+    .legal-back i {
+        font-size: 14px;
+    }
+
+    .legal-back:hover {
+        background: #f5f8ff;
+        border-color: #b8c9f5;
+        color: #3158c7;
+        box-shadow: 0 4px 10px rgba(49, 88, 199, 0.10);
+        transform: translateY(-1px);
+    }
+
+    .legal-back:active {
+        transform: translateY(0);
+        box-shadow: 0 1px 3px rgba(16, 24, 40, 0.08);
+    }
+
+    .legal-back:focus-visible {
+        outline: none;
+        border-color: #5274d8;
+        box-shadow: 0 0 0 3px rgba(82, 116, 216, 0.16);
+    }
+
+
+/* ============================================================
+   EYEBROW
+   ============================================================ */
+
+.legal-eyebrow {
+    display: block;
+    margin-bottom: 10px;
+    color: #5570b8;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+}
+
+
+/* ============================================================
+   PAGE TITLE
+   ============================================================ */
+
+.legal-title {
+    margin: 0;
+    color: #172033;
+    font-size: clamp(30px, 4vw, 44px);
+    line-height: 1.12;
+    font-weight: 750;
+    letter-spacing: -0.035em;
+}
+
+
+/* ============================================================
+   EFFECTIVE DATE
+   ============================================================ */
+
+.legal-effective-date {
+    display: flex;
+    align-items: center;
+    margin: 14px 0 0;
+    color: #7a8496;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+
+/* ============================================================
+   CONTENT CARD
+   ============================================================ */
+
+.legal-content {
+    background: #ffffff;
+    border: 1px solid #e7eaf0;
+    border-radius: 18px;
+    padding: 42px 48px;
+    box-shadow: 0 8px 30px rgba(23, 32, 51, 0.045);
+}
+
+
+    /* ============================================================
+   SECTION HEADINGS
+   ============================================================ */
+
+    .legal-content h2 {
+        position: relative;
+        margin: 38px 0 13px;
+        padding-top: 2px;
+        color: #172033;
+        font-size: 19px;
+        line-height: 1.4;
+        font-weight: 700;
+        letter-spacing: -0.015em;
+    }
+
+        .legal-content h2:first-child {
+            margin-top: 0;
+        }
+
+
+        /* Small accent line beside section heading */
+
+        .legal-content h2::before {
+            content: "";
+            display: inline-block;
+            width: 3px;
+            height: 17px;
+            margin-right: 10px;
+            vertical-align: -2px;
+            border-radius: 4px;
+            background: #5274d8;
+        }
+
+
+    /* ============================================================
+   PARAGRAPHS
+   ============================================================ */
+
+    .legal-content p {
+        margin: 0 0 17px;
+        color: #5d687b;
+        font-size: 15px;
+        line-height: 1.85;
+        font-weight: 400;
+    }
+
+        .legal-content p:last-child {
+            margin-bottom: 0;
+        }
+
+
+    /* ============================================================
+   LISTS
+   ============================================================ */
+
+    .legal-content ul,
+    .legal-content ol {
+        margin: 0 0 20px;
+        padding-left: 24px;
+        color: #5d687b;
+        font-size: 15px;
+        line-height: 1.8;
+    }
+
+    .legal-content li {
+        margin-bottom: 8px;
+    }
+
+
+    /* ============================================================
+   LINKS
+   ============================================================ */
+
+    .legal-content a {
+        color: #4263c5;
+        font-weight: 600;
+        text-decoration: none;
+        transition: color 0.18s ease;
+    }
+
+        .legal-content a:hover {
+            color: #294da9;
+            text-decoration: underline;
+        }
+
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.legal-footer {
+    margin-top: 22px;
+    padding: 22px 28px;
+    border: 1px solid #e2e6ed;
+    border-radius: 14px;
+    background: #202938;
+    color: #aeb7c7;
+    font-size: 12px;
+    line-height: 1.6;
+    text-align: center;
+    box-shadow: 0 5px 18px rgba(23, 32, 51, 0.08);
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    .legal-container {
+        width: min(100% - 24px, 680px);
+        padding-top: 24px;
+        padding-bottom: 45px;
+    }
+
+    .legal-header {
+        padding: 26px 25px 28px;
+        border-radius: 15px;
+    }
+
+    .legal-back {
+        margin-bottom: 24px;
+    }
+
+    .legal-title {
+        font-size: 32px;
+    }
+
+    .legal-content {
+        padding: 32px 28px;
+        border-radius: 15px;
+    }
+
+        .legal-content h2 {
+            font-size: 18px;
+            margin-top: 32px;
+        }
+
+        .legal-content p {
+            font-size: 14.5px;
+            line-height: 1.8;
+        }
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 480px) {
+
+    .legal-container {
+        width: calc(100% - 20px);
+        padding-top: 15px;
+        padding-bottom: 30px;
+    }
+
+    .legal-header {
+        padding: 22px 19px 24px;
+        margin-bottom: 14px;
+        border-radius: 13px;
+    }
+
+    .legal-back {
+        height: 36px;
+        padding: 0 12px;
+        margin-bottom: 22px;
+        font-size: 12.5px;
+    }
+
+    .legal-eyebrow {
+        font-size: 10px;
+    }
+
+    .legal-title {
+        font-size: 28px;
+        letter-spacing: -0.025em;
+    }
+
+    .legal-effective-date {
+        font-size: 12px;
+    }
+
+    .legal-content {
+        padding: 27px 21px;
+        border-radius: 13px;
+    }
+
+        .legal-content h2 {
+            font-size: 17px;
+            margin-top: 29px;
+            margin-bottom: 11px;
+        }
+
+            .legal-content h2::before {
+                width: 3px;
+                height: 15px;
+                margin-right: 8px;
+            }
+
+        .legal-content p {
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+    .legal-footer {
+        margin-top: 14px;
+        padding: 18px 15px;
+        border-radius: 11px;
+        font-size: 11px;
+    }
+}
+
+```

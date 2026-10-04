@@ -128,7 +128,7 @@ const ModernMetrics = {
 
         let height = 45;
 
-        if (document?.flags?.showInvoiceFlowBranding)
+        if (document?.flags?.showinvoiceNgineBranding)
             height += 20;
 
         if (document?.company?.footer?.text)

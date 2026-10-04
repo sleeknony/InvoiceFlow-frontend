@@ -534,7 +534,7 @@ export default function DocumentsTab({
                         className="form-check-label"
                     >
 
-                        Show "Powered by InvoiceFlow"
+                        Show "Powered by invoiceNgine"
 
                     </label>
 

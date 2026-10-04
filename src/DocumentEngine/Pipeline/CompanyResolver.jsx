@@ -58,8 +58,8 @@ class CompanyResolver {
                 phone:
                     settings.phone ?? "",
 
-                showInvoiceFlowBranding:
-                    settings.removeInvoiceFlowBranding !== true
+                showinvoiceNgineBranding:
+                    settings.removeinvoiceNgineBranding !== true
 
             }
         };

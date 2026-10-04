@@ -55,7 +55,7 @@ export async function downloadBulkImportTemplate() {
     link.href = url;
 
     link.download =
-        "InvoiceFlow-Customer-Import-Template.xlsx";
+        "invoiceNgine-Customer-Import-Template.xlsx";
 
     document.body.appendChild(link);
 

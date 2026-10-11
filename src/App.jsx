@@ -6,6 +6,8 @@ import PermissionRoute from "./components/PermissionRoute.jsx";
 import SuperAdminRoute from "./components/SuperAdminRoute.jsx";
 import SuperAdminLayout from "./layouts/SuperAdminLayout.jsx";
 import SuperAdminActivity from "./pages/SuperAdmin/SuperAdminActivity";
+import SuperAdminSupport from "./pages/SuperAdmin/SuperAdminSupport.jsx";
+import SuperAdminSupportTicket from "./pages/SuperAdmin/SuperAdminSupportTicket.jsx";
 
 // ============================================================
 // PUBLIC PAGES
@@ -29,7 +31,7 @@ import SuperAdminCompanies from "./pages/SuperAdmin/SuperAdminCompanies.jsx";
 import SuperAdminCompanyUsers from "./pages/SuperAdmin/SuperAdminCompanyUsers.jsx";
 import SuperAdminCompanyDetails from "./pages/SuperAdmin/SuperAdminCompanyDetails";
 import SuperAdminSubscriptionHistory from "./pages/SuperAdmin/SuperAdminSubscriptionHistory";
-
+import SuperAdminCommunications from "./pages/SuperAdmin/SuperAdminCommunications.jsx";
 
 
 // ============================================================
@@ -54,6 +56,10 @@ import BulkInvite from "./pages/TeamManagement/BulkInvite/BulkInvite";
 
 import SetupCompany from "./pages/Company/SetupCompany";
 import RoleManagement from "./pages/RoleManagement/RoleManagement";
+
+import ReportsPage from "./pages/Reports/ReportsPage";
+import NotificationsPage from "./pages/Notifications/NotificationsPage";
+import HelpSupport from "./pages/HelpSupport/HelpSupport.jsx";
 
 import NotFound from "./pages/NotFound.jsx";
 
@@ -168,6 +174,14 @@ export default function App() {
                     element={<Dashboard />}
                 />
 
+                {/* =================================================
+                    NOTIFICATIONS
+                ================================================= */}
+
+                <Route
+                    path="/notifications"
+                    element={<NotificationsPage />}
+                />
 
                 {/* =================================================
                     CUSTOMERS
@@ -319,7 +333,36 @@ export default function App() {
                     element={<SetupCompany />}
                 />
 
+
+                {/* =================================================
+                     REPORTS
+                   ================================================= */}
+
+                <Route
+                    path="/reports"
+                    element={
+                        <PermissionRoute permission="ViewReports">
+                            <ReportsPage />
+                        </PermissionRoute>
+                    }
+                />
+
+                {/* =================================================
+    HELP & SUPPORT
+================================================= */}
+
+                <Route
+                    path="/help"
+                    element={<HelpSupport />}
+                />
+
+
+
             </Route>
+
+
+           
+         
 
 
                {/* =================================================
@@ -357,6 +400,21 @@ export default function App() {
                 <Route
                     path="activity"
                     element={<SuperAdminActivity />}
+                />
+
+                <Route
+                    path="communications"
+                    element={<SuperAdminCommunications />}
+                />
+
+                <Route
+                    path="support"
+                    element={<SuperAdminSupport />}
+                />
+
+                <Route
+                    path="support/tickets/:ticketId"
+                    element={<SuperAdminSupportTicket />}
                 />
             </Route>
 

@@ -1,0 +1,585 @@
+
+.help-support-page {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 30px 28px 48px;
+    color: #101828;
+}
+
+.help-support-hero {
+    padding: 42px 24px 38px;
+    text-align: center;
+    background: linear-gradient(135deg, #f0f7ff, #f8faff 65%, #eef2ff);
+    border: 1px solid #e1eaff;
+    border-radius: 20px;
+}
+
+.help-support-hero-icon {
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    background: #ffffff;
+    color: #2563eb;
+    font-size: 25px;
+    box-shadow: 0 3px 12px rgba(37, 99, 235, 0.1);
+}
+
+.help-support-eyebrow {
+    margin: 0 0 9px;
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.help-support-hero h1 {
+    margin: 0;
+    color: #101828;
+    font-size: clamp(25px, 3vw, 34px);
+    font-weight: 800;
+    letter-spacing: -0.8px;
+}
+
+.help-support-hero-description {
+    max-width: 550px;
+    margin: 12px auto 24px;
+    color: #667085;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.help-support-search {
+    width: 100%;
+    max-width: 560px;
+    height: 48px;
+    margin: 0 auto;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    background: #ffffff;
+    border: 1px solid #d0d5dd;
+    border-radius: 11px;
+    color: #98a2b3;
+    box-shadow: 0 2px 5px rgba(16, 24, 40, 0.04);
+}
+
+    .help-support-search:focus-within {
+        border-color: #84adff;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .help-support-search svg {
+        flex-shrink: 0;
+        font-size: 18px;
+    }
+
+    .help-support-search input {
+        width: 100%;
+        min-width: 0;
+        height: 100%;
+        border: 0;
+        outline: none;
+        background: transparent;
+        color: #101828;
+        font-size: 13px;
+    }
+
+        .help-support-search input::placeholder {
+            color: #98a2b3;
+        }
+
+.help-support-section {
+    margin-top: 36px;
+}
+
+.help-support-section-heading {
+    margin-bottom: 17px;
+}
+
+    .help-support-section-heading h2 {
+        margin: 0;
+        font-size: 19px;
+        font-weight: 750;
+        letter-spacing: -0.3px;
+    }
+
+    .help-support-section-heading p {
+        margin: 6px 0 0;
+        color: #667085;
+        font-size: 13px;
+    }
+
+.help-support-topic-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.help-support-topic-card {
+    min-width: 0;
+    padding: 22px;
+    background: #ffffff;
+    border: 1px solid #eaecf0;
+    border-radius: 14px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+    .help-support-topic-card:hover {
+        border-color: #c7d7fe;
+        box-shadow: 0 5px 18px rgba(16, 24, 40, 0.05);
+        transform: translateY(-2px);
+    }
+
+.help-support-topic-icon {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 19px;
+}
+
+.help-support-topic-card h3 {
+    margin: 0 0 8px;
+    font-size: 14px;
+    font-weight: 750;
+}
+
+.help-support-topic-card p {
+    margin: 0;
+    color: #667085;
+    font-size: 12.5px;
+    line-height: 1.7;
+}
+
+.help-support-faq-list {
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #eaecf0;
+    border-radius: 13px;
+}
+
+.help-support-faq + .help-support-faq {
+    border-top: 1px solid #eaecf0;
+}
+
+.help-support-faq-question {
+    width: 100%;
+    min-height: 58px;
+    padding: 15px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    border: 0;
+    background: #ffffff;
+    color: #344054;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+    .help-support-faq-question:hover {
+        background: #f9fafb;
+        color: #1d4ed8;
+    }
+
+.help-support-faq-chevron {
+    flex-shrink: 0;
+    color: #98a2b3;
+    transition: transform 0.18s ease;
+}
+
+    .help-support-faq-chevron.is-open {
+        transform: rotate(180deg);
+    }
+
+.help-support-faq-answer {
+    margin: 0;
+    padding: 0 18px 18px;
+    color: #667085;
+    font-size: 12.5px;
+    line-height: 1.8;
+}
+
+.help-support-empty {
+    padding: 18px;
+    color: #667085;
+    font-size: 13px;
+}
+
+.help-support-contact {
+    margin-top: 30px;
+    padding: 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #ffffff;
+    border: 1px solid #dbeafe;
+    border-radius: 15px;
+}
+
+.help-support-contact-icon {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 20px;
+}
+
+.help-support-contact-content {
+    flex: 1;
+    min-width: 0;
+}
+
+    .help-support-contact-content h2 {
+        margin: 0 0 5px;
+        font-size: 15px;
+        font-weight: 750;
+    }
+
+    .help-support-contact-content p {
+        margin: 0;
+        color: #667085;
+        font-size: 12.5px;
+        line-height: 1.6;
+    }
+
+.help-support-contact-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 15px;
+    border: 1px solid #2563eb;
+    border-radius: 9px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 650;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.15s ease;
+}
+
+    .help-support-contact-button:hover {
+        background: #1d4ed8;
+        color: #ffffff;
+    }
+
+@media (max-width: 768px) {
+    .help-support-page {
+        padding: 20px 16px 32px;
+    }
+
+    .help-support-hero {
+        padding: 32px 18px;
+    }
+
+    .help-support-topic-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .help-support-topic-card {
+        padding: 18px;
+    }
+
+    .help-support-contact {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .help-support-contact-content {
+        flex-basis: calc(100% - 65px);
+    }
+
+    .help-support-contact-button {
+        width: 100%;
+    }
+}
+
+
+
+/* Live chat section */
+
+.help-support-live-chat {
+    margin-top: 30px;
+    padding: 23px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #f8faff;
+    border: 1px solid #dbeafe;
+    border-radius: 15px;
+}
+
+.help-support-chat-icon {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: #e8f1ff;
+    color: #2563eb;
+    font-size: 21px;
+}
+
+.help-support-chat-content {
+    flex: 1;
+    min-width: 0;
+}
+
+    .help-support-chat-content h2 {
+        margin: 0 0 6px;
+        color: #101828;
+        font-size: 15px;
+        font-weight: 750;
+    }
+
+    .help-support-chat-content p {
+        margin: 0;
+        color: #667085;
+        font-size: 12.5px;
+        line-height: 1.7;
+    }
+
+    .help-support-chat-content .help-support-chat-note {
+        margin-top: 6px;
+        color: #475467;
+        font-size: 12px;
+    }
+
+.help-support-chat-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 16px;
+    border: 1px solid #2563eb;
+    border-radius: 9px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 650;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+    .help-support-chat-button:hover:not(:disabled) {
+        background: #1d4ed8;
+        border-color: #1d4ed8;
+    }
+
+    .help-support-chat-button:disabled {
+        border-color: #d0d5dd;
+        background: #e4e7ec;
+        color: #667085;
+        cursor: not-allowed;
+    }
+
+@media (max-width: 768px) {
+    .help-support-live-chat {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        padding: 18px;
+    }
+
+    .help-support-chat-content {
+        flex-basis: calc(100% - 65px);
+    }
+
+    .help-support-chat-button {
+        width: 100%;
+    }
+}
+
+/* Support ticket submission */
+
+.help-support-ticket {
+    margin-top: 32px;
+    padding: 28px;
+    background: #ffffff;
+    border: 1px solid #e5eaf2;
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(20, 43, 78, 0.04);
+}
+
+.help-support-ticket-heading {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.help-support-ticket-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #edf4ff;
+    color: #2459a9;
+    font-size: 22px;
+}
+
+.help-support-ticket-heading h2 {
+    margin: 0 0 8px;
+    color: #172b4d;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.help-support-ticket-heading p {
+    margin: 0;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.help-support-ticket-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.help-support-ticket-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+    .help-support-ticket-field label {
+        color: #24364b;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .help-support-ticket-field input,
+    .help-support-ticket-field textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px 14px;
+        border: 1px solid #d6deea;
+        border-radius: 9px;
+        background: #ffffff;
+        color: #172b4d;
+        font: inherit;
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .help-support-ticket-field input:focus,
+        .help-support-ticket-field textarea:focus {
+            border-color: #356fc2;
+            box-shadow: 0 0 0 3px rgba(53, 111, 194, 0.12);
+        }
+
+    .help-support-ticket-field textarea {
+        resize: vertical;
+        min-height: 140px;
+    }
+
+        .help-support-ticket-field input:disabled,
+        .help-support-ticket-field textarea:disabled {
+            background: #f8fafc;
+            cursor: not-allowed;
+        }
+
+    .help-support-ticket-field small {
+        color: #718096;
+        font-size: 12px;
+        text-align: right;
+    }
+
+.help-support-ticket-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    gap: 9px;
+    min-height: 44px;
+    padding: 11px 20px;
+    border: none;
+    border-radius: 9px;
+    background: #2459a9;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+    .help-support-ticket-submit:hover:not(:disabled) {
+        background: #194783;
+    }
+
+    .help-support-ticket-submit:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+    }
+
+.help-support-ticket-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 14px 16px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    line-height: 1.5;
+}
+
+    .help-support-ticket-message > svg {
+        flex: 0 0 auto;
+        margin-top: 2px;
+        font-size: 19px;
+    }
+
+    .help-support-ticket-message p {
+        margin: 6px 0 0;
+    }
+
+    .help-support-ticket-message.is-success {
+        background: #f0fdf4;
+        border-color: #bbf7d0;
+        color: #166534;
+    }
+
+    .help-support-ticket-message.is-error {
+        background: #fff7f7;
+        border-color: #fecaca;
+        color: #b42318;
+    }
+
+@media (max-width: 640px) {
+    .help-support-ticket {
+        padding: 20px 16px;
+    }
+
+    .help-support-ticket-heading h2 {
+        font-size: 19px;
+    }
+
+    .help-support-ticket-submit {
+        width: 100%;
+    }
+}

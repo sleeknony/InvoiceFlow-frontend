@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
+import http from "../api/http";
 
 export const AuthContext = createContext();
 
@@ -93,7 +94,7 @@ export function AuthProvider({ children }) {
                 err
             );
 
-            logout();
+            logout(false);
         }
     }, [token]);
 
@@ -120,26 +121,50 @@ export function AuthProvider({ children }) {
         setToken(jwtToken);
     };
 
-    const logout = () => {
+    //const logout = () => {
 
-        localStorage.removeItem(
-            "token"
-        );
+    //    localStorage.removeItem(
+    //        "token"
+    //    );
 
-        localStorage.removeItem(
-            "user"
-        );
+    //    localStorage.removeItem(
+    //        "user"
+    //    );
 
-        localStorage.removeItem(
-            "permissions"
-        );
+    //    localStorage.removeItem(
+    //        "permissions"
+    //    );
 
-        localStorage.removeItem(
-            "companyRole"
-        );
+    //    localStorage.removeItem(
+    //        "companyRole"
+    //    );
 
-        setToken(null);
-        setUser(null);
+    //    setToken(null);
+    //    setUser(null);
+    //};
+
+
+    const logout = async (recordActivity = true) => {
+        try {
+            if (recordActivity && token) {
+                await http.post("/Auth/logout");
+            }
+        }
+        catch (error) {
+            console.error(
+                "Logout activity could not be recorded:",
+                error
+            );
+        }
+        finally {
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            localStorage.removeItem("permissions");
+            localStorage.removeItem("companyRole");
+
+            setToken(null);
+            setUser(null);
+        }
     };
 
     return (

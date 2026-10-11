@@ -23,7 +23,7 @@ export default function RecentDocuments({
                             <th>Customer</th>
                             <th>Status</th>
                             <th>Amount</th>
-                            <th>Date</th>
+                            <th>Issue Date</th>
                         </tr>
                     </thead>
 
@@ -64,7 +64,7 @@ export default function RecentDocuments({
 
                                 <td>
                                     {new Date(
-                                        doc.createdAt
+                                        doc.issueDate
                                     ).toLocaleDateString()}
                                 </td>
 

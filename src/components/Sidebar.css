@@ -3,20 +3,73 @@
    Dark ink shell · warm amber accent
 ===================================================== */
 
-/* SHELL  */
+
+/* =====================================================
+   APPLICATION SHELL
+===================================================== */
+
+.app-layout {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.app-shell {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: stretch;
+    margin: 0;
+    padding: 0;
+}
+
+.app-sidebar-column {
+    flex: 0 0 16.666667%;
+    width: 16.666667%;
+    max-width: 16.666667%;
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+    transition: flex-basis 0.22s ease, width 0.22s ease, max-width 0.22s ease;
+}
+
+.app-sidebar-column-collapsed {
+    flex: 0 0 72px;
+    width: 72px;
+    max-width: 72px;
+}
+
+.app-content-column {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+}
+
+
+/* =====================================================
+   SHELL
+===================================================== */
 
 .app-sidebar {
     width: 100%;
-    min-height: 100%;
+    min-height: 100vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     background: #0f1117;
     color: #c9cfe0;
     border-right: 1px solid #1e2130;
     position: relative;
+    overflow: visible;
+    transition: width 0.22s ease;
 }
 
-    /* subtle vertical grain line on far right */
     .app-sidebar::after {
         content: "";
         position: absolute;
@@ -28,7 +81,9 @@
     }
 
 
-/* BRAND */
+/* =====================================================
+   BRAND
+===================================================== */
 
 .sidebar-brand {
     display: flex;
@@ -36,8 +91,9 @@
     gap: 11px;
     padding: 20px 18px 18px;
     border-bottom: 1px solid #1a1d2e;
+    min-height: 77px;
+    overflow: hidden;
 }
-
 
 .sidebar-logo {
     display: block;
@@ -46,6 +102,7 @@
     max-width: 100%;
     object-fit: contain;
     margin: 0 auto;
+    flex-shrink: 0;
 }
 
 .sidebar-brand-icon {
@@ -56,7 +113,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 9px;
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    background: linear-gradient( 135deg, #3b82f6 0%, #2563eb 100% );
     color: #0f1117;
     font-size: 17px;
     box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.25), 0 4px 12px rgba(59, 130, 246, 0.3);
@@ -66,6 +123,9 @@
     display: flex;
     flex-direction: column;
     min-width: 0;
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.16s ease, transform 0.18s ease;
 }
 
 .sidebar-brand-name {
@@ -84,7 +144,48 @@
 }
 
 
-/* NAVIGATION */
+/* =====================================================
+   COLLAPSE BUTTON
+===================================================== */
+
+.sidebar-collapse-button {
+    position: absolute;
+    z-index: 200;
+    top: 55px;
+    right: -13px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid #2d3148;
+    border-radius: 50%;
+    background: #141720;
+    color: #8b92aa;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+    transition: background 0.14s ease, border-color 0.14s ease, color 0.14s ease, transform 0.14s ease;
+}
+
+    .sidebar-collapse-button:hover {
+        background: #1e2235;
+        border-color: #3b82f6;
+        color: #60a5fa;
+    }
+
+    .sidebar-collapse-button:active {
+        transform: scale(0.94);
+    }
+
+    .sidebar-collapse-button svg {
+        font-size: 13px;
+    }
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
 
 .sidebar-navigation {
     flex: 1;
@@ -92,6 +193,8 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .sidebar-section {
@@ -113,10 +216,15 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: #363a52;
+    white-space: nowrap;
+    opacity: 1;
+    transition: opacity 0.14s ease, height 0.14s ease, margin 0.14s ease;
 }
 
 
-/*  NAV LINK */
+/* =====================================================
+   NAV LINK
+===================================================== */
 
 .sidebar-nav-link {
     position: relative;
@@ -139,14 +247,17 @@
         text-decoration: none;
     }
 
-    /* Active state — amber warmth */
+
+    /* =====================================================
+   ACTIVE STATE
+===================================================== */
+
     .sidebar-nav-link.active {
         background: rgba(59, 130, 246, 0.08);
         color: #60a5fa;
         font-weight: 600;
     }
 
-        /* Active left bar */
         .sidebar-nav-link.active::before {
             content: "";
             position: absolute;
@@ -161,7 +272,9 @@
         }
 
 
-/* LINK ICON */
+/* =====================================================
+   LINK ICON
+===================================================== */
 
 .sidebar-link-icon {
     width: 28px;
@@ -189,6 +302,10 @@
 .sidebar-link-label {
     flex: 1;
     letter-spacing: 0.01em;
+    white-space: nowrap;
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.14s ease, transform 0.18s ease;
 }
 
 .sidebar-link-arrow {
@@ -213,7 +330,76 @@
 }
 
 
-/* FOOTER */
+/* =====================================================
+   COLLAPSED SIDEBAR
+===================================================== */
+
+.app-sidebar-column-collapsed .sidebar-brand {
+    justify-content: center;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.app-sidebar-column-collapsed .sidebar-brand-text {
+    width: 0;
+    opacity: 0;
+    transform: translateX(-8px);
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.app-sidebar-column-collapsed .sidebar-navigation {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.app-sidebar-column-collapsed .sidebar-section-label {
+    height: 0;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.app-sidebar-column-collapsed .sidebar-nav-link {
+    justify-content: center;
+    gap: 0;
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+.app-sidebar-column-collapsed .sidebar-link-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+}
+
+.app-sidebar-column-collapsed .sidebar-link-label {
+    width: 0;
+    flex: 0 0 0;
+    opacity: 0;
+    transform: translateX(-8px);
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.app-sidebar-column-collapsed .sidebar-link-arrow {
+    display: none;
+}
+
+.app-sidebar-column-collapsed .sidebar-nav-link.active::before {
+    left: -10px;
+}
+
+.app-sidebar-column-collapsed .sidebar-section {
+    margin-bottom: 14px;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
 
 .sidebar-footer {
     margin-top: auto;
@@ -222,7 +408,9 @@
 }
 
 
-/*  PLAN CARD */
+/* =====================================================
+   PLAN CARD
+===================================================== */
 
 .sidebar-plan-card {
     padding: 13px;
@@ -233,7 +421,6 @@
     overflow: hidden;
 }
 
-    /* subtle amber glow in top-right corner */
     .sidebar-plan-card::before {
         content: "";
         position: absolute;
@@ -292,7 +479,9 @@
 }
 
 
-/* PLAN BUTTON */
+/* =====================================================
+   PLAN BUTTON
+===================================================== */
 
 .sidebar-plan-button {
     width: 100%;
@@ -328,3 +517,35 @@
     .sidebar-plan-button:hover svg {
         transform: translateX(2px);
     }
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 767.98px) {
+
+    .app-shell {
+        display: block;
+    }
+
+    .app-sidebar-column,
+    .app-sidebar-column-collapsed {
+        width: 100%;
+        max-width: 100%;
+        min-height: auto;
+    }
+
+    .app-content-column {
+        width: 100%;
+        min-height: auto;
+    }
+
+    .app-sidebar {
+        min-height: auto;
+    }
+
+    .sidebar-collapse-button {
+        right: 12px;
+    }
+}

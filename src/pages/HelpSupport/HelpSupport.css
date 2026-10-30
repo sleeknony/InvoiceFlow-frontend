@@ -583,3 +583,101 @@
         width: 100%;
     }
 }
+
+
+
+.help-support-attachment-help {
+    margin: 6px 0 12px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--text-secondary, #64748b);
+}
+
+.help-support-file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.help-support-attachment-picker {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px dashed var(--border-color, #cbd5e1);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+    .help-support-attachment-picker:hover {
+        background: var(--surface-hover, #f8fafc);
+    }
+
+.help-support-file-input:focus-visible + .help-support-attachment-picker {
+    outline: 2px solid var(--primary-color, #2563eb);
+    outline-offset: 3px;
+}
+
+.help-support-attachment-list {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.help-support-attachment-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 8px;
+    min-width: 0;
+}
+
+.help-support-attachment-name {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-size: 0.9rem;
+}
+
+.help-support-attachment-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 6px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+}
+
+    .help-support-attachment-remove:hover {
+        background: var(--surface-hover, #f1f5f9);
+    }
+
+    .help-support-attachment-remove:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+.help-support-attachment-error {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 10px;
+    color: var(--danger-color, #b91c1c);
+    font-size: 0.875rem;
+}

@@ -1,6 +1,12 @@
+
 import http from "../api/http";
 
 const BASE_URL = "/superadmin/support";
+const AGENTS_URL = `${BASE_URL}/agents`;
+
+// ============================================================
+// SUPPORT TICKETS
+// ============================================================
 
 export const getSupportTickets = async (params = {}) => {
     const response = await http.get(`${BASE_URL}/tickets`, {
@@ -61,3 +67,48 @@ export const linkTawkConversation = async (ticketId, data) => {
 
     return response.data;
 };
+
+// ============================================================
+// SUPPORT AGENTS
+// ============================================================
+
+export const getSupportAgents = async (params = {}) => {
+    const response = await http.get(AGENTS_URL, {
+        params: {
+            includeInactive: true,
+            ...params
+        }
+    });
+
+    return response.data;
+};
+
+export const createSupportAgent = async (data) => {
+    const response = await http.post(AGENTS_URL, data);
+
+    return response.data;
+};
+
+export const resendSupportAgentInvitation = async (userId) => {
+    const response = await http.post(
+        `${AGENTS_URL}/${encodeURIComponent(userId)}/resend-invitation`
+    );
+
+    return response.data;
+};
+
+export const updateSupportAgentStatus = async (userId, isActive) => {
+    const response = await http.put(
+        `${AGENTS_URL}/${encodeURIComponent(userId)}/status`,
+        { isActive }
+    );
+
+    return response.data;
+};
+
+
+export const getSupportAssignees = async () => {
+    const response = await http.get(`${BASE_URL}/assignees`);
+    return response.data;
+};
+

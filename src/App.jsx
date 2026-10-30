@@ -1,13 +1,19 @@
+
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 
 import Layout from "./components/Layout.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import PermissionRoute from "./components/PermissionRoute.jsx";
 import SuperAdminRoute from "./components/SuperAdminRoute.jsx";
+import SuperAdminOnlyRoute from "./components/SuperAdminOnlyRoute.jsx";
+
+import { useAuth } from "./context/useAuth";
+
 import SuperAdminLayout from "./layouts/SuperAdminLayout.jsx";
 import SuperAdminActivity from "./pages/SuperAdmin/SuperAdminActivity";
 import SuperAdminSupport from "./pages/SuperAdmin/SuperAdminSupport.jsx";
 import SuperAdminSupportTicket from "./pages/SuperAdmin/SuperAdminSupportTicket.jsx";
+import SuperAdminSupportAgents from "./pages/SuperAdmin/SuperAdminSupportAgents.jsx";
 
 // ============================================================
 // PUBLIC PAGES
@@ -17,6 +23,7 @@ import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import VerifyEmail from "./pages/Auth/VerifyEmail";
 import AcceptInvitation from "./pages/Auth/AcceptInvitation";
+import SupportAgentSetup from "./pages/Auth/SupportAgentSetup.jsx";
 import InvitationRegister from "./pages/Auth/InvitationRegister";
 import Unauthorized from "./pages/Unauthorized.jsx";
 import Pricing from "./pages/Pricing/Pricing";
@@ -25,17 +32,17 @@ import Privacy from "./pages/Legal/Privacy";
 import CancellationRefund from "./pages/Legal/CancellationRefund";
 
 // ============================================================
-// SUPERADMIN PAGES
+// SUPER ADMIN PAGES
 // ============================================================
+
 import SuperAdminCompanies from "./pages/SuperAdmin/SuperAdminCompanies.jsx";
 import SuperAdminCompanyUsers from "./pages/SuperAdmin/SuperAdminCompanyUsers.jsx";
 import SuperAdminCompanyDetails from "./pages/SuperAdmin/SuperAdminCompanyDetails";
 import SuperAdminSubscriptionHistory from "./pages/SuperAdmin/SuperAdminSubscriptionHistory";
 import SuperAdminCommunications from "./pages/SuperAdmin/SuperAdminCommunications.jsx";
 
-
 // ============================================================
-// APPLICATION PAGES
+// COMPANY APPLICATION PAGES
 // ============================================================
 
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
@@ -60,49 +67,99 @@ import RoleManagement from "./pages/RoleManagement/RoleManagement";
 import ReportsPage from "./pages/Reports/ReportsPage";
 import NotificationsPage from "./pages/Notifications/NotificationsPage";
 import HelpSupport from "./pages/HelpSupport/HelpSupport.jsx";
+import CustomerSupportTicketConversation from "./pages/HelpSupport/CustomerSupportTicketConversation";
+import CustomerSupportTickets from "./components/Support/CustomerSupportTickets";
 
 import NotFound from "./pages/NotFound.jsx";
 
-
+// ============================================================
+// BULK INVITE PAGE
+// ============================================================
 
 function BulkInvitePage() {
-
     const navigate = useNavigate();
 
     return (
         <BulkInvite
-            onBack={() =>
-                navigate("/team")
-            }
+            onBack={() => navigate("/team")}
         />
     );
 }
 
+// ============================================================
+// ROLE-AWARE LANDING PAGE FOR /superadmin
+// ============================================================
+
+function SuperAdminHomeRedirect() {
+    const auth = useAuth();
+
+    const roles = Array.isArray(auth?.user?.roles)
+        ? auth.user.roles
+        : [];
+
+    const hasRole = (expectedRole) =>
+        roles.some(
+            role =>
+                String(role).toLowerCase() ===
+                expectedRole.toLowerCase()
+        );
+
+    if (hasRole("SupportAgent") && !hasRole("SuperAdmin")) {
+        return <Navigate to="/superadmin/support" replace />;
+    }
+
+    return <Navigate to="/superadmin/companies" replace />;
+}
+
+// ============================================================
+// PREVENT PLATFORM ACCOUNTS FROM ENTERING COMPANY APPLICATION
+// ============================================================
+
+function CompanyApplicationRoute({ children }) {
+    const auth = useAuth();
+
+    if (!auth?.isAuthenticated) {
+        return <Navigate to="/login" replace />;
+    }
+
+    const roles = Array.isArray(auth.user?.roles)
+        ? auth.user.roles
+        : [];
+
+    const hasRole = (expectedRole) =>
+        roles.some(
+            role =>
+                String(role).toLowerCase() ===
+                expectedRole.toLowerCase()
+        );
+
+    if (hasRole("SuperAdmin")) {
+        return <Navigate to="/superadmin/companies" replace />;
+    }
+
+    if (hasRole("SupportAgent")) {
+        return <Navigate to="/superadmin/support" replace />;
+    }
+
+    return children;
+}
+
+// ============================================================
+// APP
+// ============================================================
 
 export default function App() {
-
     return (
-
         <Routes>
-
             {/* ====================================================
                 PUBLIC ROUTES
             ==================================================== */}
 
-            <Route
-                path="/login"
-                element={<Login />}
-            />
+            <Route path="/login" element={<Login />} />
 
-            <Route
-                path="/register"
-                element={<Register />}
-            />
+            <Route path="/register" element={<Register />} />
 
-            <Route
-                path="/verify-email"
-                element={<VerifyEmail />}
-            />
+            <Route path="/verify-email" element={<VerifyEmail />} />
 
             <Route
                 path="/accept-invitation/:token"
@@ -119,73 +176,60 @@ export default function App() {
                 element={<Unauthorized />}
             />
 
+            <Route
+                path="/support-agent/setup"
+                element={<SupportAgentSetup />}
+            />
+
             {/* ====================================================
                 PUBLIC LEGAL / COMMERCIAL PAGES
             ==================================================== */}
 
-            {/*<Route*/}
-            {/*    path="/pricing"*/}
-            {/*    element={<Pricing />}*/}
-            {/*/>*/}
+            <Route path="/terms" element={<Terms />} />
 
-            <Route
-                path="/terms"
-                element={<Terms />}
-            />
-
-            <Route
-                path="/privacy"
-                element={<Privacy/>}
-            />
+            <Route path="/privacy" element={<Privacy />} />
 
             <Route
                 path="/cancellation-refund"
                 element={<CancellationRefund />}
-                />
+            />
 
             {/* ====================================================
-                PROTECTED APPLICATION
+                PROTECTED COMPANY APPLICATION
+
+                Super Admins and Support Agents are redirected
+                away from this area by CompanyApplicationRoute.
             ==================================================== */}
 
             <Route
                 element={
                     <ProtectedRoute>
-                        <Layout />
+                        <CompanyApplicationRoute>
+                            <Layout />
+                        </CompanyApplicationRoute>
                     </ProtectedRoute>
                 }
             >
-
                 <Route
                     path="/"
-                    element={
-                        <Navigate
-                            to="/dashboard"
-                            replace
-                        />
-                    }
+                    element={<Navigate to="/dashboard" replace />}
                 />
 
-                {/* =================================================
-                    DASHBOARD
-                ================================================= */}
+                {/* DASHBOARD */}
 
                 <Route
                     path="/dashboard"
                     element={<Dashboard />}
                 />
 
-                {/* =================================================
-                    NOTIFICATIONS
-                ================================================= */}
+                {/* NOTIFICATIONS */}
 
                 <Route
                     path="/notifications"
                     element={<NotificationsPage />}
                 />
 
-                {/* =================================================
-                    CUSTOMERS
-                ================================================= */}
+                {/* CUSTOMERS */}
 
                 <Route
                     path="/customers"
@@ -202,17 +246,12 @@ export default function App() {
                     element={<CustomerDetails />}
                 />
 
-
-                {/* =================================================
-                    DOCUMENTS
-                ================================================= */}
+                {/* DOCUMENTS */}
 
                 <Route
                     path="/documents"
                     element={
-                        <PermissionRoute
-                            permission="ViewDocuments"
-                        >
+                        <PermissionRoute permission="ViewDocuments">
                             <Documents />
                         </PermissionRoute>
                     }
@@ -221,12 +260,8 @@ export default function App() {
                 <Route
                     path="/documents/create"
                     element={
-                        <PermissionRoute
-                            permission="CreateDocuments"
-                        >
-                            <DocumentEditor
-                                mode="create"
-                            />
+                        <PermissionRoute permission="CreateDocuments">
+                            <DocumentEditor mode="create" />
                         </PermissionRoute>
                     }
                 />
@@ -234,12 +269,8 @@ export default function App() {
                 <Route
                     path="/documents/edit/:id"
                     element={
-                        <PermissionRoute
-                            permission="EditDocuments"
-                        >
-                            <DocumentEditor
-                                mode="edit"
-                            />
+                        <PermissionRoute permission="EditDocuments">
+                            <DocumentEditor mode="edit" />
                         </PermissionRoute>
                     }
                 />
@@ -247,25 +278,18 @@ export default function App() {
                 <Route
                     path="/documents/:id"
                     element={
-                        <PermissionRoute
-                            permission="ViewDocuments"
-                        >
+                        <PermissionRoute permission="ViewDocuments">
                             <DocumentViewer />
                         </PermissionRoute>
                     }
                 />
 
-
-                {/* =================================================
-                    SETTINGS
-                ================================================= */}
+                {/* SETTINGS */}
 
                 <Route
                     path="/settings"
                     element={
-                        <PermissionRoute
-                            permission="ViewCompanySettings"
-                        >
+                        <PermissionRoute permission="ViewCompanySettings">
                             <Settings />
                         </PermissionRoute>
                     }
@@ -276,10 +300,7 @@ export default function App() {
                     element={<RoleManagement />}
                 />
 
-
-                {/* =================================================
-                    SUBSCRIPTION
-                ================================================= */}
+                {/* SUBSCRIPTION */}
 
                 <Route
                     path="/pricing"
@@ -294,25 +315,18 @@ export default function App() {
                 <Route
                     path="/subscription/billing"
                     element={
-                        <PermissionRoute
-                            permission="ManageCompanySubscriptions"
-                        >
+                        <PermissionRoute permission="ManageCompanySubscriptions">
                             <SubscriptionBilling />
                         </PermissionRoute>
                     }
                 />
 
-
-                {/* =================================================
-                    TEAM
-                ================================================= */}
+                {/* TEAM */}
 
                 <Route
                     path="/team"
                     element={
-                        <PermissionRoute
-                            permission="ViewUsers"
-                        >
+                        <PermissionRoute permission="ViewUsers">
                             <TeamManagement />
                         </PermissionRoute>
                     }
@@ -323,20 +337,14 @@ export default function App() {
                     element={<BulkInvitePage />}
                 />
 
-
-                {/* =================================================
-                    COMPANY
-                ================================================= */}
+                {/* COMPANY ONBOARDING */}
 
                 <Route
                     path="/setup-company"
                     element={<SetupCompany />}
                 />
 
-
-                {/* =================================================
-                     REPORTS
-                   ================================================= */}
+                {/* REPORTS */}
 
                 <Route
                     path="/reports"
@@ -347,28 +355,40 @@ export default function App() {
                     }
                 />
 
-                {/* =================================================
-    HELP & SUPPORT
-================================================= */}
+                {/* HELP & SUPPORT */}
 
                 <Route
                     path="/help"
                     element={<HelpSupport />}
                 />
 
+                <Route
+                    path="/help/tickets/:ticketId"
+                    element={
+                       
+                                <CustomerSupportTicketConversation />
+                        
+                    }
+                />
 
+                <Route
+                    path="/help/tickets"
+                    element={<CustomerSupportTickets />}
+                />
 
             </Route>
 
+            {/*<ProtectedRoute>*/}
+            {/*    <Layout>*/}
+            {/*    </Layout>*/}
+            {/*</ProtectedRoute>*/}
+            {/* ====================================================
+                SHARED SUPER ADMIN / SUPPORT LAYOUT
 
-           
-         
+                The outer guard admits SuperAdmin and SupportAgent.
+                Individual routes below enforce page-level access.
+            ==================================================== */}
 
-
-               {/* =================================================
-                     SUPER ADMIN
-                   ================================================= */}
-       
             <Route
                 path="/superadmin"
                 element={
@@ -378,34 +398,78 @@ export default function App() {
                 }
             >
                 <Route
+                    index
+                    element={<SuperAdminHomeRedirect />}
+                />
+
+                {/* SUPER ADMIN ONLY: COMPANY MANAGEMENT */}
+
+                <Route
                     path="companies"
-                    element={<SuperAdminCompanies />}
+                    element={
+                        <SuperAdminOnlyRoute>
+                            <SuperAdminCompanies />
+                        </SuperAdminOnlyRoute>
+                    }
                 />
 
                 <Route
                     path="companies/:companyId"
-                    element={<SuperAdminCompanyDetails />}
+                    element={
+                        <SuperAdminOnlyRoute>
+                            <SuperAdminCompanyDetails />
+                        </SuperAdminOnlyRoute>
+                    }
                 />
 
                 <Route
                     path="companies/:companyId/users"
-                    element={<SuperAdminCompanyUsers />}
+                    element={
+                        <SuperAdminOnlyRoute>
+                            <SuperAdminCompanyUsers />
+                        </SuperAdminOnlyRoute>
+                    }
                 />
 
                 <Route
                     path="companies/:companyId/subscriptions"
-                    element={<SuperAdminSubscriptionHistory />}
+                    element={
+                        <SuperAdminOnlyRoute>
+                            <SuperAdminSubscriptionHistory />
+                        </SuperAdminOnlyRoute>
+                    }
                 />
+
+                {/* SUPER ADMIN ONLY: PLATFORM OPERATIONS */}
 
                 <Route
                     path="activity"
-                    element={<SuperAdminActivity />}
+                    element={
+                        <SuperAdminOnlyRoute>
+                            <SuperAdminActivity />
+                        </SuperAdminOnlyRoute>
+                    }
                 />
 
                 <Route
                     path="communications"
-                    element={<SuperAdminCommunications />}
+                    element={
+                        <SuperAdminOnlyRoute>
+                            <SuperAdminCommunications />
+                        </SuperAdminOnlyRoute>
+                    }
                 />
+
+                <Route
+                    path="support-agents"
+                    element={
+                        <SuperAdminOnlyRoute>
+                            <SuperAdminSupportAgents />
+                        </SuperAdminOnlyRoute>
+                    }
+                />
+
+                {/* SHARED: SUPPORT TICKETS */}
 
                 <Route
                     path="support"
@@ -418,17 +482,11 @@ export default function App() {
                 />
             </Route>
 
-
             {/* ====================================================
                 NOT FOUND
             ==================================================== */}
 
-            <Route
-                path="*"
-                element={<NotFound />}
-            />
-
+            <Route path="*" element={<NotFound />} />
         </Routes>
     );
 }
-

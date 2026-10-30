@@ -770,3 +770,210 @@
         flex-direction: column;
     }
 }
+
+
+
+/* Support ticket attachments */
+
+.support-ticket-attachments {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--support-border, #e5e7eb);
+}
+
+.support-attachments-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+    .support-attachments-heading h3 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+        font-size: 1rem;
+    }
+
+.support-attachment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.support-attachment-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    border: 1px solid var(--support-border, #e5e7eb);
+    border-radius: 10px;
+    background: var(--support-card-background, #fff);
+    min-width: 0;
+}
+
+.support-attachment-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    background: #f3f4f6;
+    color: #374151;
+    font-size: 1.25rem;
+}
+
+.support-attachment-info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+    .support-attachment-info strong {
+        overflow-wrap: anywhere;
+        font-size: 0.92rem;
+    }
+
+    .support-attachment-info span {
+        color: var(--support-muted, #6b7280);
+        font-size: 0.8rem;
+    }
+
+.support-attachment-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+    .support-attachment-actions button,
+    .support-attachment-preview-footer button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+    }
+
+.support-attachment-preview-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(15, 23, 42, 0.75);
+}
+
+.support-attachment-preview-modal {
+    display: flex;
+    flex-direction: column;
+    width: min(100%, 1100px);
+    height: min(90vh, 900px);
+    overflow: hidden;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.support-attachment-preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+    .support-attachment-preview-header h2 {
+        margin: 0;
+        overflow-wrap: anywhere;
+        font-size: 1rem;
+    }
+
+    .support-attachment-preview-header p {
+        margin: 5px 0 0;
+        color: #6b7280;
+        font-size: 0.85rem;
+    }
+
+.support-icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #fff;
+    color: #374151;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.support-attachment-preview-content {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    overflow: auto;
+    padding: 16px;
+    background: #f3f4f6;
+}
+
+    .support-attachment-preview-content iframe {
+        width: 100%;
+        height: 100%;
+        min-height: 300px;
+        border: 0;
+        background: #fff;
+    }
+
+    .support-attachment-preview-content img {
+        display: block;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+.support-attachment-preview-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+@media (max-width: 640px) {
+    .support-attachment-item {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .support-attachment-info {
+        flex-basis: calc(100% - 60px);
+    }
+
+    .support-attachment-actions {
+        width: 100%;
+        padding-left: 56px;
+    }
+
+    .support-attachment-preview-backdrop {
+        padding: 8px;
+    }
+
+    .support-attachment-preview-modal {
+        height: 94vh;
+    }
+}

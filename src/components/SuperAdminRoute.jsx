@@ -1,50 +1,36 @@
+
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
 
 export default function SuperAdminRoute({ children }) {
-
     const auth = useAuth();
 
     if (!auth) {
-        return (
-            <div>
-                Auth Context Missing
-            </div>
-        );
+        return <div>Auth Context Missing</div>;
     }
 
-    const {
-        user,
-        isAuthenticated
-    } = auth;
+    const { user, isAuthenticated } = auth;
 
     if (!isAuthenticated) {
-        return (
-            <Navigate
-                to="/login"
-                replace
-            />
-        );
+        return <Navigate to="/login" replace />;
     }
 
     const roles = Array.isArray(user?.roles)
         ? user.roles
         : [];
 
-    const isSuperAdmin =
+    const hasRole = (expectedRole) =>
         roles.some(
             role =>
                 String(role).toLowerCase() ===
-                "superadmin"
+                expectedRole.toLowerCase()
         );
 
-    if (!isSuperAdmin) {
-        return (
-            <Navigate
-                to="/unauthorized"
-                replace
-            />
-        );
+    const isSuperAdmin = hasRole("SuperAdmin");
+    const isSupportAgent = hasRole("SupportAgent");
+
+    if (!isSuperAdmin && !isSupportAgent) {
+        return <Navigate to="/unauthorized" replace />;
     }
 
     return children;

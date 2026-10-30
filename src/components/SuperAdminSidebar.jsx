@@ -1,29 +1,36 @@
 
 import { NavLink, useLocation } from "react-router-dom";
-
 import {
     FiGrid,
     FiChevronRight,
     FiFileText,
     FiActivity,
     FiMail,
-    FiMessageSquare
+    FiMessageSquare,
+    FiUsers
 } from "react-icons/fi";
 
+import { useAuth } from "../context/useAuth";
 import "./Sidebar.css";
 
 export default function SuperAdminSidebar() {
     const location = useLocation();
+    const auth = useAuth();
 
-    /*
-     * Companies:
-     * /superadmin/companies
-     * /superadmin/companies/:companyId
-     * /superadmin/companies/:companyId/subscriptions
-     *
-     * Excludes:
-     * /superadmin/companies/:companyId/users
-     */
+    const roles = Array.isArray(auth?.user?.roles)
+        ? auth.user.roles
+        : [];
+
+    const hasRole = (expectedRole) =>
+        roles.some(
+            role =>
+                String(role).toLowerCase() ===
+                expectedRole.toLowerCase()
+        );
+
+    const isSuperAdmin = hasRole("SuperAdmin");
+    const isSupportAgent = hasRole("SupportAgent");
+
     const companiesActive =
         location.pathname === "/superadmin/companies" ||
         (
@@ -37,8 +44,12 @@ export default function SuperAdminSidebar() {
     const commActive =
         location.pathname.startsWith("/superadmin/communications");
 
-    const supportActive =
-        location.pathname.startsWith("/superadmin/support");
+    const supportTicketsActive =
+        location.pathname === "/superadmin/support" ||
+        location.pathname.startsWith("/superadmin/support/tickets");
+
+    const supportAgentsActive =
+        location.pathname.startsWith("/superadmin/support-agents");
 
     return (
         <aside className="app-sidebar">
@@ -53,7 +64,9 @@ export default function SuperAdminSidebar() {
                     </span>
 
                     <span className="sidebar-brand-caption">
-                        SuperAdmin
+                        {isSupportAgent && !isSuperAdmin
+                            ? "Support Workspace"
+                            : "SuperAdmin"}
                     </span>
                 </div>
             </div>
@@ -61,68 +74,93 @@ export default function SuperAdminSidebar() {
             <div className="sidebar-navigation">
                 <div className="sidebar-section">
                     <div className="sidebar-section-label">
-                        Platform
+                        {isSupportAgent && !isSuperAdmin
+                            ? "Customer Support"
+                            : "Platform"}
                     </div>
 
-                    <NavLink
-                        className={`sidebar-nav-link${companiesActive ? " active" : ""}`}
-                        to="/superadmin/companies"
-                    >
-                        <span className="sidebar-link-icon">
-                            <FiGrid />
-                        </span>
+                    {isSuperAdmin && (
+                        <>
+                            <NavLink
+                                className={`sidebar-nav-link${companiesActive ? " active" : ""}`}
+                                to="/superadmin/companies"
+                            >
+                                <span className="sidebar-link-icon">
+                                    <FiGrid />
+                                </span>
 
-                        <span className="sidebar-link-label">
-                            Companies
-                        </span>
+                                <span className="sidebar-link-label">
+                                    Companies
+                                </span>
 
-                        <FiChevronRight className="sidebar-link-arrow" />
-                    </NavLink>
+                                <FiChevronRight className="sidebar-link-arrow" />
+                            </NavLink>
 
-                    <NavLink
-                        className={`sidebar-nav-link${activityActive ? " active" : ""}`}
-                        to="/superadmin/activity"
-                    >
-                        <span className="sidebar-link-icon">
-                            <FiActivity />
-                        </span>
+                            <NavLink
+                                className={`sidebar-nav-link${activityActive ? " active" : ""}`}
+                                to="/superadmin/activity"
+                            >
+                                <span className="sidebar-link-icon">
+                                    <FiActivity />
+                                </span>
 
-                        <span className="sidebar-link-label">
-                            Activity Reports
-                        </span>
+                                <span className="sidebar-link-label">
+                                    Activity Reports
+                                </span>
 
-                        <FiChevronRight className="sidebar-link-arrow" />
-                    </NavLink>
+                                <FiChevronRight className="sidebar-link-arrow" />
+                            </NavLink>
 
-                    <NavLink
-                        className={`sidebar-nav-link${commActive ? " active" : ""}`}
-                        to="/superadmin/communications"
-                    >
-                        <span className="sidebar-link-icon">
-                            <FiMail />
-                        </span>
+                            <NavLink
+                                className={`sidebar-nav-link${commActive ? " active" : ""}`}
+                                to="/superadmin/communications"
+                            >
+                                <span className="sidebar-link-icon">
+                                    <FiMail />
+                                </span>
 
-                        <span className="sidebar-link-label">
-                            Communications
-                        </span>
+                                <span className="sidebar-link-label">
+                                    Communications
+                                </span>
 
-                        <FiChevronRight className="sidebar-link-arrow" />
-                    </NavLink>
+                                <FiChevronRight className="sidebar-link-arrow" />
+                            </NavLink>
+                        </>
+                    )}
 
-                    <NavLink
-                        className={`sidebar-nav-link${supportActive ? " active" : ""}`}
-                        to="/superadmin/support"
-                    >
-                        <span className="sidebar-link-icon">
-                            <FiMessageSquare />
-                        </span>
+                    {(isSuperAdmin || isSupportAgent) && (
+                        <NavLink
+                            className={`sidebar-nav-link${supportTicketsActive ? " active" : ""}`}
+                            to="/superadmin/support"
+                        >
+                            <span className="sidebar-link-icon">
+                                <FiMessageSquare />
+                            </span>
 
-                        <span className="sidebar-link-label">
-                            Support Tickets
-                        </span>
+                            <span className="sidebar-link-label">
+                                Support Tickets
+                            </span>
 
-                        <FiChevronRight className="sidebar-link-arrow" />
-                    </NavLink>
+                            <FiChevronRight className="sidebar-link-arrow" />
+                        </NavLink>
+                    )}
+
+                    {isSuperAdmin && (
+                        <NavLink
+                            className={`sidebar-nav-link${supportAgentsActive ? " active" : ""}`}
+                            to="/superadmin/support-agents"
+                        >
+                            <span className="sidebar-link-icon">
+                                <FiUsers />
+                            </span>
+
+                            <span className="sidebar-link-label">
+                                Support Agents
+                            </span>
+
+                            <FiChevronRight className="sidebar-link-arrow" />
+                        </NavLink>
+                    )}
                 </div>
             </div>
         </aside>

@@ -7,10 +7,13 @@ import {
     FiHelpCircle,
     FiMail,
     FiMessageCircle,
+    FiPaperclip,
     FiSearch,
-    FiSend
+    FiSend,
+    FiX
 } from "react-icons/fi";
 import http from "../../api/http";
+import CustomerSupportTickets from "../../components/Support/CustomerSupportTickets";
 import "./HelpSupport.css";
 
 const TAWK_PROPERTY_ID = import.meta.env.VITE_TAWK_PROPERTY_ID;
@@ -66,6 +69,14 @@ export default function HelpSupport() {
     const [submittingTicket, setSubmittingTicket] = useState(false);
     const [ticketError, setTicketError] = useState("");
     const [ticketSuccess, setTicketSuccess] = useState(null);
+
+    const [attachments, setAttachments] = useState([]);
+    const [attachmentError, setAttachmentError] = useState("");
+
+    const MAX_ATTACHMENTS = 5;
+    const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
+    const ALLOWED_EXTENSIONS = [".pdf", ".jpg", ".jpeg", ".png", ".webp"];
 
     const chatConfigured = Boolean(
         TAWK_PROPERTY_ID && TAWK_WIDGET_ID
@@ -164,6 +175,7 @@ export default function HelpSupport() {
         };
     }, [chatConfigured]);
 
+
     useEffect(() => {
         if (!chatReady || !supportIdentity) {
             return;
@@ -202,6 +214,76 @@ export default function HelpSupport() {
         });
     }, [chatReady, supportIdentity]);
 
+    const handleAttachmentChange = (event) => {
+        setAttachmentError("");
+
+        const selectedFiles = Array.from(event.target.files || []);
+        event.target.value = "";
+
+        if (selectedFiles.length === 0) {
+            return;
+        }
+
+        const combinedFiles = [...attachments, ...selectedFiles];
+
+        if (combinedFiles.length > MAX_ATTACHMENTS) {
+            setAttachmentError(
+                `You can attach a maximum of ${MAX_ATTACHMENTS} files.`
+            );
+            return;
+        }
+
+        for (const file of selectedFiles) {
+            const extension = file.name
+                .substring(file.name.lastIndexOf("."))
+                .toLowerCase();
+
+            if (!ALLOWED_EXTENSIONS.includes(extension)) {
+                setAttachmentError(
+                    `${file.name}: unsupported file type. Use PDF, JPG, JPEG, PNG or WEBP.`
+                );
+                return;
+            }
+
+            if (file.size === 0) {
+                setAttachmentError(`${file.name} is empty.`);
+                return;
+            }
+
+            if (file.size > MAX_FILE_SIZE) {
+                setAttachmentError(
+                    `${file.name} exceeds the 5 MB file-size limit.`
+                );
+                return;
+            }
+
+            if (
+                attachments.some(
+                    existing =>
+                        existing.name === file.name &&
+                        existing.size === file.size &&
+                        existing.lastModified === file.lastModified
+                )
+            ) {
+                setAttachmentError(
+                    `${file.name} has already been selected.`
+                );
+                return;
+            }
+        }
+
+        setAttachments(combinedFiles);
+    };
+
+    const removeAttachment = (indexToRemove) => {
+        setAttachments(current =>
+            current.filter((_, index) => index !== indexToRemove)
+        );
+
+        setAttachmentError("");
+    };
+
+
     const openLiveChat = useCallback(() => {
         const api = window.Tawk_API;
 
@@ -219,10 +301,12 @@ export default function HelpSupport() {
         api.maximize();
     }, [chatConfigured]);
 
+
     const handleTicketSubmit = async (event) => {
         event.preventDefault();
 
         setTicketError("");
+        setAttachmentError("");
         setTicketSuccess(null);
 
         const trimmedSubject = subject.trim();
@@ -248,13 +332,29 @@ export default function HelpSupport() {
             return;
         }
 
+        if (attachments.length > MAX_ATTACHMENTS) {
+            setAttachmentError(
+                `You can attach a maximum of ${MAX_ATTACHMENTS} files.`
+            );
+            return;
+        }
+
         setSubmittingTicket(true);
 
         try {
-            const response = await http.post("/support/tickets", {
-                subject: trimmedSubject,
-                description: trimmedDescription
+            const formData = new FormData();
+
+            formData.append("Subject", trimmedSubject);
+            formData.append("Description", trimmedDescription);
+
+            attachments.forEach(file => {
+                formData.append("Attachments", file);
             });
+
+            const response = await http.post(
+                "/support/tickets",
+                formData
+            );
 
             setTicketSuccess({
                 id: response.data?.id,
@@ -265,6 +365,8 @@ export default function HelpSupport() {
 
             setSubject("");
             setDescription("");
+            setAttachments([]);
+            setAttachmentError("");
         } catch (error) {
             const responseData = error?.response?.data;
 
@@ -292,6 +394,7 @@ export default function HelpSupport() {
             setSubmittingTicket(false);
         }
     };
+
 
     const normalizedSearch = search.trim().toLowerCase();
 
@@ -528,6 +631,74 @@ export default function HelpSupport() {
                         </small>
                     </div>
 
+                    <div className="help-support-ticket-field">
+                        <label htmlFor="support-ticket-attachments">
+                            Attach files (optional)
+                        </label>
+
+                        <p className="help-support-attachment-help">
+                            Attach screenshots, receipts or documents to help us
+                            investigate your issue. Maximum 5 files, 5 MB each.
+                            Accepted formats: PDF, JPG, PNG and WEBP.
+                        </p>
+
+                        <label
+                            htmlFor="support-ticket-attachments"
+                            className="help-support-attachment-picker"
+                        >
+                            <FiPaperclip />
+                            <span>Select files</span>
+                        </label>
+
+                        <input
+                            id="support-ticket-attachments"
+                            type="file"
+                            accept=".pdf,.jpg,.jpeg,.png,.webp"
+                            multiple
+                            onChange={handleAttachmentChange}
+                            disabled={submittingTicket}
+                            className="help-support-file-input"
+                        />
+
+                        {attachmentError && (
+                            <div className="help-support-attachment-error" role="alert">
+                                <FiAlertCircle />
+                                <span>{attachmentError}</span>
+                            </div>
+                        )}
+
+                        {attachments.length > 0 && (
+                            <ul className="help-support-attachment-list">
+                                {attachments.map((file, index) => (
+                                    <li
+                                        key={`${file.name}-${file.lastModified}-${index}`}
+                                        className="help-support-attachment-item"
+                                    >
+                                        <FiPaperclip />
+
+                                        <span className="help-support-attachment-name">
+                                            {file.name}
+                                            {" "}
+                                            ({(file.size / (1024 * 1024)).toFixed(2)} MB)
+                                        </span>
+
+                                        <button
+                                            type="button"
+                                            className="help-support-attachment-remove"
+                                            onClick={() => removeAttachment(index)}
+                                            disabled={submittingTicket}
+                                            aria-label={`Remove ${file.name}`}
+                                            title="Remove attachment"
+                                        >
+                                            <FiX />
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+
+
                     <button
                         type="submit"
                         className="help-support-ticket-submit"
@@ -541,6 +712,9 @@ export default function HelpSupport() {
                     </button>
                 </form>
             </section>
+
+
+            <CustomerSupportTickets />
 
             <section className="help-support-live-chat">
                 <div className="help-support-chat-icon">

@@ -104,6 +104,37 @@ export default function Login() {
                 return;
             }
 
+
+
+
+            // =====================================================
+            // SUPPORT AGENT ROUTING
+            //
+            // Support Agents are platform-level users.
+            // They do not require company membership and must
+            // not enter normal company onboarding.
+            // =====================================================
+
+            const isSupportAgent = roles.some(
+                role =>
+                    String(role).toLowerCase() === "supportagent"
+            );
+
+            if (isSupportAgent) {
+                localStorage.removeItem("redirectAfterLogin");
+                localStorage.removeItem("pendingInvitationToken");
+
+                navigate("/superadmin/support", {
+                    replace: true
+                });
+
+                return;
+            }
+
+
+
+
+
             // =====================================================
             // PENDING INVITATION
             //

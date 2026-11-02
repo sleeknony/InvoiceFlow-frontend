@@ -26,6 +26,10 @@ export default function Login() {
             // SAVE PERMISSIONS
             // =====================================================
 
+            // =====================================================
+            // SAVE PERMISSIONS
+            // =====================================================
+
             localStorage.setItem(
                 "permissions",
                 JSON.stringify(res.data.permissions || [])

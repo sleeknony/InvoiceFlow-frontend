@@ -3,7 +3,7 @@ import http from "../../api/http";
 import { useState } from "react";
 import { useAuth } from "../../context/useAuth";
 import toast from "react-hot-toast";
-import companyTeamService from "../../services/companyteamService";
+import companyTeamService from "../../services/companyTeamService";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
 export default function Login() {

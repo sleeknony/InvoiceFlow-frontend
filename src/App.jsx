@@ -9,7 +9,7 @@ import SuperAdminOnlyRoute from "./components/SuperAdminOnlyRoute.jsx";
 
 import { useAuth } from "./context/useAuth";
 
-import SuperAdminLayout from "./layouts/SuperAdminLayout.jsx";
+import SuperAdminLayout from "./adminlayouts/SuperAdminLayout.jsx";
 import SuperAdminActivity from "./pages/SuperAdmin/SuperAdminActivity";
 import SuperAdminSupport from "./pages/SuperAdmin/SuperAdminSupport.jsx";
 import SuperAdminSupportTicket from "./pages/SuperAdmin/SuperAdminSupportTicket.jsx";

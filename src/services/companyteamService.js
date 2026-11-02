@@ -1,5 +1,7 @@
 import http from "../api/http";
 
+//Corrected
+
 const companyTeamService = {
 
     async getMembers() {
@@ -7,6 +9,7 @@ const companyTeamService = {
         return data;
     },
 
+    
     async inviteMember(payload) {
         const { data } = await http.post(
             "/company/team/invite",
@@ -15,6 +18,7 @@ const companyTeamService = {
         return data;
     },
 
+    
     async updateMember(id, payload) {
         const { data } = await http.put(
             `/company/member/${id}`,

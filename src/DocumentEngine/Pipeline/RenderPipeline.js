@@ -1,51 +1,51 @@
-import PaginationEngine
-    from "../../renderer/Print/PaginationEngine";
+//import PaginationEngine
+//    from "../../renderer/Print/PaginationEngine";
 
-import RenderContextBuilder
-    from "../../renderer/Core/RenderContextBuilder";
+//import RenderContextBuilder
+//    from "../../renderer/Core/RenderContextBuilder";
 
-class RenderPipeline {
+//class RenderPipeline {
 
-    build({
+//    build({
 
-        renderDocument,
+//        renderDocument,
 
-        template
+//        template
 
-    }) {
+//    }) {
 
-        let pages = [];
+//        let pages = [];
 
-        // Modern renderer uses continuous HTML.
-        // Browser printing performs pagination.
-        if (template !== "Modern") {
+//        // Modern renderer uses continuous HTML.
+//        // Browser printing performs pagination.
+//        if (template !== "Modern") {
 
-            const result =
+//            const result =
 
-                PaginationEngine.paginate({
+//                PaginationEngine.paginate({
 
-                    document: renderDocument,
+//                    document: renderDocument,
 
-                    template
+//                    template
 
-                });
+//                });
 
-            pages = result.pages ?? [];
+//            pages = result.pages ?? [];
 
-        }
+//        }
 
-        return RenderContextBuilder.build({
+//        return RenderContextBuilder.build({
 
-            renderDocument,
+//            renderDocument,
 
-            pages,
+//            pages,
 
-            template
+//            template
 
-        });
+//        });
 
-    }
+//    }
 
-}
+//}
 
-export default new RenderPipeline();
+//export default new RenderPipeline();

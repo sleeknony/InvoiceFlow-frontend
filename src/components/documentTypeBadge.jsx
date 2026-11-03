@@ -1,4 +1,4 @@
-export default function DocumentTypeBadge({ type }) {
+export default function documentTypeBadge({ type }) {
 
     const map = {
         Invoice: "invoice",

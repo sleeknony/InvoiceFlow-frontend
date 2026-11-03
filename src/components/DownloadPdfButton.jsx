@@ -1,52 +1,52 @@
-import PdfExporter
-    from "../renderer/Pdf/PdfExporter";
+//import PdfExporter
+//    from "../renderer/Pdf/PdfExporter";
 
-export default function DownloadPdfButton({
+//export default function DownloadPdfButton({
 
-    documentRef,
+//    documentRef,
 
-    renderDocument
+//    renderDocument
 
-}) {
+//}) {
 
-    async function handleDownload() {
+//    async function handleDownload() {
 
-        try {
+//        try {
 
-            await PdfExporter.export({
+//            await PdfExporter.export({
 
-                element:
-                    documentRef.current,
+//                element:
+//                    documentRef.current,
 
-                document:
-                    renderDocument
+//                document:
+//                    renderDocument
 
-            });
+//            });
 
-        }
+//        }
 
-        catch (error) {
+//        catch (error) {
 
-            console.error(error);
+//            console.error(error);
 
-        }
+//        }
 
-    }
+//    }
 
-    return (
+//    return (
 
-        <button
+//        <button
 
-            className="btn btn-danger"
+//            className="btn btn-danger"
 
-            onClick={handleDownload}
+//            onClick={handleDownload}
 
-        >
+//        >
 
-            Download PDF
+//            Download PDF
 
-        </button>
+//        </button>
 
-    );
+//    );
 
-}
+//}

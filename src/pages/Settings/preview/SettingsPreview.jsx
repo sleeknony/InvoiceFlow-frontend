@@ -1,54 +1,54 @@
-import { useMemo } from "react";
+//import { useMemo } from "react";
 
-import sampleDocument from "../../../renderer/templates/sampleDocument";
+//import sampleDocument from "../../../renderer/templates/sampleDocument";
 
-import DocumentPipeline
-    from "../../../DocumentEngine/Pipeline/DocumentPipeline";
+//import DocumentPipeline
+//    from "../../../DocumentEngine/Pipeline/DocumentPipeline";
 
-import { getDocumentConfig }
-    from "../../../renderer/templates/config/documentConfigService";
+//import { getDocumentConfig }
+//    from "../../../renderer/templates/config/documentConfigService";
 
-import { DocumentRenderer }
-    from "../../../renderer";
+//import { DocumentRenderer }
+//    from "../../../renderer";
 
-export default function SettingsPreview({
+//export default function SettingsPreview({
 
-    settings
+//    settings
 
-}) {
+//}) {
 
-    const renderDocument =
-        useMemo(() =>
+//    const renderDocument =
+//        useMemo(() =>
 
-            DocumentPipeline.build({
+//            DocumentPipeline.build({
 
-                document: sampleDocument,
+//                document: sampleDocument,
 
-                settings,
+//                settings,
 
-                config:
-                    getDocumentConfig(
-                        sampleDocument.type
-                    ),
+//                config:
+//                    getDocumentConfig(
+//                        sampleDocument.type
+//                    ),
 
-                payments: [],
+//                payments: [],
 
-                approvalHistory: []
+//                approvalHistory: []
 
-            }),
+//            }),
 
-            [settings]
+//            [settings]
 
-        );
+//        );
 
-    return (
+//    return (
 
-        <DocumentRenderer
+//        <DocumentRenderer
 
-            renderDocument={renderDocument}
+//            renderDocument={renderDocument}
 
-        />
+//        />
 
-    );
+//    );
 
-}
+//}

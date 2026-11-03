@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import {
     FiMoreVertical
 } from "react-icons/fi";
-import DocumentTypeBadge from "../../components/DocumentTypeBadge";
+import DocumentTypeBadge from "../../components/documentTypeBadge";
 import DocumentStatusBadge from "../../components/documentStatusBadge";
 
 import currencySymbol from "../../utils/currency";

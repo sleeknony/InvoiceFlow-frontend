@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useMemo, useState} from "react";
 import PageHeader from "../../components/PageHeader";
-import DocumentTypeBadge from "../../components/DocumentTypeBadge";
+import DocumentTypeBadge from "../../components/documentTypeBadge";
 import { DOCUMENT_TYPES } from "../../utils/constants";
 import { getAllInvoices } from "../../services/documentService";
 import currencySymbol from "../../utils/currency";

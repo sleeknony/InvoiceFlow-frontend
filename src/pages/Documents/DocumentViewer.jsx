@@ -10,7 +10,7 @@ import AddPaymentModal from "../../components/AddPaymentModal";
 import PaymentHistoryTable from "../../components/PaymentHistoryTable";
 import PdfDocumentViewer from "../../components/PdfDocumentViewer";
 import DocumentViewerHeader from "./components/DocumentViewerHeader";
-import DocumentKPICards  from "./components/DocumentKPICards";
+import DocumentKPICards  from "./components/DocumentKpiCards";
 import {getDocument,getApprovalHistory,getPayments, updateDocumentStatus, approveDocument, rejectDocument, duplicateDocument,  deleteDocument,
     convertDocument, emailDocument, addPayment, getDocumentPreview, downloadDocumentPdf, submitForApproval} from "../../services/documentService";
 import { getSettings } from "../../services/settingsService";

@@ -12,7 +12,8 @@ import {
     FiSettings,
     FiCheck,
     FiX,
-    FiZap
+    FiZap,
+    FiMenu
 } from "react-icons/fi";
 
 import { useAuth } from "../context/useAuth";
@@ -113,7 +114,7 @@ function formatNotificationTime(dateValue) {
     return date.toLocaleDateString();
 }
 
-export default function Topbar() {
+export default function Topbar({ onMenuClick }) {
     const { user, isAuthenticated, logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -420,6 +421,17 @@ export default function Topbar() {
                         {companyName}
                     </div>
                 )}
+
+
+                <button
+                    type="button"
+                    className="mobile-menu-button"
+                    aria-label="Open navigation menu"
+                    onClick={onMenuClick}
+                >
+                    <FiMenu />
+                </button>
+
 
                 <div className="topbar-breadcrumb">
 

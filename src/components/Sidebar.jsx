@@ -18,7 +18,7 @@ import { useSubscription } from "../context/useSubscription";
 import invoiceNgineLogo from "../assets/images/IN_logo.png";
 import "./Sidebar.css";
 
-export default function Sidebar({ collapsed = false, onToggle }) {
+export default function Sidebar({ collapsed = false, onToggle, onNavigate }) {
     const navigate = useNavigate();
 
     const {
@@ -150,6 +150,7 @@ export default function Sidebar({ collapsed = false, onToggle }) {
                         className={getNavClass}
                         to="/dashboard"
                         title={collapsed ? "Dashboard" : undefined}
+                        onClick={onNavigate}
                     >
                         <span className="sidebar-link-icon">
                             <FiGrid />
@@ -167,6 +168,7 @@ export default function Sidebar({ collapsed = false, onToggle }) {
                             className={getNavClass}
                             to="/customers"
                             title={collapsed ? "Customers" : undefined}
+                            onClick={onNavigate}
                         >
                             <span className="sidebar-link-icon">
                                 <FiUsers />
@@ -200,6 +202,7 @@ export default function Sidebar({ collapsed = false, onToggle }) {
                             className={getNavClass}
                             to="/documents"
                             title={collapsed ? "All Documents" : undefined}
+                            onClick={onNavigate}
                         >
                             <span className="sidebar-link-icon">
                                 <FiFileText />
@@ -218,6 +221,7 @@ export default function Sidebar({ collapsed = false, onToggle }) {
                             className={getNavClass}
                             to="/documents/create"
                             title={collapsed ? "Create Document" : undefined}
+                            onClick={onNavigate}
                         >
                             <span className="sidebar-link-icon">
                                 <FiPlus />
@@ -257,6 +261,7 @@ export default function Sidebar({ collapsed = false, onToggle }) {
                             className={getNavClass}
                             to="/subscription/billing"
                             title={collapsed ? "Subscription" : undefined}
+                            onClick={onNavigate}
                         >
                             <span className="sidebar-link-icon">
                                 <FiCreditCard />
@@ -279,6 +284,7 @@ export default function Sidebar({ collapsed = false, onToggle }) {
                             className={getNavClass}
                             to="/team"
                             title={collapsed ? "Team Management" : undefined}
+                            onClick={onNavigate}
                         >
                             <span className="sidebar-link-icon">
                                 <FiUserCheck />
@@ -300,6 +306,7 @@ export default function Sidebar({ collapsed = false, onToggle }) {
                             className={getNavClass}
                             to="/settings/roles"
                             title={collapsed ? "Role Management" : undefined}
+                            onClick={onNavigate}
                         >
                             <span className="sidebar-link-icon">
                                 <FiShield />
@@ -321,6 +328,7 @@ export default function Sidebar({ collapsed = false, onToggle }) {
                             className={getNavClass}
                             to="/reports"
                             title={collapsed ? "Reports" : undefined}
+                            onClick={onNavigate}
                         >
                             <span className="sidebar-link-icon">
                                 <FiBarChart2 />
@@ -343,6 +351,7 @@ export default function Sidebar({ collapsed = false, onToggle }) {
                             className={getNavClass}
                             to="/settings"
                             title={collapsed ? "Settings" : undefined}
+                            onClick={onNavigate}
                         >
                             <span className="sidebar-link-icon">
                                 <FiSettings />

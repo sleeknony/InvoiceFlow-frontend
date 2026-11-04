@@ -1,21 +1,21 @@
-import "./Watermark.css";
+//import "./Watermark.css";
 
-import { useDocument } from "../../renderer/RenderContext";
+//import { useDocument } from "../../renderer/RenderContext";
 
-export default function Watermark() {
+//export default function Watermark() {
 
-    const { watermark } = useDocument();
+//    const { watermark } = useDocument();
 
-    if (!watermark) return null;
+//    if (!watermark) return null;
 
-    return (
+//    return (
 
-        <div className="document-watermark">
+//        <div className="document-watermark">
 
-            {watermark}
+//            {watermark}
 
-        </div>
+//        </div>
 
-    );
+//    );
 
-}
+//}

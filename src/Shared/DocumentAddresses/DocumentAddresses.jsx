@@ -1,128 +1,128 @@
-import "./DocumentAddresses.css";
+//import "./DocumentAddresses.css";
 
-import PrintableSection
-    from "../../renderer/PrintableSection";
+//import PrintableSection
+//    from "../../renderer/PrintableSection";
 
-import {
-    useRenderDocument
-} from "../../renderer/RenderContext";
-import { useDocument } from "../../renderer/RenderContext";
+//import {
+//    useRenderDocument
+//} from "../../renderer/RenderContext";
+//import { useDocument } from "../../renderer/RenderContext";
 
-export default function DocumentAddresses() {
+//export default function DocumentAddresses() {
 
-    const {
+//    const {
 
-        company,
+//        company,
 
-        customer,
+//        customer,
 
-        flags
+//        flags
 
-    } = useDocument();
+//    } = useDocument();
 
-    return (
+//    return (
 
-        <PrintableSection type="addresses">
+//        <PrintableSection type="addresses">
 
-            <section className="address-grid">
+//            <section className="address-grid">
 
-                <article className="address-card">
+//                <article className="address-card">
 
-                    <div className="address-title">
+//                    <div className="address-title">
 
-                        FROM
+//                        FROM
 
-                    </div>
+//                    </div>
 
-                    <div className="address-body">
+//                    <div className="address-body">
 
-                        <strong>
+//                        <strong>
 
-                            {company.name}
+//                            {company.name}
 
-                        </strong>
+//                        </strong>
 
-                        {company.address &&
-                            <div>{company.address}</div>}
+//                        {company.address &&
+//                            <div>{company.address}</div>}
 
-                        {company.phone &&
-                            <div>{company.phone}</div>}
+//                        {company.phone &&
+//                            <div>{company.phone}</div>}
 
-                        {company.email &&
-                            <div>{company.email}</div>}
+//                        {company.email &&
+//                            <div>{company.email}</div>}
 
-                    </div>
+//                    </div>
 
-                </article>
+//                </article>
 
-                <article className="address-card">
+//                <article className="address-card">
 
-                    <div className="address-title">
+//                    <div className="address-title">
 
-                        BILL TO
+//                        BILL TO
 
-                    </div>
+//                    </div>
 
-                    <div className="address-body">
+//                    <div className="address-body">
 
-                        <strong>
+//                        <strong>
 
-                            {customer.name}
+//                            {customer.name}
 
-                        </strong>
+//                        </strong>
 
-                        {customer.billing.exists &&
-                            <div>
+//                        {customer.billing.exists &&
+//                            <div>
 
-                                {customer.billing.address}
+//                                {customer.billing.address}
 
-                            </div>}
+//                            </div>}
 
-                        {customer.email &&
-                            <div>
+//                        {customer.email &&
+//                            <div>
 
-                                {customer.email}
+//                                {customer.email}
 
-                            </div>}
+//                            </div>}
 
-                    </div>
+//                    </div>
 
-                </article>
+//                </article>
 
-                {flags.showShippingAddress && (
+//                {flags.showShippingAddress && (
 
-                    <article className="address-card">
+//                    <article className="address-card">
 
-                        <div className="address-title">
+//                        <div className="address-title">
 
-                            SHIP TO
+//                            SHIP TO
 
-                        </div>
+//                        </div>
 
-                        <div className="address-body">
+//                        <div className="address-body">
 
-                            <strong>
+//                            <strong>
 
-                                {customer.name}
+//                                {customer.name}
 
-                            </strong>
+//                            </strong>
 
-                            <div>
+//                            <div>
 
-                                {customer.shipping.address}
+//                                {customer.shipping.address}
 
-                            </div>
+//                            </div>
 
-                        </div>
+//                        </div>
 
-                    </article>
+//                    </article>
 
-                )}
+//                )}
 
-            </section>
+//            </section>
 
-        </PrintableSection>
+//        </PrintableSection>
 
-    );
+//    );
 
-}
+//}

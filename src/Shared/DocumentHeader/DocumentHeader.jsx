@@ -1,174 +1,174 @@
-import "./DocumentHeader.css";
+//import "./DocumentHeader.css";
 
-import {
-    useRenderDocument
-} from "../../renderer/RenderContext";
-import formatDate
-    from "../../utils/formatDate";
-import { useDocument}  from "../../renderer/RenderContext";
+//import {
+//    useRenderDocument
+//} from "../../renderer/RenderContext";
+//import formatDate
+//    from "../../utils/formatDate";
+//import { useDocument}  from "../../renderer/RenderContext";
 
-export default function DocumentHeader() {
+//export default function DocumentHeader() {
 
-    const {
+//    const {
 
-        company,
+//        company,
 
-        meta,
+//        meta,
 
-        flags
+//        flags
 
-    } = useDocument();
+//    } = useDocument();
 
-    const logo =
+//    const logo =
 
-        company.logo?.base64 ??
+//        company.logo?.base64 ??
 
-        company.logo?.url;
+//        company.logo?.url;
 
-    return (
+//    return (
 
-        <header className="document-header">
+//        <header className="document-header">
 
-            <section className="company-section">
+//            <section className="company-section">
 
-                {company.logo?.exists ? (
+//                {company.logo?.exists ? (
 
-                    <img
-                        src={logo}
-                        alt={company.name}
-                        className="company-logo"
-                        crossOrigin="anonymous"
-                    />
+//                    <img
+//                        src={logo}
+//                        alt={company.name}
+//                        className="company-logo"
+//                        crossOrigin="anonymous"
+//                    />
 
-                ) : (
+//                ) : (
 
-                    <div className="company-logo-placeholder">
+//                    <div className="company-logo-placeholder">
 
-                        {company.name?.charAt(0)}
+//                        {company.name?.charAt(0)}
 
-                    </div>
+//                    </div>
 
-                )}
+//                )}
 
-                <div className="company-details">
+//                <div className="company-details">
 
-                    <h1>
+//                    <h1>
 
-                        {company.name}
+//                        {company.name}
 
-                    </h1>
+//                    </h1>
 
-                    {company.address && (
+//                    {company.address && (
 
-                        <div>
+//                        <div>
 
-                            {company.address}
+//                            {company.address}
 
-                        </div>
+//                        </div>
 
-                    )}
+//                    )}
 
-                    {company.phone && (
+//                    {company.phone && (
 
-                        <div>
+//                        <div>
 
-                            {company.phone}
+//                            {company.phone}
 
-                        </div>
+//                        </div>
 
-                    )}
+//                    )}
 
-                    {company.email && (
+//                    {company.email && (
 
-                        <div>
+//                        <div>
 
-                            {company.email}
+//                            {company.email}
 
-                        </div>
+//                        </div>
 
-                    )}
+//                    )}
 
-                    {company.website && (
+//                    {company.website && (
 
-                        <div>
+//                        <div>
 
-                            {company.website}
+//                            {company.website}
 
-                        </div>
+//                        </div>
 
-                    )}
+//                    )}
 
-                </div>
+//                </div>
 
-            </section>
+//            </section>
 
-            <section className="document-info">
+//            <section className="document-info">
 
-                <h2>
+//                <h2>
 
-                    {meta.title}
+//                    {meta.title}
 
-                </h2>
+//                </h2>
 
-                <table className="document-meta">
+//                <table className="document-meta">
 
-                    <tbody>
+//                    <tbody>
 
-                        <tr>
+//                        <tr>
 
-                            <td>Document No.</td>
+//                            <td>Document No.</td>
 
-                            <td>{meta.documentNumber}</td>
+//                            <td>{meta.documentNumber}</td>
 
-                        </tr>
+//                        </tr>
 
-                        <tr>
+//                        <tr>
 
-                            <td>Date</td>
+//                            <td>Date</td>
 
-                            <td>{formatDate(meta.formattedIssueDate)}</td>
+//                            <td>{formatDate(meta.formattedIssueDate)}</td>
 
-                        </tr>
-                        {meta.dateLabel && meta.dateValue && (
+//                        </tr>
+//                        {meta.dateLabel && meta.dateValue && (
 
-                            <tr>
+//                            <tr>
 
-                                <td>{meta.dateLabel}</td>
+//                                <td>{meta.dateLabel}</td>
 
-                                <td>{meta.formattedSecondaryDate}</td>
+//                                <td>{meta.formattedSecondaryDate}</td>
 
-                            </tr>
+//                            </tr>
 
-                        )}
+//                        )}
 
-                        {flags.showStatus && (
+//                        {flags.showStatus && (
 
-                            <tr>
+//                            <tr>
 
-                                <td>Status</td>
+//                                <td>Status</td>
 
-                                <td>
+//                                <td>
 
-                                    <span className={`status-badge status-${meta.status?.toLowerCase()}`}>
+//                                    <span className={`status-badge status-${meta.status?.toLowerCase()}`}>
 
-                                        {meta.status}
+//                                        {meta.status}
 
-                                    </span>
+//                                    </span>
 
-                                </td>
+//                                </td>
 
-                            </tr>
+//                            </tr>
 
-                        )}
+//                        )}
 
-                    </tbody>
+//                    </tbody>
 
-                </table>
+//                </table>
 
-            </section>
+//            </section>
 
-        </header>
+//        </header>
 
-    );
+//    );
 
-}
+//}

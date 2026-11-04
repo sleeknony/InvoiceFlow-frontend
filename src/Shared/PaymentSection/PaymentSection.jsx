@@ -1,217 +1,217 @@
-import "./PaymentSection.css";
-import PrintableSection from "../../renderer/PrintableSection";
-import { useRenderDocument} from "../../renderer/RenderContext";
-import { useDocument } from "../../renderer/RenderContext";
+//import "./PaymentSection.css";
+//import PrintableSection from "../../renderer/PrintableSection";
+//import { useRenderDocument} from "../../renderer/RenderContext";
+//import { useDocument } from "../../renderer/RenderContext";
 
-export default function PaymentSection() {
+//export default function PaymentSection() {
 
-    const {
+//    const {
 
-        payment,
+//        payment,
 
-        features
+//        features
 
-    } = useDocument();
+//    } = useDocument();
 
-    if (!features.showPaymentInstructions)
-        return null;
+//    if (!features.showPaymentInstructions)
+//        return null;
 
-    if (!payment.bank)
-        return null;
+//    if (!payment.bank)
+//        return null;
 
-    const {
+//    const {
 
-        name,
+//        name,
 
-        accountName,
+//        accountName,
 
-        accountNumber,
+//        accountNumber,
 
-        sortCode,
+//        sortCode,
 
-        swiftCode,
+//        swiftCode,
 
-        iban,
+//        iban,
 
-        instructions
+//        instructions
 
-    } = payment.bank;
+//    } = payment.bank;
 
-    const hasBankInfo =
+//    const hasBankInfo =
 
-        name ||
-        accountName ||
-        accountNumber ||
-        sortCode ||
-        swiftCode ||
-        iban ||
-        instructions;
+//        name ||
+//        accountName ||
+//        accountNumber ||
+//        sortCode ||
+//        swiftCode ||
+//        iban ||
+//        instructions;
 
-    if (!hasBankInfo)
-        return null;
+//    if (!hasBankInfo)
+//        return null;
     
-    return (
+//    return (
 
-        <PrintableSection type="payment">
+//        <PrintableSection type="payment">
 
-            <h4 className="payment-title">
+//            <h4 className="payment-title">
 
-                Payment Information
+//                Payment Information
 
-            </h4>
+//            </h4>
 
-            <div
-                className={`payment-grid${instructions ? " has-notes" : ""}`}
-            >
+//            <div
+//                className={`payment-grid${instructions ? " has-notes" : ""}`}
+//            >
 
-                <div className="payment-details">
+//                <div className="payment-details">
 
-                    {name && (
+//                    {name && (
 
-                        <div className="payment-row">
+//                        <div className="payment-row">
 
-                            <span className="payment-label">
+//                            <span className="payment-label">
 
-                                Bank
+//                                Bank
 
-                            </span>
+//                            </span>
 
-                            <span className="payment-value">
+//                            <span className="payment-value">
 
-                                {name}
+//                                {name}
 
-                            </span>
+//                            </span>
 
-                        </div>
+//                        </div>
 
-                    )}
+//                    )}
 
-                    {accountName && (
+//                    {accountName && (
 
-                        <div className="payment-row">
+//                        <div className="payment-row">
 
-                            <span className="payment-label">
+//                            <span className="payment-label">
 
-                                Account Name
+//                                Account Name
 
-                            </span>
+//                            </span>
 
-                            <span className="payment-value">
+//                            <span className="payment-value">
 
-                                {accountName}
+//                                {accountName}
 
-                            </span>
+//                            </span>
 
-                        </div>
+//                        </div>
 
-                    )}
+//                    )}
 
-                    {accountNumber && (
+//                    {accountNumber && (
 
-                        <div className="payment-row">
+//                        <div className="payment-row">
 
-                            <span className="payment-label">
+//                            <span className="payment-label">
 
-                                Account No.
+//                                Account No.
 
-                            </span>
+//                            </span>
 
-                            <span className="payment-value">
+//                            <span className="payment-value">
 
-                                {accountNumber}
+//                                {accountNumber}
 
-                            </span>
+//                            </span>
 
-                        </div>
+//                        </div>
 
-                    )}
+//                    )}
 
-                    {sortCode && (
+//                    {sortCode && (
 
-                        <div className="payment-row">
+//                        <div className="payment-row">
 
-                            <span className="payment-label">
+//                            <span className="payment-label">
 
-                                Sort Code
+//                                Sort Code
 
-                            </span>
+//                            </span>
 
-                            <span className="payment-value">
+//                            <span className="payment-value">
 
-                                {sortCode}
+//                                {sortCode}
 
-                            </span>
+//                            </span>
 
-                        </div>
+//                        </div>
 
-                    )}
+//                    )}
 
-                    {swiftCode && (
+//                    {swiftCode && (
 
-                        <div className="payment-row">
+//                        <div className="payment-row">
 
-                            <span className="payment-label">
+//                            <span className="payment-label">
 
-                                SWIFT Code
+//                                SWIFT Code
 
-                            </span>
+//                            </span>
 
-                            <span className="payment-value">
+//                            <span className="payment-value">
 
-                                {swiftCode}
+//                                {swiftCode}
 
-                            </span>
+//                            </span>
 
-                        </div>
+//                        </div>
 
-                    )}
+//                    )}
 
-                    {iban && (
+//                    {iban && (
 
-                        <div className="payment-row">
+//                        <div className="payment-row">
 
-                            <span className="payment-label">
+//                            <span className="payment-label">
 
-                                IBAN
+//                                IBAN
 
-                            </span>
+//                            </span>
 
-                            <span className="payment-value">
+//                            <span className="payment-value">
 
-                                {iban}
+//                                {iban}
 
-                            </span>
+//                            </span>
 
-                        </div>
+//                        </div>
 
-                    )}
+//                    )}
 
-                </div>
+//                </div>
 
-                {instructions && (
+//                {instructions && (
 
-                    <div className="payment-notes">
+//                    <div className="payment-notes">
 
-                        <h5>
+//                        <h5>
 
-                             Instructions
+//                             Instructions
 
-                        </h5>
+//                        </h5>
 
-                        <p>
+//                        <p>
 
-                            {instructions}
+//                            {instructions}
 
-                        </p>
+//                        </p>
 
-                    </div>
+//                    </div>
 
-                )}
+//                )}
 
-            </div>
+//            </div>
 
-        </PrintableSection>
+//        </PrintableSection>
 
-    );
+//    );
 
-}
+//}

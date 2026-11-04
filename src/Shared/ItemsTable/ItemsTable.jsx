@@ -1,171 +1,171 @@
-import "./ItemsTable.css";
+//import "./ItemsTable.css";
 
-import PrintableSection
-    from "../../renderer/PrintableSection";
+//import PrintableSection
+//    from "../../renderer/PrintableSection";
 
-import {
-    useRenderDocument
-} from "../../renderer/RenderContext";
+//import {
+//    useRenderDocument
+//} from "../../renderer/RenderContext";
 
-import formatCurrency
-    from "../../utils/currency";
+//import formatCurrency
+//    from "../../utils/currency";
 
-import { useDocument } from "../../renderer/RenderContext";
+//import { useDocument } from "../../renderer/RenderContext";
 
 
-export default function ItemsTable({
+//export default function ItemsTable({
 
-    rows = null
+//    rows = null
 
-}) {
+//}) {
 
-    const {
+//    const {
 
-        items,
+//        items,
 
-        layout
+//        layout
 
-    } = useDocument();
+//    } = useDocument();
 
-    const displayRows =
-        rows ?? items.rows;
+//    const displayRows =
+//        rows ?? items.rows;
 
   
 
-    // Hide the entire section if there are no items
-    if (!displayRows?.length) {
+//    // Hide the entire section if there are no items
+//    if (!displayRows?.length) {
 
-        return null;
+//        return null;
 
-    }
+//    }
 
-    const {
+//    const {
 
-        currency
+//        currency
 
-    } = items;
+//    } = items;
 
-    const {
+//    const {
 
-        columns,
+//        columns,
 
-        widths
+//        widths
 
-    } = layout;
+//    } = layout;
 
-    return (
+//    return (
 
-        <PrintableSection type="items">
+//        <PrintableSection type="items">
 
-            <section className="items-card">
+//            <section className="items-card">
 
-                <table className="items-table">
+//                <table className="items-table">
 
-                    <colgroup>
+//                    <colgroup>
 
-                        {columns.map(column => (
+//                        {columns.map(column => (
 
-                            <col
-                                key={column}
-                                style={{
-                                    width: widths[column]
-                                }}
-                            />
+//                            <col
+//                                key={column}
+//                                style={{
+//                                    width: widths[column]
+//                                }}
+//                            />
 
-                        ))}
+//                        ))}
 
-                    </colgroup>
+//                    </colgroup>
 
-                    <thead>
+//                    <thead>
 
-                        <tr>
+//                        <tr>
 
-                            {columns.includes("description") &&
-                                <th>DESCRIPTION</th>}
+//                            {columns.includes("description") &&
+//                                <th>DESCRIPTION</th>}
 
-                            {columns.includes("quantity") &&
-                                <th className="numeric">
-                                    QTY
-                                </th>}
+//                            {columns.includes("quantity") &&
+//                                <th className="numeric">
+//                                    QTY
+//                                </th>}
 
-                            {columns.includes("unitPrice") &&
-                                <th className="numeric">
-                                    PRICE
-                                </th>}
+//                            {columns.includes("unitPrice") &&
+//                                <th className="numeric">
+//                                    PRICE
+//                                </th>}
 
-                            {columns.includes("discount") &&
-                                <th className="numeric">
-                                    DISC %
-                                </th>}
+//                            {columns.includes("discount") &&
+//                                <th className="numeric">
+//                                    DISC %
+//                                </th>}
 
-                            {columns.includes("tax") &&
-                                <th className="numeric">
-                                    VAT %
-                                </th>}
+//                            {columns.includes("tax") &&
+//                                <th className="numeric">
+//                                    VAT %
+//                                </th>}
 
-                            {columns.includes("total") &&
-                                <th className="numeric">
-                                    AMOUNT
-                                </th>}
+//                            {columns.includes("total") &&
+//                                <th className="numeric">
+//                                    AMOUNT
+//                                </th>}
 
-                        </tr>
+//                        </tr>
 
-                    </thead>
+//                    </thead>
 
-                    <tbody>
+//                    <tbody>
 
-                        {displayRows.map(item => (
+//                        {displayRows.map(item => (
 
-                            <tr key={item.id}>
+//                            <tr key={item.id}>
 
-                                {columns.includes("description") &&
-                                    <td>
-                                        {item.description}
-                                    </td>}
+//                                {columns.includes("description") &&
+//                                    <td>
+//                                        {item.description}
+//                                    </td>}
 
-                                {columns.includes("quantity") &&
-                                    <td className="numeric">
-                                        {item.quantity}
-                                    </td>}
+//                                {columns.includes("quantity") &&
+//                                    <td className="numeric">
+//                                        {item.quantity}
+//                                    </td>}
 
-                                {columns.includes("unitPrice") &&
-                                    <td className="numeric">
-                                        {formatCurrency(
-                                            item.unitPrice,
-                                            currency
-                                        )}
-                                    </td>}
+//                                {columns.includes("unitPrice") &&
+//                                    <td className="numeric">
+//                                        {formatCurrency(
+//                                            item.unitPrice,
+//                                            currency
+//                                        )}
+//                                    </td>}
 
-                                {columns.includes("discount") &&
-                                    <td className="numeric">
-                                        {item.discount}
-                                    </td>}
+//                                {columns.includes("discount") &&
+//                                    <td className="numeric">
+//                                        {item.discount}
+//                                    </td>}
 
-                                {columns.includes("tax") &&
-                                    <td className="numeric">
-                                        {item.tax}
-                                    </td>}
+//                                {columns.includes("tax") &&
+//                                    <td className="numeric">
+//                                        {item.tax}
+//                                    </td>}
 
-                                {columns.includes("total") &&
-                                    <td className="numeric total-column">
-                                        {formatCurrency(
-                                            item.total,
-                                            currency
-                                        )}
-                                    </td>}
+//                                {columns.includes("total") &&
+//                                    <td className="numeric total-column">
+//                                        {formatCurrency(
+//                                            item.total,
+//                                            currency
+//                                        )}
+//                                    </td>}
 
-                            </tr>
+//                            </tr>
 
-                        ))}
+//                        ))}
 
-                    </tbody>
+//                    </tbody>
 
-                </table>
+//                </table>
 
-            </section>
+//            </section>
 
-        </PrintableSection>
+//        </PrintableSection>
 
-    );
+//    );
 
-}
+//}

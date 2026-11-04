@@ -774,6 +774,8 @@ export default function HelpSupport() {
                 <a
                     className="help-support-contact-button"
                     href="mailto:info@dubiquitytechnology.com?subject=InvoiceNgine%20Support"
+                    target="_blank"
+                    rel="noopener noreferrer"
                 >
                     Contact support
                     <FiMail />

@@ -1,72 +1,72 @@
-﻿import "./DocumentFooter.css";
+﻿//import "./DocumentFooter.css";
 
-import PrintableSection  from "../../renderer/PrintableSection";
+//import PrintableSection  from "../../renderer/PrintableSection";
 
-import { useRenderDocument} from "../../renderer/RenderContext";
-import { useDocument } from "../../renderer/RenderContext";
+//import { useRenderDocument} from "../../renderer/RenderContext";
+//import { useDocument } from "../../renderer/RenderContext";
 
-export default function DocumentFooter() {
+//export default function DocumentFooter() {
 
-    const {
+//    const {
 
-        company,
+//        company,
 
-        features,
+//        features,
 
-        flags
+//        flags
 
-    } = useDocument();
+//    } = useDocument();
 
-    if (!features.showFooter)
-        return null;
+//    if (!features.showFooter)
+//        return null;
 
-    const footerText =
-        company.footer?.text;
+//    const footerText =
+//        company.footer?.text;
 
     
 
-    return (
+//    return (
 
-        <PrintableSection type="footer">
+//        <PrintableSection type="footer">
 
-            <footer className="document-footer">
+//            <footer className="document-footer">
 
-                {footerText && (
+//                {footerText && (
 
-                    <div className="footer-message">
+//                    <div className="footer-message">
 
-                        {footerText}
+//                        {footerText}
 
-                    </div>
+//                    </div>
 
-                )}
+//                )}
 
-                <div className="footer-divider" />
+//                <div className="footer-divider" />
 
-                <div className="footer-meta">
+//                <div className="footer-meta">
 
-                    <span>
+//                    <span>
 
-                        © {new Date().getFullYear()} {company.name}
+//                        © {new Date().getFullYear()} {company.name}
 
-                    </span>
+//                    </span>
 
-                    {flags.showinvoiceNgineBranding && (
+//                    {flags.showinvoiceNgineBranding && (
 
-                        <span className="footer-brand">
+//                        <span className="footer-brand">
 
-                            Powered by <strong>invoiceNgine</strong>
+//                            Powered by <strong>invoiceNgine</strong>
 
-                        </span>
+//                        </span>
 
-                    )}
+//                    )}
 
-                </div>
+//                </div>
 
-            </footer>
+//            </footer>
 
-        </PrintableSection>
+//        </PrintableSection>
 
-    );
+//    );
 
-}
+//}

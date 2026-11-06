@@ -285,25 +285,7 @@ export default function AdvancedTab({
             </div>
 
 
-            <div className="alert alert-info mt-4">
-
-                <strong>Coming Soon</strong>
-
-                <div className="mt-2">
-
-                    Future workspace preferences will include:
-
-                    <ul className="mt-2 mb-0">
-                        <li>Theme (Light/Dark)</li>
-                        <li>Language</li>
-                        <li>Timezone</li>
-                        <li>Email Notifications</li>
-                        <li>Desktop Notifications</li>
-                    </ul>
-
-                </div>
-
-            </div>
+            
         </>
     );
 }

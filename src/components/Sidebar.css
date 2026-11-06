@@ -601,6 +601,9 @@
         left: 0;
         z-index: 1050;
         width: min(290px, 85vw);
+        min-width: min(290px, 85vw);
+        max-width: none;
+        flex: 0 0 min(290px, 85vw);
         height: 100dvh;
         overflow-y: auto;
         transform: translateX(-100%);

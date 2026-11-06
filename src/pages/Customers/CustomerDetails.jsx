@@ -10,6 +10,7 @@ import CustomerDetailsQuickActions from "./components/CustomerDetailsQuickAction
 import CustomerRecentDocuments from "./components/CustomerRecentDocuments";
 import CustomerTabs from "./components/CustomerTabs";
 import "./components/CustomerDetails.css";
+import "./CustomersResponsive.css";
 
 import toast from "react-hot-toast";
 

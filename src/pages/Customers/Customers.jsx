@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { getCustomers, getCustomer, createCustomer, updateCustomer,  deleteCustomer as deleteCustomerApi} from "../../services/customerService";
 import { useLocation } from "react-router-dom";
+import "./CustomersResponsive.css";
 
 const emptyForm = {
     companyName: "",

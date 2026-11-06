@@ -41,7 +41,7 @@ export default function CustomerRecentDocuments({
 
     return (
 
-        <div className="card border-0 shadow-sm rounded-4">
+        <div className="card border-0 shadow-sm rounded-4 customer-details-documents">
 
             <div className="card-body">
 

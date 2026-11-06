@@ -32,48 +32,67 @@ export default function CustomerTabs({
 
     return (
 
+        //<div className="card border-0 shadow-sm rounded-4 mb-4">
+
+        //    <div className="card-body py-2">
+
+        //        <ul className="nav nav-pills">
+
+        //            {
+
+        //                tabs.map(tab => (
+
+        //                    <li
+        //                        key={tab.key}
+        //                        className="nav-item"
+        //                    >
+
+        //                        <button
+
+        //                            className={`nav-link ${activeTab === tab.key
+        //                                    ? "active"
+        //                                    : ""
+        //                                }`}
+
+        //                            onClick={() =>
+        //                                onChange(tab.key)
+        //                            }
+
+        //                        >
+
+        //                            {tab.label}
+
+        //                        </button>
+
+        //                    </li>
+
+        //                ))
+
+        //            }
+
+        //        </ul>
+
+        //    </div>
+
+        //</div>
+
+
         <div className="card border-0 shadow-sm rounded-4 mb-4">
-
             <div className="card-body py-2">
-
-                <ul className="nav nav-pills">
-
-                    {
-
-                        tabs.map(tab => (
-
-                            <li
-                                key={tab.key}
-                                className="nav-item"
+                <ul className="nav nav-pills customer-tabs">
+                    {tabs.map(tab => (
+                        <li key={tab.key} className="nav-item">
+                            <button
+                                className={`nav-link ${activeTab === tab.key ? "active" : ""
+                                    }`}
+                                onClick={() => onChange(tab.key)}
                             >
-
-                                <button
-
-                                    className={`nav-link ${activeTab === tab.key
-                                            ? "active"
-                                            : ""
-                                        }`}
-
-                                    onClick={() =>
-                                        onChange(tab.key)
-                                    }
-
-                                >
-
-                                    {tab.label}
-
-                                </button>
-
-                            </li>
-
-                        ))
-
-                    }
-
+                                {tab.label}
+                            </button>
+                        </li>
+                    ))}
                 </ul>
-
             </div>
-
         </div>
 
     );

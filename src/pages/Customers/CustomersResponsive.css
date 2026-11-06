@@ -1,0 +1,289 @@
+/* =========================================================
+   CUSTOMER LIST
+   ========================================================= */
+
+.customer-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.customer-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.customer-header-text {
+    min-width: 0;
+}
+
+.customer-stat-body {
+    padding: 1.5rem;
+}
+
+.customer-stat-icon {
+    flex-shrink: 0;
+}
+
+.customer-card {
+    min-width: 0;
+}
+
+    .customer-card .card-body {
+        min-width: 0;
+    }
+
+    .customer-card h5 {
+        overflow-wrap: anywhere;
+    }
+
+    .customer-card .small {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    .customer-card .card-footer {
+        min-width: 0;
+    }
+
+        .customer-card .card-footer .d-flex {
+            flex-wrap: wrap;
+        }
+
+        .customer-card .card-footer .btn {
+            min-height: 42px;
+        }
+
+            .customer-card .card-footer .btn.flex-fill {
+                min-width: 0;
+            }
+
+/* =========================================================
+   CUSTOMER DETAILS
+   ========================================================= */
+
+.customer-details-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.customer-details-heading {
+    min-width: 0;
+}
+
+    .customer-details-heading h2 {
+        overflow-wrap: anywhere;
+    }
+
+.customer-code {
+    overflow-wrap: anywhere;
+}
+
+.customer-details-stat-body {
+    padding: 1.25rem;
+}
+
+.customer-details-stat-value {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    font-size: clamp(1.15rem, 2vw, 1.75rem);
+}
+
+.customer-info-item {
+    min-width: 0;
+}
+
+    .customer-info-item > div {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+.customer-sidebar {
+    position: sticky;
+    top: 24px;
+}
+
+.customer-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 6px;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+}
+
+    .customer-tabs .nav-item {
+        flex: 0 0 auto;
+    }
+
+    .customer-tabs .nav-link {
+        white-space: nowrap;
+    }
+
+/* =========================================================
+   CUSTOMER DOCUMENT TABLE
+   ========================================================= */
+
+.customer-details-documents .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.customer-details-documents table {
+    min-width: 650px;
+}
+
+/* =========================================================
+   CUSTOMER MODAL
+   ========================================================= */
+
+.customer-modal-body {
+    overflow-x: hidden;
+}
+
+.customer-modal-footer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 991.98px) {
+    .customer-sidebar {
+        position: static;
+        top: auto;
+    }
+
+    .customer-details-header-content {
+        align-items: flex-start;
+    }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+    .customer-header-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
+    }
+
+    .customer-header-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+    }
+
+        .customer-header-actions .btn {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+            white-space: nowrap;
+            font-size: 0.85rem;
+        }
+
+    .customer-page-header .card-body {
+        padding: 1.25rem !important;
+    }
+
+    .customer-stat-body {
+        padding: 1rem;
+    }
+
+    .customer-stat-icon {
+        font-size: 1.4rem !important;
+    }
+
+    .customer-details-header-content {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .customer-edit-button {
+        width: 100%;
+    }
+
+    .customer-details-heading h2 {
+        font-size: 1.45rem;
+    }
+
+    .customer-details-stat-body {
+        padding: 1rem;
+    }
+
+    .customer-details-stat-value {
+        font-size: 1.2rem;
+    }
+
+    .customer-modal-header {
+        padding: 1.25rem !important;
+    }
+
+    .customer-modal-body {
+        padding: 1.25rem !important;
+    }
+
+    .customer-modal-footer {
+        padding: 1rem 1.25rem !important;
+        gap: 8px;
+    }
+
+        .customer-modal-footer .btn {
+            flex: 1;
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+        }
+
+    .customer-card .card-body {
+        padding: 1.25rem !important;
+    }
+
+    .customer-card .card-footer {
+        padding: 0.85rem !important;
+    }
+
+    .customer-info-card .card-body,
+    .customer-details-overview .card-body {
+        padding: 1.25rem !important;
+    }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+    .customer-header-actions {
+        grid-template-columns: 1fr;
+    }
+
+        .customer-header-actions .btn {
+            width: 100%;
+        }
+
+    .customer-page-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .customer-details-stat-value {
+        font-size: 1.05rem;
+    }
+
+    .customer-details-stat-body {
+        padding: 0.85rem;
+    }
+
+    .customer-card .card-footer .btn {
+        font-size: 0.85rem;
+    }
+}

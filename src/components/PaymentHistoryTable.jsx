@@ -1,8 +1,8 @@
-export default function
-    PaymentHistoryTable({
-        payments,
-        currency
-    }) {
+
+export default function PaymentHistoryTable({
+    payments,
+    currency
+}) {
     if (!payments.length)
         return null;
 
@@ -15,67 +15,56 @@ export default function
 
             <div className="card-body p-0">
 
-                <table className="table mb-0">
+                <div className="document-history-table-wrapper">
 
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Method</th>
-                            <th>Reference</th>
-                            <th>Notes</th>
-                            <th className="text-end">
-                                Amount
-                            </th>
-                        </tr>
-                    </thead>
+                    <table className="table mb-0">
 
-                    <tbody>
-
-                        {payments.map(p => (
-                            <tr key={p.id}>
-                                <td>
-                                    {
-                                        new Date(
-                                            p.paymentDate
-                                        )
-                                            .toLocaleDateString()
-                                    }
-                                </td>
-
-                                <td>
-                                    {
-                                        p.paymentMethod
-                                    }
-                                </td>
-
-                                <td>
-                                    {
-                                        p.referenceNumber
-                                    }
-                                </td>
-
-                                <td>
-                                    {
-                                        p.notes
-                                    }
-                                </td>
-
-                                <td className="text-end">
-                                    {
-                                        currency
-                                    }
-                                    {" "}
-                                    {
-                                        p.amount
-                                            .toLocaleString()
-                                    }
-                                </td>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Method</th>
+                                <th>Reference</th>
+                                <th>Notes</th>
+                                <th className="text-end">
+                                    Amount
+                                </th>
                             </tr>
-                        ))}
+                        </thead>
 
-                    </tbody>
+                        <tbody>
+                            {payments.map(p => (
+                                <tr key={p.id}>
+                                    <td>
+                                        {new Date(
+                                            p.paymentDate
+                                        ).toLocaleDateString()}
+                                    </td>
 
-                </table>
+                                    <td>
+                                        {p.paymentMethod}
+                                    </td>
+
+                                    <td>
+                                        {p.referenceNumber}
+                                    </td>
+
+                                    <td>
+                                        {p.notes}
+                                    </td>
+
+                                    <td className="text-end">
+                                        {currency}{" "}
+                                        {Number(
+                                            p.amount ?? 0
+                                        ).toLocaleString()}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+
+                    </table>
+
+                </div>
 
             </div>
 

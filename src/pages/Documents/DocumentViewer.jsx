@@ -1174,7 +1174,7 @@ export default function DocumentViewer() {
                     </div>
 
                     <div className="card-body p-0">
-
+                        <div className="document-history-table-wrapper">
                         <table className="table mb-0">
 
                             <thead>
@@ -1216,6 +1216,7 @@ export default function DocumentViewer() {
 
                         </table>
 
+                        </div>
                     </div>
 
                 </div>

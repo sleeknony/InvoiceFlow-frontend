@@ -1,0 +1,234 @@
+
+.line-items-card {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.line-items-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 16px 20px;
+}
+
+.line-items-subtitle {
+    display: block;
+    color: #777;
+    margin-top: 4px;
+}
+
+.line-items-add-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.line-items-content {
+    width: 100%;
+    padding: 0 16px 16px;
+}
+
+.line-items-grid {
+    display: grid;
+    grid-template-columns: minmax(180px, 2fr) minmax(65px, 0.55fr) minmax(105px, 1fr) minmax(90px, 0.8fr) minmax(105px, 0.9fr) minmax(105px, 0.9fr) 75px;
+    gap: 10px;
+    align-items: end;
+}
+
+.line-items-column-header {
+    padding: 12px 10px;
+    background: #f7f8fa;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 12px;
+    font-weight: 600;
+    color: #555;
+}
+
+.line-item-row {
+    padding: 14px 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.line-item-field {
+    min-width: 0;
+}
+
+    .line-item-field label {
+        display: none;
+    }
+
+    .line-item-field .form-control {
+        width: 100%;
+        min-width: 0;
+        font-size: 13px;
+    }
+
+.line-item-tax-control {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+    .line-item-tax-control input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        cursor: pointer;
+    }
+
+.line-item-total {
+    font-weight: 600;
+    text-align: right;
+    padding: 9px 0;
+    white-space: nowrap;
+}
+
+.line-item-delete-field {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.line-item-delete-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+.desktop-delete-label {
+    display: none !important;
+}
+
+.line-items-empty {
+    padding: 35px 15px;
+    text-align: center;
+    color: #777;
+}
+
+    .line-items-empty span {
+        display: block;
+        font-size: 13px;
+        margin-top: 5px;
+    }
+
+/* Tablet */
+@media (max-width: 991px) {
+    .line-items-content {
+        padding: 0 12px 12px;
+    }
+
+    .line-items-grid {
+        grid-template-columns: minmax(150px, 1.8fr) minmax(55px, 0.6fr) minmax(90px, 1fr) minmax(75px, 0.8fr) minmax(90px, 0.9fr) minmax(90px, 0.9fr) 65px;
+        gap: 7px;
+    }
+
+    .line-items-column-header {
+        font-size: 11px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+    .line-items-header {
+        padding: 15px;
+    }
+
+    .line-items-content {
+        padding: 0 12px 12px;
+    }
+
+    .line-items-column-header {
+        display: none;
+    }
+
+    .line-items-grid.line-item-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 13px;
+        padding: 16px 12px;
+        margin-bottom: 12px;
+        border: 1px solid #e9ecef;
+        border-radius: 10px;
+        background: #fff;
+    }
+
+    .line-item-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+        .line-item-field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #555;
+            margin: 0;
+        }
+
+    .description-field {
+        grid-column: 1 / -1;
+    }
+
+    .line-item-field .form-control {
+        min-height: 40px;
+        font-size: 14px;
+    }
+
+    .line-item-tax-control {
+        min-height: 40px;
+    }
+
+        .line-item-tax-control .form-control {
+            flex: 1;
+        }
+
+    .line-total-field {
+        justify-content: flex-end;
+    }
+
+    .line-item-total {
+        text-align: left;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        font-size: 15px;
+    }
+
+    .line-item-delete-field {
+        align-items: stretch;
+        justify-content: flex-end;
+    }
+
+    .line-item-delete-btn {
+        width: 100%;
+        min-height: 40px;
+    }
+
+    .line-items-empty {
+        padding: 25px 10px;
+    }
+}
+
+/* Small mobile */
+@media (max-width: 380px) {
+    .line-items-header {
+        align-items: flex-start;
+    }
+
+    .line-items-add-btn {
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+
+    .line-items-grid.line-item-row {
+        gap: 11px;
+        padding: 12px 9px;
+    }
+}

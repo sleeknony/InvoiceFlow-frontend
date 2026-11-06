@@ -284,8 +284,6 @@ export default function AdvancedTab({
 
             </div>
 
-
-            
         </>
     );
 }

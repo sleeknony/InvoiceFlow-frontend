@@ -9,6 +9,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoggingIn, setIsLoggingIn] = useState(false);
 
     const { login } = useAuth();
     const navigate = useNavigate();
@@ -16,16 +17,18 @@ export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
 
     const handleLogin = async () => {
+
+        if (isLoggingIn) return;
+
+        setIsLoggingIn(true);
+
         try {
             const res = await http.post("/Auth/login", {
                 email,
                 password
             });
 
-            // =====================================================
-            // SAVE PERMISSIONS
-            // =====================================================
-
+            
             // =====================================================
             // SAVE PERMISSIONS
             // =====================================================
@@ -228,6 +231,9 @@ export default function Login() {
                 "Login failed. Please check your credentials."
             );
         }
+        finally {
+            setIsLoggingIn(false);
+        }
     };
 
     return (
@@ -373,8 +379,25 @@ export default function Login() {
                         <button
                             type="submit"
                             className="auth-btn"
+                            disabled={isLoggingIn}
+                            style={{
+                                opacity: isLoggingIn ? 0.75 : 1,
+                                cursor: isLoggingIn ? "not-allowed" : "pointer"
+                            }}
                         >
-                            Login
+                            {isLoggingIn ? (
+                                <>
+                                    <span
+                                        className="spinner-border spinner-border-sm me-2"
+                                        role="status"
+                                        aria-hidden="true"
+                                    />
+
+                                    Logging in...
+                                </>
+                            ) : (
+                                "Login"
+                            )}
                         </button>
 
                     </form>

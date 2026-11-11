@@ -442,10 +442,21 @@ export default function DocumentViewer() {
         catch (err) {
             console.error(err);
 
-            toast.error(
-                err?.response?.data?.message ??
-                "Unable to send document."
-            );
+            const response = err?.response?.data;
+
+            const message =
+                response?.message ||
+                response?.detail ||
+                response?.title ||
+                (typeof response === "string" ? response : null) ||
+                err?.message ||
+                "Unable to send document.";
+
+            await Swal.fire({
+                icon: "warning",
+                title: "Action Blocked",
+                text: message
+            });
         }
     };
 

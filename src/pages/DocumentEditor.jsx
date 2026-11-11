@@ -23,7 +23,7 @@ export default function DocumentEditor({ mode }) {
     const [customers, setCustomers] = useState([]);
     const [settings, setSettings] = useState(null);
     const [bankAccounts, setBankAccounts] = useState([]);
-    const [selectedBankAccountId, setSelectedBankAccountId] =  useState(null);
+/*    const [selectedBankAccountId, setSelectedBankAccountId] =  useState(null);*/
 
     const [doc, setDoc] = useState({
         id: id || null,
@@ -513,6 +513,13 @@ export default function DocumentEditor({ mode }) {
                                 settings && (
                                     <PaymentSidebar
                                         bankAccounts={bankAccounts}
+                                        selectedBankAccountId={doc.companyBankAccountId}
+                                        onBankAccountChange={(accountId) =>
+                                            setDoc(prev => ({
+                                                ...prev,
+                                                companyBankAccountId: accountId
+                                            }))
+                                        }
                                     />
 
                                 )
